@@ -3,3 +3,6 @@
 
 # Port .env
 *.env
+
+# Text files
+*.txt
