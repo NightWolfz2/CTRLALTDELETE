@@ -1,139 +1,137 @@
-/* google font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
-/* layout */
-:root {
-  --primary: #000000;
-  --error: #e7195a;
+.App {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adjust as needed */
 }
-body {
-  background: #f1f1f1;
-  margin: 0;
-  font-family: "Poppins";
+
+
+.background-image {
+  position: fixed;     /* Fixed position to cover the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;         /* Full width of viewport */
+  height: 100%;        /* Full height of viewport */
+  background-image: url('https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;   /* Cover the entire viewport */
+  background-position: center; /* Center the background image */
+  z-index: -1;         /* Place it behind the content */
 }
-.overview {
-  background: #b9b9b9;
-  height: 100px;
-  padding: 5px;
-  margin: 0;
-  position: relative;
-}
-header {
-  background: #272727;
-}
-h1 {
-  color:#ffffff;
-}
-h2 {
-  margin-right: 20px;
-  padding: 20px;
-}
-h3 {
-  margin-left: 10px;
-}
-header .container {
-  max-width: 1400px;
-  margin: 0;
-  padding: 1px 20px;
+
+
+.logo-title-container {
   display: flex;
   align-items: center;
+  
 }
-.ulList {
-  list-style-type: none;
-  padding: 0;
+
+.navbar .logo {
+  height: 50px;           /* Adjust based on your logo's desired size */
+  width: auto;            /* Keeps the logo's aspect ratio */
+  margin-right: 10px;     /* Space between the logo and the title */
+}
+
+.navbar {
   display: flex;
-  margin-top: 0;
-  margin-left: 100px;
-}
-
-.navItem {
-  margin-right: 20px; /* Adjust the value to control spacing between items */
-  border: 1px solid white;
-  padding: 2px 15px;
-  width: 100px;
-  text-align: center;
-}
-
-header a {
-  color: #ffffff;
-  text-decoration: none;
+  justify-content: space-between;
   align-items: center;
+  border: 2px solid white;  /* Border around the navbar */
+  background-color: black;  /* Background color for the navbar */
+  padding: 10px;            /* Space between the border and the content */
 }
-.pages{
-  /*max-width: 1400px;*/
-  /*max-width: 80%; */
-  margin: 0 auto;
-  /*margin-left: 1em; */
+
+.navbar h1 {
+  color: white;
+  margin: 0px;
 }
-/* homepage */
+
+.navbar .links {
+  display: flex;
+  gap: 10px;                 /* Space between each link box */
+}
+
+.navbar .links a {
+  color: white;             /* Text color for the links */
+  padding: 10px 15px;       /* Space inside each link box */
+  border: 2px solid white;  /* Border for each link box */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  text-decoration: none;    /* Remove the underline from the links */
+}
+
+.navbar .links a:hover {
+  background-color: #555;  /* Darker background color for hover effect */
+}
+
+
+
+.navbar .links a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.overview-section {
+  padding: 20px;  /* Add some spacing around the section */
+  color: white;
+}
+
+.filter-options {
+  display: flex;  /* Lay out children horizontally */
+  gap: 50px;      /* Space between each item */
+  align-items: center; /* Vertically align the items in the center */
+  margin-top: 10px;   /* Space above the filter options */
+}
+
+/* Style the dropdowns and search input */
+.filter-options select, .filter-options input {
+  margin-left: 5px;   /* Space between label and input/dropdown */
+}
+
+
+
 .home {
-  gap: 100px;
-}
-.tasks {
-  max-width: 80%;
-  margin-left: 10px;
   display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
+  justify-content: space-between;  /* This will spread each task status section evenly */
+  flex-wrap: wrap;  /* This ensures the boxes wrap onto the next line if they don't fit */
 }
-.task-details {
-  background: #fff;
-  border: 1px solid rgb(7, 7, 7); 
-  border-radius: 4px;
-  margin: 10px auto;
-  padding: 15px;
-  min-width: 15%;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-}
-.task-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  color: var(--primary);
-}
-.task-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
-}
-.task-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
-}
-/* new workout form */
-label, input {
-  display: block;
-}
-input {
+
+.task-box {
+  width: 15.86%; /* set the width */
+  margin: 0 10px;
   padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: transparent;
   box-sizing: border-box;
 }
-form button {
-  background: var(--primary);
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Poppins";
-  border-radius: 4px;
-  cursor: pointer;
+
+
+.task-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;  /* This will allow boxes to wrap to the next line if they don't fit */
+  justify-content: flex-start;
+  gap: 10px;  /* Provides spacing between each box */
+  width: 100%; /* or set a fixed px value like 1200px */
 }
-div.error {
-  padding: 10px;
-  background: #ffefef;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
+
+.task-box h3 {
+  margin-bottom: 50px;  /* Adjust the value as needed */
+}
+
+
+.task-box .status {
+  margin-left: 220px; /* Adjust this value if it's causing the box to expand too much */
+}
+
+/* Specific colors for each status */
+.task-box .status.in-progress {
+  color: blue;
+}
+
+.task-box .status.past-due {
+  color: red;
+}
+
+.task-box .status.completed {
+  color: green;
 }
