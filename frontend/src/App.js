@@ -1,59 +1,29 @@
-//import logo from './logo.svg';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './Navbar';
-import Home from './Home';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+// pages & components
+import Home from './pages/Home'
+import Navbar from './components/Navbar'
+import TaskForm from './pages/TaskForm'
 
 function App() {
-  //const title = "Task Manager";
-  //<h1>{title}</h1>
-  
-  
   return (
-    <Router>
-      
-        <Navbar />
-        
-      <div className="overview-section">
-        <h1>Overview</h1>
-        <div className="filter-options">
-
-            <label for="status">Status: 
-                <select id="status" name="status">
-                    <option value="in-progress">In Progress</option>
-                    <option value="past-due">Past Due</option>
-                    <option value="completed">Completed</option>
-                </select>
-            </label>
-
-            <label for="priority">Priority: 
-                <select id="priority" name="priority">
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                </select>
-            </label>
-
-            <label for="dueDate">Due Date: 
-                <input type="date" id="dueDate" name="dueDate" />
-            </label>
-
-            <label for="search">Search: 
-                <input type="search" id="search" name="search" placeholder="Search..." />
-            </label>
-
-        </div>
-
-      </div>
-
-
-        <div className="content">
+    <div className="App">
+      <BrowserRouter>
+      <Navbar />
+        <div className="pages">
           <Routes>
-            <Route path="/" element={<Home />} />
-            {/* Add other routes as needed */}
+            <Route 
+              path="/"
+              element={<Home />}
+            />
+            <Route
+              path="/createTask"
+              element={<TaskForm />}
+            />
           </Routes>
         </div>
-      
-    </Router>
+      </BrowserRouter>
+    </div>
   );
 }
 
