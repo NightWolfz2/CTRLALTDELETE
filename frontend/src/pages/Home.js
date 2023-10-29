@@ -22,8 +22,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="overview">
-        <h2>OVERVIEW</h2>
+      <div className="home-details">
+        <h2>HOME</h2>
       </div>
       <h3>In Progress</h3>
       <div className="tasks">
