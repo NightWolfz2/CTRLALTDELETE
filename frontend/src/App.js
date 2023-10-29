@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import TaskForm from './pages/TaskForm'
+import Calendar from './pages/Calendar'
+import Overview from './pages/Overview'
+import History from './pages/History'
 
 function App() {
   return (
@@ -19,6 +22,18 @@ function App() {
             <Route
               path="/createTask"
               element={<TaskForm />}
+            />
+            <Route
+              path="/calendar"
+              element={< Calendar />} // change this to calendar.js
+            />
+            <Route
+              path="/Overview"
+              element={<Overview />}
+            />
+            <Route
+              path="/History"
+              element={<History />}
             />
           </Routes>
         </div>
