@@ -40,7 +40,7 @@ const TaskForm = () => {
 
   return (
     <form className="create" onSubmit={handleSubmit}> 
-      <h3>Add a New Task</h3>
+      <h3>Create Task</h3>
 
       <label>Task Title:</label>
       <input 
@@ -67,7 +67,7 @@ const TaskForm = () => {
         value={priority} 
       />
 
-      <button>Add Task</button>
+      <button>Submit</button>
       {error && <div className="error">{error}</div>}
     </form>
   )
