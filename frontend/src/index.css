@@ -137,3 +137,56 @@ div.error {
   border-radius: 4px;
   margin: 20px 0;
 }
+
+/* overview page */
+.priority-label {
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+.priority-select {
+  margin-left: 22px;
+  width: 100px;
+  display: flex;
+}
+.status-label {
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+.status-select {
+  margin-left: 24px;
+  width: 101px;
+  display: flex;
+}
+.due-date-label {
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+}
+.due-date-select {
+  margin-left: 10px;
+  width: 150px;
+  display: flex;
+  align-items: center; 
+}
+.react-datepicker__input-container input {
+  width: 90px; 
+  padding: 1.5px; 
+  border: 1px solid rgb(61, 60, 60); 
+  margin-top: -20px;
+}
+.clear-button {
+  margin-top: -10px;
+  margin-left: 165px;
+}
+
+
+
+
+
