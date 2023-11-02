@@ -3,10 +3,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 // pages & components
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
+import Bottombar from './components/Bottombar'
 import TaskForm from './pages/TaskForm'
 import Calendar from './pages/Calendar'
 import Overview from './pages/Overview'
 import History from './pages/History'
+
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
             />
           </Routes>
         </div>
+        <Bottombar />
       </BrowserRouter>
     </div>
   );
