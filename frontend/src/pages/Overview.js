@@ -1,19 +1,7 @@
-/*import { useEffect } from "react"
-import { useTasksContext } from "../hooks/useTasksContext"
-
-const Overview = () => { 
-    return (
-        <h2>Overview</h2>
-      )
-}
-
-export default Overview
-
-*/
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "../../src/index.css";
+
 const Overview = () => {
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
@@ -59,7 +47,7 @@ const Overview = () => {
     </div>
     <div className="due-date-label">
       <label>Filter by Due Date:</label>
-      <DatePicker className="due-date-select" selected={dueDate} onChange={duedateChange} />
+        <input className = "date-select" type="date"></input>
     </div>
   
     <div className="clear-button">

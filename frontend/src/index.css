@@ -168,6 +168,13 @@ div.error {
   margin-top: 5px;
   margin-left: 10px;
   display: flex;
+  align-items: center;
+  
+}
+.date-select {
+  margin-left: 24px;
+  width: 125px;
+  display: flex;
 }
 .due-date-select {
   margin-left: 10px;
