@@ -3,276 +3,70 @@
 
 /* layout */
 :root {
-  --primary: #000000;
+  --primary: #333;
   --error: #e7195a;
 }
+
 body {
   background: #f1f1f1;
   margin: 0;
   font-family: "Poppins";
 }
-.home-details {
+
+.page-title {
   background: #b9b9b9;
-  height: 100px;
+  width: 100%;
+  height: 70px;
   padding: 5px;
   margin: 0;
   position: relative;
+  text-align: center;
 }
-header {
-  background: #272727;
-}
-h1 {
-  color:#ffffff;
-}
-h2 {
-  margin-right: 20px;
-  padding: 20px;
-}
+
 h3 {
-  margin-left: 10px;
-}
-header .container {
-  max-width: 1400px;
-  margin: 0;
-  padding: 1px 20px;
-  display: flex;
-  align-items: center;
-}
-.logo {
-  padding-right: 10px;
+  font-size: larger;
+  margin-left: 50px;
 }
 
-/* Begin Navbar */
-.navbar { /* Main Container */
-  background-color: #333;
-  color: #fff; 
-  display: flex; /* Flex container to control layout */
-  justify-content: flex-start; /* Space between the elements */
-  align-items: center; /* Vertically center content */
-  padding: 10px 25px; /* Padding for top and bottom, left and right */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-
-}
-
-.navbar-logo {
-  margin-right: 10px; /* Add spacing between the image and brand name */
-}
-
-.navbar-brand {
-  font-size: xx-large; 
-  font-weight: bold;
-  padding-right: 5rem;
-  text-transform: uppercase; 
-  white-space: nowrap; /* Prevent text from wrapping */
-}
-
-.nav-links {
-  display: flex; 
-  font-size: large; 
-  white-space: nowrap;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: inherit;
-  margin: 0 0.4rem; /* Adjust spacing between links */
-  padding: 0rem 1.5rem; /* Add padding to create boxes */
-  border: 1px solid whitesmoke; /* Add a border */
-  border-radius: 2px; /* Round the corners */
-  transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions on hover */
-  text-align: center; /* Center text horizontally */
-}
-
-.nav-links a:hover {
-  background-color: #555; /* lighten background color on hover*/
-}
-
-.nav-username {
-  margin-right: inherit; /* Adjust spacing between links */
-  padding: 0 1.5rem; /* Add padding to create space space */
-  color: inherit;
-  font-size: inherit;
-  text-decoration: none; 
-}
-/*
-/* Button styles */
-button.menu {
-  text-decoration: none; 
-  font: inherit;
-  color: inherit;
-  background-color: inherit; 
-  padding: 0rem 1.5rem; /* Add padding to create boxes */
-  border: 1px solid whitesmoke; /* Add a border */
-  border-radius: 2px; /* Round the corners */
-  cursor: pointer;  /* Cursor pointer on hover */
-}
-
-/* Remove the default focus outline */
-button.menu:focus {
-  outline: none;
-}
-
-button.menu:hover {
-  text-decoration: none;
-  background-color: #555; 
-}
-/*End Navbar*/
-
-header a {
-  color: #ffffff;
-  text-decoration: none;
-  align-items: center;
-}
-.pages{
-  /*max-width: 1400px;*/
-  /*max-width: 80%; */
-  margin: 0 auto;
-  /*margin-left: 1em; */
-}
-/* homepage */
-.home {
-  gap: 100px;
-}
-.tasks {
-  max-width: 80%;
-  margin-left: 10px;
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-.task-details {
-  background: #fff;
-  border: 1px solid rgb(7, 7, 7); 
-  border-radius: 4px;
-  margin: 10px auto;
-  padding: 15px;
-  min-width: 15%;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-}
-.task-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  color: var(--primary);
-}
-.task-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #555;
-}
-.task-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
-}
-/* new workout form */
-label, input {
-  display: block;
-}
-input {
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-form button {
-  background: var(--primary);
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Poppins";
-  border-radius: 4px;
-  cursor: pointer;
-}
-div.error {
-  padding: 10px;
-  background: #ffefef;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
-}
-
-/* overview page */
 .priority-label {
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-left: 10px;
+  margin-top: 10px;
+  height: 25px;
   display: flex;
   align-items: center;
 }
+
 .priority-select {
-  margin-left: 22px;
-  width: 100px;
+  margin-left: 50px;
+  width: 115px;
   display: flex;
 }
+
 .status-label {
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-left: 10px;
+  margin-top: 10px;
   display: flex;
   align-items: center;
 }
+
 .status-select {
-  margin-left: 24px;
-  width: 101px;
-  display: flex;
+  margin-left: 54px;
+  width: 115px;
 }
+
 .due-date-label {
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-left: 10px;
+  margin-top: 10px;
+  height: 25px;
   display: flex;
   align-items: center;
-  
 }
+
 .date-select {
-  margin-left: 24px;
-  width: 125px;
-  display: flex;
+  margin-top: 20px;
+  margin-left: 30px;
+  padding: 4px 4px;
+  width: inherit;
 }
-.due-date-select {
-  margin-left: 10px;
-  width: 150px;
-  display: flex;
-  align-items: center; 
-}
-.react-datepicker__input-container input {
-  width: 90px; 
-  padding: 1.5px; 
-  border: 1px solid rgb(61, 60, 60); 
-  margin-top: -20px;
-}
+
 .clear-button {
-  margin-top: -10px;
-  margin-left: 165px;
+  margin-top: 10px;
+  margin-left: 230px;
 }
-/* Footer */
-.footer {
-  background-color: #353535;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 5%;
-  z-index: 1000;
-  background-image: url('https://res.cloudinary.com/djuqkjsl4/image/upload/v1698908449/CN_dchz50.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center center; /* This line centers the background image */
-}
-.main-content {
-  padding-bottom: 5%; /* This is equal to the height of footer. Adjust if necessary. */
-}
-
-
-

@@ -1,0 +1,32 @@
+.task-details {
+  background: #fff;
+  border: 1px solid rgb(7, 7, 7); 
+  border-radius: 4px;
+  margin: 10px auto;
+  padding: 15px;
+  min-width: 15%;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+.task-details h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: var(--primary);
+}
+
+.task-details p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.task-details span {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background: #f1f1f1;
+  padding: 6px;
+  border-radius: 50%;
+  color: #333;
+}
