@@ -43,7 +43,7 @@ header .container {
 }
 
 /* Begin Navbar */
-.navbar { /* Container */
+.navbar { /* Main Container */
   background-color: #333;
   color: #fff; 
   display: flex; /* Flex container to control layout */
@@ -54,43 +54,70 @@ header .container {
 
 }
 
-/* Image (your logo) within the brand */
 .navbar-logo {
   margin-right: 10px; /* Add spacing between the image and brand name */
 }
+
 .navbar-brand {
-  font-size: 2rem; /* Adjust the brand font size */
+  font-size: xx-large; 
   font-weight: bold;
   padding-right: 5rem;
   text-transform: uppercase; 
   white-space: nowrap; /* Prevent text from wrapping */
-  /* Add any other logo-specific styles here */
 }
 
 .nav-links {
   display: flex; 
-  font-weight: normal;
-  font-size: 1rem;
+  font-size: large; 
   white-space: nowrap;
-  flex-shrink: 1;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #fff;
+  color: inherit;
   margin: 0 0.4rem; /* Adjust spacing between links */
   padding: 0rem 1.5rem; /* Add padding to create boxes */
   border: 1px solid whitesmoke; /* Add a border */
   border-radius: 2px; /* Round the corners */
-  background-color: #333; /* Background color for the boxes */
   transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions on hover */
   text-align: center; /* Center text horizontally */
 }
 
 .nav-links a:hover {
-  background-color: #555; /* Change the background color on hover */
+  background-color: #555; /* lighten background color on hover*/
+}
+
+.nav-username {
+  margin-right: inherit; /* Adjust spacing between links */
+  padding: 0 1.5rem; /* Add padding to create space space */
+  color: inherit;
+  font-size: inherit;
+  text-decoration: none; 
+}
+/*
+/* Button styles */
+button.menu {
+  text-decoration: none; 
+  font: inherit;
+  color: inherit;
+  background-color: inherit; 
+  padding: 0rem 1.5rem; /* Add padding to create boxes */
+  border: 1px solid whitesmoke; /* Add a border */
+  border-radius: 2px; /* Round the corners */
+  cursor: pointer;  /* Cursor pointer on hover */
+}
+
+/* Remove the default focus outline */
+button.menu:focus {
+  outline: none;
+}
+
+button.menu:hover {
+  text-decoration: none;
+  background-color: #555; 
 }
 /*End Navbar*/
+
 header a {
   color: #ffffff;
   text-decoration: none;
