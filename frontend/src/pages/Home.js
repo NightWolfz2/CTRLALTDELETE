@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
+import './../css/Home.css'; // Import your CSS file
 
 // components
 import TaskDetails from "../components/TaskDetails"
@@ -22,8 +23,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="home-details">
-        <h2>HOME</h2>
+      <div className="page-title">
+        <h2>Home</h2>
       </div>
       <h3>In Progress</h3>
       <div className="tasks">

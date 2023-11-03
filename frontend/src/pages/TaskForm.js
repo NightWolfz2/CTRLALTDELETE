@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTasksContext } from '../hooks/useTasksContext'
+import './../css/TaskForm.css'; // Import your CSS file
 
 const TaskForm = () => {
   const { dispatch } = useTasksContext()
@@ -39,8 +40,10 @@ const TaskForm = () => {
   }
 
   return (
-    <form className="create" onSubmit={handleSubmit}> 
-      <h3>Create Task</h3>
+    <form className="taskform" onSubmit={handleSubmit}> 
+      <div className="page-title">
+        <h2>Create Task</h2>
+      </div>
 
       <label>Task Title:</label>
       <input 

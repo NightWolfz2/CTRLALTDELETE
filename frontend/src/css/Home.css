@@ -1,0 +1,11 @@
+/* homepage */
+.home {
+  
+}
+.tasks {
+  max-width: 60%;
+  margin-left: 50px;
+  display: flex;
+  gap: 50px;
+  overflow: auto;
+}

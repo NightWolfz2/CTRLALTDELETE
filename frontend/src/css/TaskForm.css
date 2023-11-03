@@ -1,0 +1,43 @@
+.taskform {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  background-color: #cccccc;
+  align-items: center; /* Align items horizontally to the center */
+  justify-content: center; /* Align items vertically to the center */
+}
+
+label, input {
+  margin-left: 20px;
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 20%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form button {
+  background: #333;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  margin-left: 20px;
+  width: min-content;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
