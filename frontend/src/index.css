@@ -38,22 +38,59 @@ header .container {
   display: flex;
   align-items: center;
 }
-.ulList {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  margin-top: 0;
-  margin-left: 100px;
+.logo {
+  padding-right: 10px;
 }
 
-.navItem {
-  margin-right: 20px; /* Adjust the value to control spacing between items */
-  border: 1px solid white;
-  padding: 2px 15px;
-  width: 100px;
-  text-align: center;
+/* Begin Navbar */
+.navbar { /* Container */
+  background-color: #333;
+  color: #fff; 
+  display: flex; /* Flex container to control layout */
+  justify-content: flex-start; /* Space between the elements */
+  align-items: center; /* Vertically center content */
+  padding: 10px 25px; /* Padding for top and bottom, left and right */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+
 }
 
+/* Image (your logo) within the brand */
+.navbar-logo {
+  margin-right: 10px; /* Add spacing between the image and brand name */
+}
+.navbar-brand {
+  font-size: 2rem; /* Adjust the brand font size */
+  font-weight: bold;
+  padding-right: 5rem;
+  text-transform: uppercase; 
+  white-space: nowrap; /* Prevent text from wrapping */
+  /* Add any other logo-specific styles here */
+}
+
+.nav-links {
+  display: flex; 
+  font-weight: normal;
+  font-size: 1rem;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  margin: 0 0.4rem; /* Adjust spacing between links */
+  padding: 0rem 1.5rem; /* Add padding to create boxes */
+  border: 1px solid whitesmoke; /* Add a border */
+  border-radius: 2px; /* Round the corners */
+  background-color: #333; /* Background color for the boxes */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions on hover */
+  text-align: center; /* Center text horizontally */
+}
+
+.nav-links a:hover {
+  background-color: #555; /* Change the background color on hover */
+}
+/*End Navbar*/
 header a {
   color: #ffffff;
   text-decoration: none;

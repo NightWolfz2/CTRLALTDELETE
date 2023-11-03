@@ -1,22 +1,21 @@
 import { Link } from 'react-router-dom'
 const Navbar = () => {
-    
     return(
-        <header>
-            <div className="container">
-                <h1>Code Ninjas</h1>
-                <nav className="navList">
-                    <ul className="ulList">
-                        <li className="navItem"><Link to="/">Home</Link></li>
-                        <li className="navItem"><Link to="/createTask">Create Task</Link></li>
-                        <li className="navItem"><Link to="/calendar">Calendar</Link></li>
-                        <li className="navItem"><Link to="/overview">Overview</Link></li>
-                        <li className="navItem"><Link to="/history">History</Link></li>
-                    </ul>
-                </nav>
+            <div className="navbar">
+              <div className="navbar-logo">
+                <img src="CodeNinjasLogo.png" alt="Code Ninjas Logo" />
+              </div>
+              <div className='navbar-brand'>NINJAS MANAGER
+              </div>
+              <div className="nav-links">
+                  <Link to="/">Home</Link>
+                  <Link to="/createTask">Create Task</Link>
+                  <Link to="/calendar">Calendar</Link>
+                  <Link to="/overview">Overview</Link>       
+                  <Link to="/history">History</Link>
+              </div>
             </div>
-        </header>
-    )
+    ) 
 }
 
 export default Navbar
