@@ -8,7 +8,7 @@ const taskSchema = new Schema({
     required: true
   },
   date: { 
-    type: String, //change this later to Date format
+    type: Date, //change this later to Date format
     required: true
   },
   description: {
@@ -16,6 +16,10 @@ const taskSchema = new Schema({
     required: true
   },
   priority: {
+    type: Number, // change this to High,Low, etc.
+    required: false
+  },
+  employees: {
     type: Number, // change this to High,Low, etc.
     required: false
   }
