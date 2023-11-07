@@ -9,7 +9,7 @@ const TaskForm = () => {
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
-    const [employees, setEmployees] = useState([]); // List of all added employees
+    const [employees, setEmployees] = useState([{}]); // List of all added employees
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
