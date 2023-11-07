@@ -1,0 +1,45 @@
+.overview {
+    .priority-label {
+        margin-top: 10px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .priority-select {
+        margin-left: 50px;
+        width: 115px;
+        display: flex;
+      }
+      
+      .status-label {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .status-select {
+        margin-left: 54px;
+        width: 115px;
+      }
+      
+      .due-date-label {
+        margin-top: 10px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .date-select {
+        margin-top: 20px;
+        margin-left: 30px;
+        padding: 4px 4px;
+        width: inherit;
+      }
+      
+      .clear-button {
+        margin-top: 10px;
+        margin-left: 230px;
+      }
+      
+}
