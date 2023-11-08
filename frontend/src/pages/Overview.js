@@ -5,7 +5,8 @@ const Overview = () => {
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState(null);
-
+  const [searchBar, setSearch] = useState("All");
+  
   const priorityChange = (e) => {
     setPriorityLevel(e.target.value);
   };
@@ -17,11 +18,14 @@ const Overview = () => {
   const duedateChange = (date) => {
     setDueDate(date);
   };
-
+  const searchbarChange= (e) => {
+    setSearch(e.target.value);
+  }
   const clearFilters = () => {
     setPriorityLevel("All");
     setStatus("All");
     setDueDate(null);
+    setSearch("All");
   };
 
   return (
@@ -52,11 +56,17 @@ const Overview = () => {
       <div className="due-date-label">
         <label>Filter by Due Date:</label>
         <input className = "date-select" type="date"></input>
-      </div>
-  
+      </div> 
+
+      <div className="search-bar-label">
+	  			<label>Search Text:</label>
+          <input className = "search-bar-select" type="text"></input>
+	    
+	     	
+        </div>
       <div className="clear-button">
         <button onClick={clearFilters}>Clear Filters</button>
-      </div>
+    </div>
     </div>
   );
 };
