@@ -1,3 +1,41 @@
 .history { /* Main container */
-  
+
+    .text-filter-input {
+        margin-left: 5px;
+        margin-top: 1px;
+    }
+      
+      .hpriority-label {
+        margin-top: 5px;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .hpriority-textlabel {
+        margin-top: 5px;
+        margin-left: 10px;
+        display: flex;
+      }
+      
+      .hpriority-textinput {
+        margin-top: 1px;
+        margin-left: 5px;
+        height: 25px;
+      }
+      
+      .history-date-align {
+        display: flex;
+      }
+      
+      .history-datelabel {
+        margin-top: -14px;
+        margin-left: 9px;
+        width: 210px;
+      }
+      
+      .history-dateinput {
+        margin-top: 9px;
+        height: 25px;
+      }
 }
