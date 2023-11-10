@@ -1,12 +1,16 @@
-import React, { useState } from "react"
+import React, { useState, } from "react"
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
 import "./../css/History.css"
+
+// components
+import TaskDetails from "../components/TaskDetails"
 
 const History = () => {
   const [selectedPriority, setSelectedPriority] = useState("");
   const [textFilter, setTextFilter] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const { dispatch } = useTasksContext();
 
   const handlePriorityChange = (event) => {
     setSelectedPriority(event.target.value);
@@ -16,9 +20,28 @@ const History = () => {
     setTextFilter(event.target.value);
   };
 
-  const duedateChange = (date) => {
-    setDueDate(date);
+  const handleDueDateChange = (event) => {
+    setDueDate(event.target.value);
   };
+
+  const clearFilters = () => {
+    setSelectedPriority("");
+    setTextFilter("");
+    setDueDate("");
+  };
+
+  const fetchCompletedTasks = async () => {
+    const response = await fetch('/api/completed-tasks');
+    const json = await response.json();
+
+    if (response.ok) {
+      dispatch({ type: 'SET_TASKS', payload: json });
+    }
+  };
+
+  useEffect(() => {
+    fetchCompletedTasks();
+  }, [dispatch]);
 
   return (
     
@@ -51,7 +74,19 @@ const History = () => {
         />
       </div>
 
-     
+      <div className="due-date-label">
+        <label>Filter by Due Date:</label>
+        <input
+          className="date-select"
+          type="date"
+          value={dueDate}
+          onChange={handleDueDateChange}
+        />
+      </div>
+
+      <div className="clear-filters-button">
+        <button onClick={clearFilters}>Clear Filters</button>
+      </div>
 
     </div>
   );
