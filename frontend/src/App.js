@@ -8,6 +8,7 @@ import TaskForm from './pages/TaskForm'
 import Calendar from './pages/Calendar'
 import Overview from './pages/Overview'
 import History from './pages/History'
+import EditHistory from './pages/EditHistory'
 
 
 function App() {
@@ -36,6 +37,10 @@ function App() {
             <Route
               path="/History"
               element={<History />}
+            />
+            <Route
+              path="/editTask/:_id"
+              element={<EditHistory />}
             />
           </Routes>
         </div>
