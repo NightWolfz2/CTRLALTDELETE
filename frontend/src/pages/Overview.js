@@ -6,6 +6,7 @@ import { useTasksContext } from "../hooks/useTasksContext"
 
 import TaskDetails from "../components/TaskDetails"
 
+import { useNavigate } from 'react-router-dom';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -22,6 +23,8 @@ const Overview = () => {
   const [searchBar, setSearch] = useState("");
   
   const {tasks, dispatch} = useTasksContext()
+
+  const navigate = useNavigate();
   
     useEffect(() => {
     const fetchTasks = async () => {
@@ -68,7 +71,8 @@ const Overview = () => {
   
 
   const handleEditTask = (taskId) => {
-    console.log(`Editing task with ID ${taskId}`);
+    //console.log(`Editing task with ID ${taskId}`);
+    navigate(`/editTask/${taskId}`);
   };
 
   const getTaskStatus = (task) => {
