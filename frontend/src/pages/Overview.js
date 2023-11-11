@@ -66,6 +66,11 @@ const Overview = () => {
     setSearch(""); // Clear the search bar by setting it to an empty string
   };
   
+
+  const handleEditTask = (taskId) => {
+    console.log(`Editing task with ID ${taskId}`);
+  };
+
   const getTaskStatus = (task) => {
 	  const taskDueDate = new Date(task.date);
 	  
@@ -145,6 +150,11 @@ const Overview = () => {
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
 			
+
+      <div className="edit-button">
+        <button onClick={() => handleEditTask(task._id)}>Edit</button>
+      </div>
+
 			<div className="box2">
 				
 				<div className="little-box2">
