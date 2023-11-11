@@ -4,11 +4,14 @@ import './../css/TaskForm.css'; // Import your CSS file
 
 const TaskForm = () => {
     // State variables for the form fields
+    const { dispatch } = useTasksContext()
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
     const [employees, setEmployees] = useState([{}]); // List of all added employees
+    const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
 
     // Handler for the form submission
     const handleSubmit = async (e) => {
@@ -16,6 +19,28 @@ const TaskForm = () => {
 
         // Construct the task object
         const task = { title, date, description, priority, employees };
+        const response = await fetch('/api/tasks', {
+            method: 'POST',
+            body: JSON.stringify(task),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          const json = await response.json()
+      
+          if (!response.ok) {
+            setError(json.error)
+            setEmptyFields(json.emptyFields)
+          }
+          if (response.ok) {
+            setEmptyFields([])
+            setError(null)
+            setTitle('')
+            setDate('')
+            setDescription('')
+            setEmployees([{}])
+            dispatch({type: 'CREATE_WORKOUT', payload: json})
+          }
     };
 
     return (
@@ -30,6 +55,7 @@ const TaskForm = () => {
                     type="text"
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
+                    className={emptyFields.includes('title') ? 'error' : ''}
                 />
 
                 {/* Input field for Due Date */}
@@ -38,6 +64,7 @@ const TaskForm = () => {
                     type="date"
                     onChange={(e) => setDate(e.target.value)} 
                     value={date}
+                    className={emptyFields.includes('date') ? 'error' : ''}
                 />
 
                 {/* Dropdown for Priority selection */}
@@ -90,6 +117,7 @@ const TaskForm = () => {
 
                 {/* Submit button */}
                 <button type="submit">Submit</button>
+                {error && <div className="error">{error}</div>}
             </form>
             {/* End of the form */}
             </div>

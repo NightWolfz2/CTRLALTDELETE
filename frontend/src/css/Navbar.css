@@ -1,72 +1,121 @@
-.navbar { /* Main Container */
+/* Navbar.css */
+
+/* Main navbar container */
+/* Main navbar container */
+.navbar {
   background-color: #353535;
-  color: #fff; 
-  display: flex; /* Flex container to control layout */
-  justify-content: flex-start; /* Space between the elements */
-  align-items: center; /* Vertically center content */
-  padding: 10px 25px; /* Padding for top and bottom, left and right */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative; /* Add relative positioning here */
 }
 
+/* Navbar logo */
 .navbar-logo {
-  margin-right: 10px; /* Add spacing between the image and brand name */
+  margin-right: 10px;
 }
 
+/* Navbar brand text */
 .navbar-brand {
-  font-size: xx-large; 
+  font-size: xx-large;
   font-weight: bold;
   padding-right: 5rem;
-  text-transform: uppercase; 
-  white-space: nowrap; /* Prevent text from wrapping */
-}
-
-.nav-links {
-  display: flex; 
-  font-size: large; 
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
+/* Navigation links */
+.nav-links {
+  display: flex;
+  font-size: large;
+  white-space: nowrap;
+}
+
+/* Styling for each navigation link */
 .nav-links a {
   text-decoration: none;
   color: inherit;
-  margin: 0 0.4rem; /* Adjust spacing between links */
-  padding: 0rem 1.5rem; /* Add padding to create boxes */
-  border: 1px solid whitesmoke; /* Add a border */
-  border-radius: 2px; /* Round the corners */
-  transition: background-color 0.3s, border-color 0.3s; /* Smooth transitions on hover */
-  text-align: center; /* Center text horizontally */
+  margin: 0 0.4rem;
+  padding: 0rem 1.5rem;
+  border: 1px solid whitesmoke;
+  border-radius: 2px;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
+/* Hover effect for navigation links */
 .nav-links a:hover {
-  background-color: #555; /* lighten background color on hover*/
+  background-color: #555;
 }
 
+/* Username display in navbar */
 .nav-username {
-  margin-right: inherit; /* Adjust spacing between links */
-  padding: 0 1.5rem; /* Add padding to create space space */
+  margin-left: auto;
+  margin-right: 20px;
+  padding: 0 1.5rem;
   color: inherit;
   font-size: inherit;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
-/* Button styles */
+/* Styling for menu button */
 button.menu {
-  text-decoration: none; 
+  text-decoration: none;
   font: inherit;
   color: inherit;
-  background-color: inherit; 
-  padding: 0rem 1.5rem; /* Add padding to create boxes */
-  border: 1px solid whitesmoke; /* Add a border */
-  border-radius: 2px; /* Round the corners */
-  cursor: pointer;  /* Cursor pointer on hover */
+  background-color: inherit;
+  padding: 0rem 1.5rem;
+  border: 1px solid whitesmoke;
+  border-radius: 2px;
+  cursor: pointer;
 }
 
-/* Remove the default focus outline */
+/* Remove default focus outline from menu button */
 button.menu:focus {
   outline: none;
 }
 
+/* Hover effect for menu button */
 button.menu:hover {
-  text-decoration: none;
-  background-color: #555; 
+  background-color: #555;
 }
+
+/* Dropdown menu container */
+.dropdown-menu {
+  display: none; /* Hidden by default */
+  position: absolute; /* Positioning relative to the navbar */
+  background-color: #353535; /* Same as navbar background */
+  min-width: 160px;
+  top: 100%; /* Position right below the navbar */
+  right: 0; /* Align with the right side of the navbar */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Dropdown menu links */
+.dropdown-menu a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Hover effect for dropdown menu links */
+.dropdown-menu a:hover {
+  background-color: #555;
+}
+
+/* Display the dropdown menu when 'menu' button is clicked */
+.menu.active + .dropdown-menu {
+  display: block;
+}
+
+/* Ensure the dropdown content does not block other elements */
+.nav-links .dropdown-menu {
+  display: none;
+}
+
+

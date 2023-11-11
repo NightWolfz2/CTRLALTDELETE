@@ -6,7 +6,6 @@ import { useTasksContext } from "../hooks/useTasksContext"
 
 import TaskDetails from "../components/TaskDetails"
 
-//hifbbdkbbfdjbbjfbjbjb f
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -59,10 +58,6 @@ const Overview = () => {
   const searchbarChange = (e) => {
     setSearch(e.target.value);
   }
-  const handleEditTask = (taskId) => {
-    console.log(`Editing task with ID ${taskId}`);
-  };
-
   
   const clearFilters = () => {
     setPriorityLevel("All");
@@ -150,11 +145,6 @@ const Overview = () => {
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
 			
-       
-      <div className="edit-button">
-        <button onClick={() => handleEditTask(task._id)}>Edit</button>
-      </div>
-
 			<div className="box2">
 				
 				<div className="little-box2">
