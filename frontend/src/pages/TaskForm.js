@@ -43,6 +43,22 @@ const TaskForm = () => {
           }
     };
 
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+      };
+
+    const handleDateChange = (e) => {
+    setDate(e.target.value);
+    }
+
+    const handlePriorityChange = (e) => {
+    setPriority(e.target.value);
+    }
+
+    const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+    }
+
     return (
       <div>
             {/* Start of the form */}
@@ -53,7 +69,7 @@ const TaskForm = () => {
                 <label>Task Title:</label>
                 <input
                     type="text"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleTitleChange}
                     value={title}
                     className={emptyFields.includes('title') ? 'error' : ''}
                 />
@@ -62,7 +78,7 @@ const TaskForm = () => {
                 <label>Due Date:</label>
                 <input 
                     type="datetime-local"
-                    onChange={(e) => setDate(e.target.value)} 
+                    onChange={handleDateChange} 
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
                 />
@@ -70,7 +86,7 @@ const TaskForm = () => {
                 {/* Dropdown for Priority selection */}
                 <label>Priority:</label>
                 <select
-                    onChange={(e) => setPriority(e.target.value)}
+                    onChange={handlePriorityChange}
                     value={priority}
                 >
                     <option value="">Select Priority</option>
@@ -111,7 +127,7 @@ const TaskForm = () => {
                 <label>Description:</label>
                 <textarea
                     rows="10"
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleDescriptionChange}
                     value={description}
                 ></textarea>
 

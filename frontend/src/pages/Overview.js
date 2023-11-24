@@ -1,5 +1,6 @@
 import React, { Component,useState } from "react";
 import './../css/Overview.css'; // Import CSS file
+import editIcon from '../images/edit_icon.png';
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
@@ -153,11 +154,6 @@ const Overview = () => {
 		<div className="additional-boxes">
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
-			
-
-      <div className="edit-button">
-        <button onClick={() => handleEditTask(task._id)}>Edit</button>
-      </div>
 
 			<div className="box2">
 				
@@ -208,6 +204,12 @@ const Overview = () => {
 					<p>{task.history}</p>
 				
 				</div>
+
+        <div className="edit-button">
+        <button 
+          style={{ backgroundImage: `url(${editIcon})` }}
+          onClick={() => handleEditTask(task._id)}></button>
+        </div>
 			  </div>
 			</div>
 		  ))}

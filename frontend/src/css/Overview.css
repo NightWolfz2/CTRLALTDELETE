@@ -91,7 +91,7 @@ border: 1px solid #000;
 margin: 0px;
 padding: 10px; 
 display: flex;
-
+position: relative;
 }
 
 .little-box {
@@ -125,23 +125,30 @@ margin: 0px 0px;
 padding: 1px; 
 font-size: 15px;
 }
+
 .task-box {
-  position: fixed;
+  position: relative;
 }
 
 .edit-button {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 10px;
+  bottom: 50px; 
+  right: 50px; 
 }
 
 .edit-button button {
-  background-color: #f58e08;
-  color: rgb(14, 1, 1);
-  padding: 10px 20px;
-  text-align: center;
-  border: 2px solid #101010;
-  font-size: 16px;
+  background-image: url('../images/edit_icon.png'); 
+  background-color: #4E4E4E; 
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: none; 
+  border-radius: 50%; 
+  width: 40px; 
+  height: 40px; 
+  padding: 0; 
   cursor: pointer;
+  outline: none; 
+  overflow: hidden; 
+  position: absolute;
 }
