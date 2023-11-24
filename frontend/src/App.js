@@ -9,6 +9,7 @@ import Calendar from './pages/Calendar'
 import Overview from './pages/Overview'
 import History from './pages/History'
 import EditHistory from './pages/EditHistory'
+import Profile from './pages/Profile'
 
 
 function App() {
@@ -31,16 +32,20 @@ function App() {
               element={< Calendar />} // change this to calendar.js
             />
             <Route
-              path="/Overview"
+              path="/overview"
               element={<Overview />}
             />
             <Route
-              path="/History"
+              path="/history"
               element={<History />}
             />
             <Route
               path="/editTask/:_id"
               element={<EditHistory />}
+            />
+            <Route
+              path="/profile"
+              element={<Profile />}
             />
           </Routes>
         </div>
