@@ -61,7 +61,7 @@ const TaskForm = () => {
                 {/* Input field for Due Date */}
                 <label>Due Date:</label>
                 <input 
-                    type="date"
+                    type="datetime-local"
                     onChange={(e) => setDate(e.target.value)} 
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
