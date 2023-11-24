@@ -70,7 +70,6 @@ const History = () => {
           type="text"
           value={textFilter}
           onChange={handleTextFilterChange}
-          style={{ width: "96px" }}
         />
       </div>
 
