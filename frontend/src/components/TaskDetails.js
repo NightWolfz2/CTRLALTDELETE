@@ -47,7 +47,7 @@ const TaskDetails = ({ task }) => {
         </div>
         <p className="priority"><strong>Priority: </strong>{task.priority}</p>
         <p><strong>Assigned: </strong></p>
-        <button type="button" className="delete-button" onClick={deleteClick}><span>delete</span></button>
+        <button type="button" className="material-symbols-outlined" onClick={deleteClick}><span>delete</span></button>
       </div>
     </div>
   );
