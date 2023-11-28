@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Bottombar from './components/Bottombar'
 import TaskForm from './pages/TaskForm'
-import Calendar from './pages/Calendar'
+import CalendarPage from './pages/Calendar'
 import Overview from './pages/Overview'
 import History from './pages/History'
 import EditHistory from './pages/EditHistory'
@@ -29,7 +29,7 @@ function App() {
             />
             <Route
               path="/calendar"
-              element={< Calendar />} // change this to calendar.js
+              element={< CalendarPage />} // change this to calendar.js
             />
             <Route
               path="/overview"
