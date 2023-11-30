@@ -1,6 +1,5 @@
 import './../css/Profile.css'; // Import CSS file
 
-import './../css/Profile.css'; // Import CSS file
 const Profile = () => { 
   return (
     <div className="profile">
