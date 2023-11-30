@@ -15,6 +15,7 @@ const TaskForm = () => {
     // Convert the local date and time to a UTC string
     const convertToUTC = (localDateTime) => {
         const localDate = new Date(localDateTime);
+        localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
         return localDate.toISOString();
     };
 

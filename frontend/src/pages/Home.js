@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import './../css/Home.css'; // Import your CSS file
-
-// components
 import TaskDetails from "../components/TaskDetails";
 
 const Home = () => {
@@ -47,6 +45,11 @@ const Home = () => {
     return date.toISOString();
   };
 
+  const convertUTCToLocalDate = (utcDate) => {
+    const date = new Date(utcDate);
+    return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+  };
+
   const filterTasks = (taskList) => {
     return (taskList || []).filter(task => {
       const statusMatch = selectedStatus === 'all' || task.status === selectedStatus;
@@ -66,7 +69,9 @@ const Home = () => {
         </div>
 
         <div className="filters-bar">
+          {/* Filter bar elements */}
           <div className="filter-wrapper">
+            {/* Status filter */}
             <label htmlFor="status">Status:</label>
             <select id="status" className="filter-select" onChange={handleStatusChange}>
               <option value="all">All Statuses</option>
@@ -76,6 +81,7 @@ const Home = () => {
           </div>
 
           <div className="filter-wrapper">
+            {/* Priority filter */}
             <label htmlFor="priority">Priority:</label>
             <select id="priority" className="filter-select" onChange={handlePriorityChange}>
               <option value="all">All Priorities</option>
@@ -86,11 +92,13 @@ const Home = () => {
           </div>
 
           <div className="filter-wrapper">
+            {/* Due date filter */}
             <label htmlFor="due-date">Due Date:</label>
             <input type="date" id="due-date" className="filter-input" onChange={handleDueDateChange} />
           </div>
 
           <div className="filter-wrapper search-wrapper">
+            {/* Search filter */}
             <label htmlFor="search">Search:</label>
             <input
               type="text"
@@ -104,13 +112,19 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Task listings */}
       {(selectedStatus === 'all' || selectedStatus === 'In Progress') && (
         <>
           <h3 className="tasks-heading">In Progress</h3>
           <div className="tasks">
-            {filterTasks(tasks).filter(task => task.status === 'In Progress').map(task => (
-              <TaskDetails task={task} key={task._id} />
-            ))}
+            {filterTasks(tasks)
+              .filter(task => task.status === 'In Progress')
+              .map(task => (
+                <TaskDetails 
+                  task={{...task, date: convertUTCToLocalDate(task.date).toLocaleString()}}
+                  key={task._id} 
+                />
+              ))}
           </div>
         </>
       )}
@@ -119,9 +133,14 @@ const Home = () => {
         <>
           <h3 className="tasks-heading">Past Due</h3>
           <div className="tasks">
-            {filterTasks(tasks).filter(task => task.status === 'Past Due').map(task => (
-              <TaskDetails task={task} key={task._id} />
-            ))}
+            {filterTasks(tasks)
+              .filter(task => task.status === 'Past Due')
+              .map(task => (
+                <TaskDetails 
+                  task={{...task, date: convertUTCToLocalDate(task.date).toLocaleString()}}
+                  key={task._id} 
+                />
+              ))}
           </div>
         </>
       )}
