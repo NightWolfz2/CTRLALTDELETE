@@ -26,9 +26,14 @@ const CalendarPage = () => {
       <div className="page-title">
         <h2>Calendar</h2>
       </div>
-      <Calendar localizer={localizer} startAccessor="start" endAccessor="end" style={{height: 800, width: 1500, margin: "50px"}} />
+      <Calendar localizer={localizer} startAccessor="start" endAccessor="end" 
+                style={{  fontSize: "inherit",
+                          height: 800, 
+                          width: 1500, 
+                          margin: "50px" }} 
+      />
     </div>
-  );
+  )
 }
 
 export default CalendarPage
