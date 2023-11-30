@@ -197,11 +197,15 @@ const Overview = () => {
 				<div className="little-box">
 					<p><b>Task Description:</b></p>
 					<p>{task.description}</p>
+
+
 				
 				</div>
 				<div className="little-box">
 					<p><b>Edit History:</b></p>
 					<p>{task.history}</p>
+
+
 				
 				</div>
 
@@ -209,6 +213,9 @@ const Overview = () => {
         <button 
           style={{ backgroundImage: `url(${editIcon})` }}
           onClick={() => handleEditTask(task._id)}></button>
+
+
+          
         </div>
 			  </div>
 			</div>
