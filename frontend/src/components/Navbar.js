@@ -33,7 +33,7 @@ const Navbar = () => {
         <img src="CodeNinjasLogo.png" alt="Code Ninjas Logo" />
       </div>
       <div className='navbar-brand'>
-        NINJAS MANAGER
+        NINJA MANAGER
       </div>
       <div className="nav-links">
         <Link to="/">Home</Link>
