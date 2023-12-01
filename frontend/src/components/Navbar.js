@@ -10,18 +10,22 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
-    const clickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+    const closeMenu = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target) && !e.target.classList.contains('menu')) {
         setIsMenuOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", clickOutside);
+    document.addEventListener("mousedown", closeMenu);
     return () => {
-      document.removeEventListener("mousedown", clickOutside);
+      document.removeEventListener("mousedown", closeMenu);
     };
-  }, []);
+  }, [isMenuOpen]);
 
   return (
     <div className="navbar">
@@ -44,8 +48,8 @@ const Navbar = () => {
         </div>
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
-          <a href="/profile">Profile</a>
-          <a href="/logout">Logout</a>
+          <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
+          <Link to="/loggedout" onClick={handleMenuItemClick}>Logout</Link>
         </div>
       </div>
     </div>

@@ -1,11 +1,13 @@
 import React, { Component,useState } from "react";
 import './../css/Overview.css'; // Import CSS file
+import editIcon from '../images/edit_icon.png';
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
 
 import TaskDetails from "../components/TaskDetails"
 
+import { useNavigate } from 'react-router-dom';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -22,6 +24,8 @@ const Overview = () => {
   const [searchBar, setSearch] = useState("");
   
   const {tasks, dispatch} = useTasksContext()
+
+  const navigate = useNavigate();
   
     useEffect(() => {
     const fetchTasks = async () => {
@@ -66,6 +70,12 @@ const Overview = () => {
     setSearch(""); // Clear the search bar by setting it to an empty string
   };
   
+
+  const handleEditTask = (taskId) => {
+    //console.log(`Editing task with ID ${taskId}`);
+    navigate(`/editTask/${taskId}`);
+  };
+
   const getTaskStatus = (task) => {
 	  const taskDueDate = new Date(task.date);
 	  
@@ -144,7 +154,7 @@ const Overview = () => {
 		<div className="additional-boxes">
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
-			
+
 			<div className="box2">
 				
 				<div className="little-box2">
@@ -187,13 +197,26 @@ const Overview = () => {
 				<div className="little-box">
 					<p><b>Task Description:</b></p>
 					<p>{task.description}</p>
+
+
 				
 				</div>
 				<div className="little-box">
 					<p><b>Edit History:</b></p>
 					<p>{task.history}</p>
+
+
 				
 				</div>
+
+        <div className="edit-button">
+        <button 
+          style={{ backgroundImage: `url(${editIcon})` }}
+          onClick={() => handleEditTask(task._id)}></button>
+
+
+          
+        </div>
 			  </div>
 			</div>
 		  ))}
