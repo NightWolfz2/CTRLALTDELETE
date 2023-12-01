@@ -67,7 +67,7 @@ List key milestones, how much we have left to do for 191, and what we expect to 
 
 The team programming this product is:
 
-John Vardanyan | johnvardanyan@gmail.com | https://github.com/johnvardanyan
+John Vardanyan | johnvardanyan@gmail.com | https://github.com/johnvardanyan | www.linkedin.com/in/nairy/
 
 Elina Grigoryan | email@csus.edu | | https://github.com/githubname | https://www.linkedin.com/in/linkedName/
 
