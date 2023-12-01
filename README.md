@@ -1,4 +1,12 @@
-# CtrlAltDelete
+<div align="center">
+
+# CtrlAltDelete 
+
+<a href="https://github.com/johnvardanyan/ctrlaltdelete">
+  <img src="logo.png" alt="Logo" style="display:block; margin:auto;">
+</a>
+
+</div>
 
 # Synopsis
 NinjaManager is a web-based task management application tailored for the administrative team at Code Ninjas, owned by Lego Haryanto. This tool is designed to efficiently handle day-to-day administrative tasks, including membership adjustments, customer request management, and task tracking.
@@ -8,6 +16,15 @@ The application is built to integrate seamlessly with the existing Code Ninjas D
 NinjaManager offers a clean, user-friendly interface with essential navigation options such as “Home”, “Create Task”, “Calendar”, “Overview”, and “History”. Each section provides specific functionalities - from displaying current tasks on the Home page to a detailed history of completed tasks. The task management process is streamlined, allowing for easy assignment of tasks to employees, setting priorities, and editing task details.
 
 With NinjaManager, the Code Ninjas administrative team can effectively track and manage tasks, ensuring timely responses and efficient operations. This application is a strategic step towards enhancing administrative efficiency, providing a simple yet powerful tool for day-to-day management.
+
+
+<a href="https://github.com/johnvardanyan/ctrlaltdelete">
+  <img src="pic1.png" alt="Home" style="display:block; margin:auto; ">
+</a>
+
+<a href="https://github.com/johnvardanyan/ctrlaltdelete">
+  <img src="pic2.png" alt="Create" style="display:block; margin:auto;">
+</a>
 
 ## Installation
 
@@ -34,17 +51,23 @@ Make sure you have the following installed on your machine:
      - nodemon (version 3.0.1) (installed globally)
 
 3. **Configuration:**
-- Go to https://www.mongodb.com/atlas/database and create a free database using the following options: 
+	
+- Database setup
+Go to https://www.mongodb.com/atlas/database and create a free database using the following options: 
 - Shared cluster (free) 
 - Cloud Provider: AWS 
 - Region: Any
+After creating the database, navigate to ‘Quickstart’ under the ‘Security’ section and create a user.
+Next, navigate to ‘Network Access’ and add your IP address.
+To get your URI that will be used in the next step, navigate to ‘Database’ under ‘Deployment’. Locate your database and click on ‘Connect’. A pop-up window will appear. In this pop-up window, select the ‘Drivers’ option. Your database’s URI should be visible now. Copy it as it will be used in the next step.
+
    	- Create a `.env` file in the backend folder.
    	- Add your environment variables to the `.env` file.
      Example:
-     	```env
-     	PORT=4000
-MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
-     	```
+    	```env
+     	PORT=400
+     	MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
+      ```
 Replace `<username>` and `<password>` with your actual credentials.
 
 4. **Connect to Backend Server and Database:**
@@ -52,7 +75,6 @@ Replace `<username>` and `<password>` with your actual credentials.
      ```bash
      npm run dev
      ```
-
 ### Frontend Installation
 
 1. **Install Frontend Dependencies:**
@@ -80,6 +102,7 @@ Replace `<username>` and `<password>` with your actual credentials.
 3. **App Startup:**
    - The app should start up.
 
+
 # Deployment
 - Will be added in 191
 
@@ -96,11 +119,11 @@ Replace `<username>` and `<password>` with your actual credentials.
 ### What we expect to get done in 191
 - Add a profile/user database
 - Link profile with task
-- Add a "completed" button on the home page
+- Add a "completed" button on the home page and connect to History page
 - Clean up CSS designs and make them consistent on each page
 - Add pop-up notifications on every page to make user experience clearer
 - Create a database for the employees
-- Create login page and security
+- Create Login page and security
 - "Mark Complete" button functionality
 - Connect employee database with tasks database
 
