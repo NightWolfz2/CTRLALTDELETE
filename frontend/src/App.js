@@ -10,6 +10,7 @@ import Overview from './pages/Overview'
 import History from './pages/History'
 import EditHistory from './pages/EditHistory'
 import Profile from './pages/Profile'
+import LoggedOut from './pages/LogOut'
 
 
 function App() {
@@ -46,6 +47,10 @@ function App() {
             <Route
               path="/profile"
               element={<Profile />}
+            />
+            <Route 
+              path="/loggedOut"
+              element={<LoggedOut />}
             />
           </Routes>
         </div>
