@@ -57,6 +57,7 @@ Go to https://www.mongodb.com/atlas/database and create a free database using th
 - Shared cluster (free) 
 - Cloud Provider: AWS 
 - Region: Any
+  
 After creating the database, navigate to ‘Quickstart’ under the ‘Security’ section and create a user.
 Next, navigate to ‘Network Access’ and add your IP address.
 To get your URI that will be used in the next step, navigate to ‘Database’ under ‘Deployment’. Locate your database and click on ‘Connect’. A pop-up window will appear. In this pop-up window, select the ‘Drivers’ option. Your database’s URI should be visible now. Copy it as it will be used in the next step.
