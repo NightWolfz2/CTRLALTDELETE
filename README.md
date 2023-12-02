@@ -52,18 +52,20 @@ Make sure you have the following installed on your machine:
 
 3. **Configuration:**
 	
-- Database setup
-Go to https://www.mongodb.com/atlas/database and create a free database using the following options: 
-- Shared cluster (free) 
-- Cloud Provider: AWS 
-- Region: Any
+Database set-up:
+- Go to https://www.mongodb.com/atlas/database and create a free database using the following options: 
+	- Shared cluster (free) 
+	- Cloud Provider: AWS 
+	- Region: Any
   
-After creating the database, navigate to ‘Quickstart’ under the ‘Security’ section and create a user.
-Next, navigate to ‘Network Access’ and add your IP address.
+- After creating the database, navigate to ‘Quickstart’ under the ‘Security’ section and create a user.
+- Next, navigate to ‘Network Access’ and add your IP address.
+  
 To get your URI that will be used in the next step, navigate to ‘Database’ under ‘Deployment’. Locate your database and click on ‘Connect’. A pop-up window will appear. In this pop-up window, select the ‘Drivers’ option. Your database’s URI should be visible now. Copy it as it will be used in the next step.
 
-   	- Create a `.env` file in the backend folder.
-   	- Add your environment variables to the `.env` file.
+Environment set-up:
+- Create a `.env` file in the backend folder.
+- Add your environment variables to the `.env` file.
      Example:
     	```env
      	PORT=400
