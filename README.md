@@ -66,7 +66,9 @@ To get your URI that will be used in the next step, navigate to ‘Database’ u
 Environment set-up:
 - Create a `.env` file in the backend folder.
 - Add your environment variables to the `.env` file.
+  
      Example:
+  
     	```env
      	PORT=400
      	MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
