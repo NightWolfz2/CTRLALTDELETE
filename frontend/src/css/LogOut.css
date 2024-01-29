@@ -1,0 +1,11 @@
+.logout { /* Main container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: grey;
+}
+
+.logout-img {
+  margin: 20rem 0 ;
+  object-fit: contain; /* or cover, contain, etc. based on your preference */
+}

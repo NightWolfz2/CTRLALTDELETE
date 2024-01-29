@@ -1,13 +1,11 @@
-import { Link } from 'react-router-dom'
-import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
 import './../css/Navbar.css'; // Import your CSS file
 import { useLogout } from '../hooks/useLogout';
 import {useAuthContext} from '../hooks/useAuthContext'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-<<<<<<< Updated upstream
-=======
   const menuRef = useRef(null);
   const {user} = useAuthContext()
   const {logout} = useLogout()
@@ -15,14 +13,11 @@ const Navbar = () => {
     logout()
     setIsMenuOpen(false)
   }
->>>>>>> Stashed changes
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-<<<<<<< Updated upstream
-  return(
-=======
   const handleMenuItemClick = () => {
     setIsMenuOpen(false);
     
@@ -43,13 +38,12 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   return (
->>>>>>> Stashed changes
     <div className="navbar">
       <div className="navbar-logo">
         <img src="CodeNinjasLogo.png" alt="Code Ninjas Logo" />
       </div>
       <div className='navbar-brand'>
-        NINJAS MANAGER
+        NINJA MANAGER
       </div>
       
       <div className="nav-links">
@@ -68,12 +62,6 @@ const Navbar = () => {
       )}
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
-<<<<<<< Updated upstream
-        <div className='nav-username' style={{ marginRight: '20px', marginLeft: '20px' }}>
-          USER NAME
-        </div>
-        <button className="menu" id="openMenu" onClick={toggleMenu}>Menu</button>
-=======
         <div className='nav-username' style={{ marginRight: '20px' }}>
           {user.fname + ' '+user.lname}
         </div>
@@ -82,11 +70,10 @@ const Navbar = () => {
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
           <Link to="/loggedout" onClick={handleLogOutClick}>Logout</Link>
         </div>
->>>>>>> Stashed changes
       </div>
       )}
     </div>
-  ) 
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

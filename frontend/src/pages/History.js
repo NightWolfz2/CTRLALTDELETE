@@ -1,10 +1,10 @@
+import React, { Component,useState } from "react";
+import './../css/Overview.css'; // Import CSS file
+import editIcon from '../images/edit_icon.png';
+
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
-import './../css/History.css'; // Import CSS file
 
-<<<<<<< Updated upstream
-const History = () => { 
-=======
 import TaskDetails from "../components/TaskDetails"
 
 import { useNavigate } from 'react-router-dom';
@@ -110,14 +110,112 @@ const Overview = () => {
   }
 };
 
->>>>>>> Stashed changes
   return (
-    <div className="history">
+    <div className='Overview'>
       <div className="page-title">
         <h2>History</h2>
       </div>
-    </div>
-  )
-}
 
-export default History
+
+     <div className="priority-label">
+        <label>Filter by Priority:</label>
+        <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
+          <option value="All">All</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+  
+
+      <div className="due-date-label">
+        <label>Filter by Due Date:</label>
+        <input
+          className="date-select"
+          type="date"
+          value={dueDate}
+          onChange={duedateChange}
+        />
+      </div> 
+
+      <div className="search-bar-label">
+        <label>Search Text:</label>
+        <input
+          className="searchBar"
+          type="text"
+          value={searchBar}
+          onChange={searchbarChange}
+        />
+      </div>
+
+      <div className="clear-button">
+        <button onClick={clearFilters}>Clear Filters</button>
+      </div>
+
+	
+	
+		<div className="additional-boxes">
+		  {tasks && tasks.slice(0, 200).map((task, index) => (
+			<div className="task-box" key={task._id}>
+
+			<div className="box2">
+				
+
+        </div>
+			
+			<div className="box1">
+				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
+				
+				
+			</div>
+			
+			  <div className="box1">
+			  
+				
+				
+				<div className="little-box1">
+					Status - {getTaskStatus(task)}
+				</div>
+				<div className={`little-box1 ${task.priority === 2 ? 'high-priority-box' : task.priority === 1 ? 'medium-priority-box' : 'low-priority-box'}`}>
+					Priority - {getPriorityStatus(task.priority)}
+				
+				</div>
+				<div className="little-box1">
+					Due Date {formatDate(task.date)}
+				
+				</div>
+			  </div>
+			  
+			  <div className="box">
+				<div className="little-box">
+				<p><b>Assigned Employee(s):</b></p>
+				<p>{task.employee}</p>
+				<p><b>Email:</b>{task.email}</p>
+				<p><b>Phone:</b>{task.phone}</p>
+				
+				</div>
+				<div className="little-box">
+					<p><b>Task Description:</b></p>
+					<p>{task.description}</p>
+
+
+				
+				</div>
+				<div className="little-box">
+					<p><b>Edit History:</b></p>
+					<p>{task.history}</p>
+
+
+				
+				</div>
+
+			  </div>
+			</div>
+		  ))}
+		</div>
+		
+    </div>
+  );
+};
+
+export default Overview;

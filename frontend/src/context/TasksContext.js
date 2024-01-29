@@ -12,6 +12,23 @@ export const tasksReducer = (state, action) => {
       return { 
         tasks: [action.payload, ...state.tasks] 
       }
+    case 'DELETE_TASK':
+      return {
+        tasks: state.tasks.filter((w)=> w._id !== action.payload._id)
+      }
+      case 'UPDATE_TASK': 
+      const updatedTask = action.payload;
+
+      const updatedTasks = state.tasks.map((task) => {
+        if(task._id === updatedTask._id){
+          return updatedTask;
+        }
+          return task;
+      });
+      return {
+        ...state,
+        tasks: updatedTasks
+      };
     default:
       return state
   }

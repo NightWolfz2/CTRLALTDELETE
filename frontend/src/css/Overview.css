@@ -1,45 +1,155 @@
 .overview {
-    .priority-label {
-        margin-top: 10px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-      }
-      
-      .priority-select {
-        margin-left: 50px;
-        width: 115px;
-        display: flex;
-      }
-      
-      .status-label {
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-      }
-      
-      .status-select {
-        margin-left: 54px;
-        width: 115px;
-      }
-      
-      .due-date-label {
-        margin-top: 10px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-      }
-      
-      .date-select {
-        margin-top: 20px;
-        margin-left: 30px;
-        padding: 4px 4px;
-        width: inherit;
-      }
-      
-      .clear-button {
-        margin-top: 10px;
-        margin-left: 230px;
-      }
-      
+  .priority-label {
+    margin-top: 10px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .priority-select {
+    margin-left: 50px;
+    width: 115px;
+    display: flex;
+  }
+
+  .status-label {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .status-select {
+    margin-left: 54px;
+    width: 115px;
+  }
+
+  .due-date-label {
+    margin-top: 10px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+  }
+
+  .date-select {
+    margin-top: 20px;
+    margin-left: 30px;
+    padding: 4px 4px;
+    width: inherit;
+  }
+
+  .clear-button {
+    margin-top: 10px;
+    margin-left: 230px;
+  }
 }
+
+.box-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.high-priority-box {
+  background-color: #ffad99;
+}
+
+.low-priority-box {
+  background-color: #adebad;
+}
+
+.medium-priority-box {
+  background-color: #b3b3ff;
+}
+
+.box2 {
+  width: 1300px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border: 0px solid #000;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  font-size: 20px;
+}
+
+.box1 {
+  width: 1300px;
+  height: 46px;
+  background-color: #e0e0e0;
+  border: 0px solid #000000;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  font-size: 20px;
+}
+
+.box {
+  width: 1278px;
+  height: 250px;
+  background-color: #f2f2f2;
+  border: 1px solid #000;
+  margin: 0px;
+  padding: 10px;
+  display: flex;
+  position: relative;
+}
+
+.little-box {
+  width: 300px;
+  height: 200px;
+  background-color: #f2f2f2;
+  border: 1px solid #000;
+  margin: 10px;
+  padding: 1px;
+  font-size: 13px;
+}
+
+.little-box1 {
+  width: 180px;
+  height: 20px;
+  border: 1px solid #000;
+  margin: 4px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.little-box2 {
+  position: relative;
+  top: 0px;
+  left: 1160px;
+  width: 135px;
+  height: 20px;
+  background-color: #adebad;
+  border: 2px solid #101010;
+  margin: 0px 0px;
+  padding: 1px;
+  font-size: 15px;
+}
+
+.task-box {
+  position: relative;
+}
+
+.edit-button {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+
+.edit-button button {
+  background-image: url('../images/edit_icon.png');
+  background-color: #4E4E4E;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  position: absolute;
+}
+
+

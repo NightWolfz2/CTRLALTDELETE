@@ -1,11 +1,60 @@
-/* homepage */
+/* Home.css */
+
+.home .page-title {
+  text-align: left;
+  /* Add any additional styles you need for .page-title here */
+}
+
 .home {
-  
+  margin: 0;
+  /* Add any additional styles you need for .home here */
 }
-.tasks {
-  max-width: 60%;
-  margin-left: 50px;
+
+.home-container {
+  border: 1px solid #ccc; /* Add a border to the container */
+  padding: 20px; /* Add some padding inside the container */
+  margin-bottom: 20px; /* Add some margin at the bottom */
+  background: #b9b9b9; /* Optional: Add a background color */
+}
+
+.filters-bar {
   display: flex;
-  gap: 50px;
-  overflow: auto;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 50px;
+  gap: 10px; /* Reduced gap */
+  margin-bottom: 20px;
 }
+
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Space between label and input bar */
+}
+
+.filter-select,
+.filter-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 150px; /* Set a fixed width for the filter bars */
+}
+
+.search-wrapper .filter-input {
+  flex-grow: 1; /* Allows the search bar to grow and fill the remaining space */
+  width: auto; /* Adjust width as necessary, 'auto' makes it flexible */
+}
+
+.tasks {
+  display: flex; /* Use flexbox for horizontal layout */
+  gap: 20px; /* Space between individual tasks */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  padding-bottom: 10px; /* Optional: adds space below the tasks for the scrollbar */
+}
+
+.task {
+  flex: 0 0 250px; /* Adjust the starting width of the tasks */
+  /* Add any additional styles you need for .task here */
+}
+
+/* Additional styles can be added below as required */

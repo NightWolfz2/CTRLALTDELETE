@@ -1,17 +1,43 @@
 .task-details {
   background: #fff;
-  border: 1px solid rgb(7, 7, 7); 
+  border: 1px solid rgb(7, 7, 7);
   border-radius: 4px;
   margin: 10px auto;
   padding: 15px;
   min-width: 15%;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  display: flex; /* Ensure that the container is a flexbox */
+  flex-direction: column; /* Stack children vertically */
+}
+
+.task-details .task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .task-details h4 {
-  margin: 0 0 10px 0;
+  margin: 0;
   font-size: 1.2em;
-  color: var(--primary);
+  color: var(--primary); /* Replace with your color variable or specific color */
+}
+
+.task-details .task-status {
+  padding: 6px;
+  /* Additional styling for the status */
+}
+
+/* Styles for different statuses */
+.status-in-progress {
+  color: green; /* Or any other color you prefer */
+}
+
+.status-past-due {
+  color: red; /* Or any other color you prefer */
+}
+
+.task-details .task-info {
+  margin-top: 10px;
 }
 
 .task-details p {
@@ -20,13 +46,30 @@
   color: #555;
 }
 
-.task-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
+.task-list-heading {
+  color: #333; /* Choose your preferred color */
+  margin-top: 20px;
+  /* Additional styling as needed */
 }
+
+.task-details .task-info p {
+  margin-bottom: 10px; /* Adjust as needed */
+}
+
+/* Add margin below the task description */
+.task-details .task-info p.description {
+  margin-bottom: 10px; /* Adjust the value as needed */
+}
+
+/* Alternatively, add margin above the task priority */
+.task-details .task-info p.priority {
+  margin-top: 80px; /* Adjust the value as needed */
+}
+
+.task-details .description .task-desc-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%; /* Adjust as needed */
+}
+

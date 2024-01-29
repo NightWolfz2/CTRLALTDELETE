@@ -1,19 +1,6 @@
-import { useEffect } from "react"
-import { useTasksContext } from "../hooks/useTasksContext"
+import { useEffect, useState } from "react";
+import { useTasksContext } from "../hooks/useTasksContext";
 import './../css/Home.css'; // Import your CSS file
-<<<<<<< Updated upstream
-
-// components
-import TaskDetails from "../components/TaskDetails"
-
-const Home = () => {
-  const {tasks, dispatch} = useTasksContext()
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const response = await fetch('/api/tasks')
-      const json = await response.json()
-=======
 import TaskDetails from "../components/TaskDetails";
 import {useAuthContext} from '../hooks/useAuthContext'
 
@@ -33,17 +20,10 @@ const Home = () => {
         }
       });
       const json = await response.json();
->>>>>>> Stashed changes
 
       if (response.ok) {
-        dispatch({type: 'SET_TASKS', payload: json})
+        dispatch({ type: 'SET_TASKS', payload: json });
       }
-<<<<<<< Updated upstream
-    }
-
-    fetchTasks()
-  }, [dispatch])
-=======
     };
     if(user) {
       fetchTasks();
@@ -88,27 +68,92 @@ const Home = () => {
       return statusMatch && priorityMatch && dueDateMatch && searchMatch;
     });
   };
->>>>>>> Stashed changes
 
   return (
     <div className="home">
-      <div className="page-title">
-        <h2>Home</h2>
-      </div>
-      <h3>In Progress</h3>
-      <div className="tasks">
-        {tasks && tasks.map(task => (
-          <TaskDetails task={task} key={task._id} />
-        ))}
-      </div>
-      <h3>Past Due</h3>
-      <div className="tasks">
-        {tasks && tasks.map(task => (
-          <TaskDetails task={task} key={task._id} />
-        ))}
-      </div>
-    </div>
-  )
-}
+      <div className="home-container">
+        <div className="page-title">
+          <h2>Home</h2>
+        </div>
 
-export default Home
+        <div className="filters-bar">
+          {/* Filter bar elements */}
+          <div className="filter-wrapper">
+            {/* Status filter */}
+            <label htmlFor="status">Status:</label>
+            <select id="status" className="filter-select" onChange={handleStatusChange}>
+              <option value="all">All Statuses</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Past Due">Past Due</option>
+            </select>
+          </div>
+
+          <div className="filter-wrapper">
+            {/* Priority filter */}
+            <label htmlFor="priority">Priority:</label>
+            <select id="priority" className="filter-select" onChange={handlePriorityChange}>
+              <option value="all">All Priorities</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+
+          <div className="filter-wrapper">
+            {/* Due date filter */}
+            <label htmlFor="due-date">Due Date:</label>
+            <input type="date" id="due-date" className="filter-input" onChange={handleDueDateChange} />
+          </div>
+
+          <div className="filter-wrapper search-wrapper">
+            {/* Search filter */}
+            <label htmlFor="search">Search:</label>
+            <input
+              type="text"
+              id="search"
+              className="filter-input"
+              placeholder="Search tasks..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Task listings */}
+      {(selectedStatus === 'all' || selectedStatus === 'In Progress') && (
+        <>
+          <h3 className="tasks-heading">In Progress</h3>
+          <div className="tasks">
+            {filterTasks(tasks)
+              .filter(task => task.status === 'In Progress')
+              .map(task => (
+                <TaskDetails 
+                  task={{...task, date: convertUTCToLocalDate(task.date).toLocaleString()}}
+                  key={task._id} 
+                />
+              ))}
+          </div>
+        </>
+      )}
+
+      {(selectedStatus === 'all' || selectedStatus === 'Past Due') && (
+        <>
+          <h3 className="tasks-heading">Past Due</h3>
+          <div className="tasks">
+            {filterTasks(tasks)
+              .filter(task => task.status === 'Past Due')
+              .map(task => (
+                <TaskDetails 
+                  task={{...task, date: convertUTCToLocalDate(task.date).toLocaleString()}}
+                  key={task._id} 
+                />
+              ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Home;
