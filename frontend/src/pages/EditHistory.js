@@ -1,74 +1,109 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext'
 import './../css/TaskForm.css'; // Import your CSS file
+import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-const TaskForm = () => {
-<<<<<<< Updated upstream
-    // State variables for the form fields
-    const { dispatch } = useTasksContext()
-=======
-    const { dispatch } = useTasksContext();
+
+const EditHistory = () => {
+
+    const navigate = useNavigate(); //NEW
+    const { dispatch, tasks } = useTasksContext();
+    const { _id } = useParams(); // Get the task ID from the URL parameters
     const {user} = useAuthContext();
->>>>>>> Stashed changes
+    
+    //console.log("Received taskId:", taskId);
+
+    // State variables for the form fields
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
-    const [employees, setEmployees] = useState([]); // List of all added employees
-    const [error, setError] = useState(null)
+    const [employees, setEmployees] = useState([{}]); // List of all added employees
+    const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([])
+
+    useEffect(() => {
+      if(!user) {
+        return
+      }
+        // Find the task with the matching ID from the URL
+        const taskToEdit = tasks.find((task) => task._id === _id);
+    
+        if (taskToEdit && user) {
+          // Populate the form fields with the task details
+          setTitle(taskToEdit.title);
+          const formattedDate = taskToEdit.date.split('T')[0];
+          setDate(formattedDate);
+          setDescription(taskToEdit.description);
+          setPriority(taskToEdit.priority);
+        }
+      }, [_id, tasks, user]);
 
     // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!user) {
-            setError('You must be logged in')
-            return
+    
+        const task = { title, date, description, priority };
+    
+        // Send a PUT request to update the task
+        const response = await fetch(`/api/tasks/${_id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(task),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':`Bearer ${user.token}`
+          },
+        });
+    
+        const json = await response.json();
+    
+        if (!response.ok) {
+          setError(json.error);
+          setEmptyFields(json.emptyFields)
         }
+        else {
+          setEmptyFields([])
+          setError(null);
+          setTitle('');
+          setDate('');
+          setDescription('');
+          setPriority('');
+    
+          dispatch({ type: 'UPDATE_TASK', payload: json });
+    
+          navigate("/overview"); //NEW
+        }
+      };
 
-        // Construct the task object
-        const task = { title, date, description, priority, employees };
-        const response = await fetch('/api/tasks', {
-            method: 'POST',
-            body: JSON.stringify(task),
-            headers: {
-<<<<<<< Updated upstream
-              'Content-Type': 'application/json'
-=======
-                'Content-Type': 'application/json',
-                'Authorization':`Bearer ${user.token}`
->>>>>>> Stashed changes
-            }
-          })
-          const json = await response.json()
-      
-          if (!response.ok) {
-            setError(json.error)
-            setEmptyFields(json.emptyFields)
-          }
-          if (response.ok) {
-            setEmptyFields([])
-            setError(null)
-            setTitle('')
-            setDate('')
-            setDescription('')
-            setEmployees([{}])
-            dispatch({type: 'CREATE_WORKOUT', payload: json})
-          }
-    };
+      const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+      };
+
+      const handleDateChange = (e) => {
+        setDate(e.target.value);
+      }
+
+      const handlePriorityChange = (e) => {
+        setPriority(e.target.value);
+      }
+
+      const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+      }
 
     return (
       <div>
             {/* Start of the form */}
             <form className="create" onSubmit={handleSubmit}>
-                <h3>Create Task</h3>
+                <h3>Edit Task</h3>
 
                 {/* Input field for Task Title */}
                 <label>Task Title:</label>
                 <input
                     type="text"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleTitleChange}
                     value={title}
                     className={emptyFields.includes('title') ? 'error' : ''}
                 />
@@ -77,7 +112,7 @@ const TaskForm = () => {
                 <label>Due Date:</label>
                 <input 
                     type="date"
-                    onChange={(e) => setDate(e.target.value)} 
+                    onChange={handleDateChange} 
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
                 />
@@ -85,7 +120,7 @@ const TaskForm = () => {
                 {/* Dropdown for Priority selection */}
                 <label>Priority:</label>
                 <select
-                    onChange={(e) => setPriority(e.target.value)}
+                    onChange={handlePriorityChange}
                     value={priority}
                 >
                     <option value="">Select Priority</option>
@@ -126,7 +161,7 @@ const TaskForm = () => {
                 <label>Description:</label>
                 <textarea
                     rows="10"
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleDescriptionChange}
                     value={description}
                 ></textarea>
 
@@ -138,4 +173,4 @@ const TaskForm = () => {
             </div>
     );
 };
-export default TaskForm;
+export default EditHistory;
