@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
 import './../css/TaskForm.css'; // Import your CSS file
-import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskForm = () => {
     const { dispatch } = useTasksContext();
-    const {user} = useAuthContext();
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
@@ -24,10 +22,6 @@ const TaskForm = () => {
     // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!user) {
-            setError('You must be logged in')
-            return
-        }
 
         // Convert the date to UTC before sending
         const utcDate = convertToUTC(date);
@@ -45,8 +39,7 @@ const TaskForm = () => {
             method: 'POST',
             body: JSON.stringify(task),
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization':`Bearer ${user.token}`
+                'Content-Type': 'application/json'
             }
         });
         const json = await response.json();

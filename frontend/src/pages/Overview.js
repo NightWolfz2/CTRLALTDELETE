@@ -1,7 +1,6 @@
 import React, { Component,useState } from "react";
 import './../css/Overview.css'; // Import CSS file
 import editIcon from '../images/edit_icon.png';
-import { useAuthContext } from '../hooks/useAuthContext';
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
@@ -23,7 +22,6 @@ const Overview = () => {
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
-  const {user} = useAuthContext();
   
   const {tasks, dispatch} = useTasksContext()
 
@@ -31,25 +29,16 @@ const Overview = () => {
   
     useEffect(() => {
     const fetchTasks = async () => {
-      if(!user) {
-        return
-      }
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        } 
-      })
+      const response = await fetch('/api/tasks')
       const json = await response.json()
 
       if (response.ok) {
         dispatch({type: 'SET_TASKS', payload: json})
       }
     }
-    if(user) {
-      fetchTasks()
-    }
-    
-  }, [dispatch, user])
+
+    fetchTasks()
+  }, [dispatch])
   
   const currentDate = new Date(); 
 
