@@ -1,11 +1,19 @@
 import './../css/TaskDetails.css'; // Import your CSS file
 import { useTasksContext } from '../hooks/useTasksContext'
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskDetails = ({ task }) => {
   const { dispatch } = useTasksContext();
+  const {user} = useAuthContext();
   const deleteClick = async() => { // delete handle click
+    if(!user) {
+      return
+    }
     const response = await fetch('/api/tasks/' + task._id, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Authorization':`Bearer ${user.token}`
+      }
     })
     const json = await response.json()
     if(response.ok) {
