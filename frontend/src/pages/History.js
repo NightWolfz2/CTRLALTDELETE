@@ -1,44 +1,28 @@
-import React, { Component,useState } from "react";
-import './../css/Overview.css'; // Import CSS file
-import editIcon from '../images/edit_icon.png';
+import React, { useState } from "react";
+import './../css/History.css'; // Import CSS file
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
 
-import TaskDetails from "../components/TaskDetails"
-
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
-
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   const day = date.getDate();
-  const month = date.getMonth();
+  const month = date.getMonth() + 1; // adjust for zero-indexed months
   const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  return `${month}/${day}/${year}`; // mm/dd/yyyy
 };
 
 const Overview = () => {
-  const {user} = useAuthContext();
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
   
   const {tasks, dispatch} = useTasksContext()
-
-  const navigate = useNavigate();
   
     useEffect(() => {
-      if(!user) {
-        return
-      }
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        }
-      })
+      const response = await fetch('/api/tasks')
       const json = await response.json()
 
       if (response.ok) {
@@ -47,16 +31,9 @@ const Overview = () => {
     }
 
     fetchTasks()
-  }, [dispatch, user])
+  }, [dispatch])
   
   const currentDate = new Date(); 
-
-  // Filter tasks for In Progress and Past Due
-  
-  const inProgressTasks = tasks ? tasks.filter(task => new Date(task.date) > currentDate) : [];
-  const pastDueTasks = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
-  
-  const complete = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
   
   const priorityChange = (e) => {
     setPriorityLevel(e.target.value);
@@ -74,17 +51,11 @@ const Overview = () => {
     setSearch(e.target.value);
   }
   
-  const clearFilters = () => {
+  const resetFilters = () => {
     setPriorityLevel("All");
     setStatus("All");
     setDueDate(""); // Clear the due date by setting it to an empty string
     setSearch(""); // Clear the search bar by setting it to an empty string
-  };
-  
-
-  const handleEditTask = (taskId) => {
-    //console.log(`Editing task with ID ${taskId}`);
-    navigate(`/editTask/${taskId}`);
   };
 
   const getTaskStatus = (task) => {
@@ -98,26 +69,26 @@ const Overview = () => {
 	};
 	
 	const getPriorityStatus = (priority) => {
-  switch (priority) {
-    case 0:
-      return 'Low';
-    case 1:
-      return 'Medium';
-    case 2:
-      return 'High';
-    default:
-      return 'Unknown';
-  }
-};
+    switch (priority) {
+      case 'Low':
+        return 'Low';
+      case 'Medium':
+        return 'Medium';
+      case 'High':
+        return 'High';
+      default:
+        return 'Unknown';
+    }
+  };  
 
   return (
-    <div className='Overview'>
+    <div className='History'>
       <div className="page-title">
         <h2>History</h2>
       </div>
 
 
-     <div className="priority-label">
+      <div className="priority-label">
         <label>Filter by Priority:</label>
         <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
           <option value="All">All</option>
@@ -127,6 +98,14 @@ const Overview = () => {
         </select>
       </div>
   
+      <div className="status-label">
+        <label>Filter by Status:</label>
+        <select className="status-select" value={status} onChange={statusChange}>
+          <option value="All">All</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Past Due">Past Due</option>
+        </select>
+      </div>
 
       <div className="due-date-label">
         <label>Filter by Due Date:</label>
@@ -149,10 +128,8 @@ const Overview = () => {
       </div>
 
       <div className="clear-button">
-        <button onClick={clearFilters}>Clear Filters</button>
+        <button onClick={resetFilters}>Reset Filters</button>
       </div>
-
-	
 	
 		<div className="additional-boxes">
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
@@ -176,10 +153,15 @@ const Overview = () => {
 				<div className="little-box1">
 					Status - {getTaskStatus(task)}
 				</div>
-				<div className={`little-box1 ${task.priority === 2 ? 'high-priority-box' : task.priority === 1 ? 'medium-priority-box' : 'low-priority-box'}`}>
-					Priority - {getPriorityStatus(task.priority)}
-				
-				</div>
+				<div className={`little-box1 ${
+          task.priority === 'High' ? 'high-priority-box' :
+          task.priority === 'Medium' ? 'medium-priority-box' :
+          task.priority === 'Low' ? 'low-priority-box' : '' // No class added if priority is null
+        }`}>
+          Priority - {task.priority || 'None'}
+        </div>
+
+
 				<div className="little-box1">
 					Due Date {formatDate(task.date)}
 				
