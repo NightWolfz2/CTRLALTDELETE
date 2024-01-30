@@ -61,9 +61,10 @@ const Navbar = () => {
       )}
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
-        <div className='nav-username' style={{ marginRight: '20px' }}>
-          {user.fname + ' '+user.lname}
-        </div>
+      <div className='nav-username' style={{ marginRight: '20px' }}>
+        {user ? `${user.fname} ${user.lname}` : ''}
+      </div>
+
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
