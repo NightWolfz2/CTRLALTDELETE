@@ -1,8 +1,6 @@
 import './../css/Profile.css'; // Import CSS file
-import {useAuthContext} from '../hooks/useAuthContext'
 
 const Profile = () => { 
-  const {user} = useAuthContext()
   return (
     <div className="profile">
       <div className="page-title">
@@ -13,8 +11,8 @@ const Profile = () => {
         <div className="info-header">
           <h4>USER INFORMATION</h4>
         </div>
-        <label>Name: {user.fname + ' '+user.lname}</label>
-        <label>Email: {user.email}</label>
+        <label>Name: GENERIC NAME</label>
+        <label>Email: GENERIC_EMAIL@EMAIL.COM</label>
       <button className='resetPW'>Reset Password</button>
       </div>
       </div>

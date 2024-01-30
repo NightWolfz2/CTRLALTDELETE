@@ -8,7 +8,6 @@ import { useTasksContext } from "../hooks/useTasksContext"
 import TaskDetails from "../components/TaskDetails"
 
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -19,7 +18,6 @@ const formatDate = (dateStr) => {
 };
 
 const Overview = () => {
-  const {user} = useAuthContext();
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
@@ -30,15 +28,8 @@ const Overview = () => {
   const navigate = useNavigate();
   
     useEffect(() => {
-      if(!user) {
-        return
-      }
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        }
-      })
+      const response = await fetch('/api/tasks')
       const json = await response.json()
 
       if (response.ok) {
@@ -47,7 +38,7 @@ const Overview = () => {
     }
 
     fetchTasks()
-  }, [dispatch, user])
+  }, [dispatch])
   
   const currentDate = new Date(); 
 

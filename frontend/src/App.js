@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import { useAuthContext } from './hooks/useAuthContext'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 // pages & components
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
@@ -11,12 +11,9 @@ import History from './pages/History'
 import EditHistory from './pages/EditHistory'
 import Profile from './pages/Profile'
 import LoggedOut from './pages/LogOut'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
 
 
 function App() {
-  const {user} = useAuthContext()
   return (
     <div className="App">
       <BrowserRouter>
@@ -25,43 +22,35 @@ function App() {
           <Routes>
             <Route 
               path="/"
-              element={user ? <Home /> : <Navigate to="/login" />}
+              element={<Home />}
             />
             <Route
               path="/createTask"
-              element={user ?<TaskForm />: <Navigate to="/login" />}
+              element={<TaskForm />}
             />
             <Route
               path="/calendar"
-              element={user ?< CalendarPage />: <Navigate to="/login" />} // change this to calendar.js
+              element={< CalendarPage />} // change this to calendar.js
             />
             <Route
               path="/overview"
-              element={user ?<Overview />: <Navigate to="/login" />}
+              element={<Overview />}
             />
             <Route
               path="/history"
-              element={user ?<History />: <Navigate to="/login" />}
+              element={<History />}
             />
             <Route
               path="/editTask/:_id"
-              element={user ?<EditHistory />: <Navigate to="/login" />}
+              element={<EditHistory />}
             />
             <Route
               path="/profile"
-              element={user ?<Profile />: <Navigate to="/login" />}
+              element={<Profile />}
             />
             <Route 
               path="/loggedOut"
               element={<LoggedOut />}
-            />
-            <Route 
-              path="/login"
-              element={!user ? <Login />: <Navigate to="/"/>}
-            />
-            <Route 
-              path="/signup"
-              element={!user ? <Signup /> : <Navigate to="/"/>}
             />
           </Routes>
         </div>

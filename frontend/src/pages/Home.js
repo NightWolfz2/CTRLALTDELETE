@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import './../css/Home.css'; // Import your CSS file
 import TaskDetails from "../components/TaskDetails";
-import {useAuthContext} from '../hooks/useAuthContext'
 
 const Home = () => {
   const { tasks, dispatch } = useTasksContext();
@@ -10,26 +9,19 @@ const Home = () => {
   const [selectedPriority, setSelectedPriority] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedDueDate, setSelectedDueDate] = useState('');
-  const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        }
-      });
+      const response = await fetch('/api/tasks');
       const json = await response.json();
 
       if (response.ok) {
         dispatch({ type: 'SET_TASKS', payload: json });
       }
     };
-    if(user) {
-      fetchTasks();
-    }
-    
-  }, [dispatch, user]);
+
+    fetchTasks();
+  }, [dispatch]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
