@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { Component,useState } from "react";
 import './../css/History.css'; // Import CSS file
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
+
+import TaskDetails from "../components/TaskDetails"
+
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -13,16 +18,26 @@ const formatDate = (dateStr) => {
 };
 
 const Overview = () => {
+  const {user} = useAuthContext();
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
   
   const {tasks, dispatch} = useTasksContext()
+
+  const navigate = useNavigate();
   
     useEffect(() => {
+      if(!user) {
+        return
+      }
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks')
+      const response = await fetch('/api/tasks', {
+        headers: {
+          'Authorization':`Bearer ${user.token}`
+        }
+      })
       const json = await response.json()
 
       if (response.ok) {
@@ -31,9 +46,16 @@ const Overview = () => {
     }
 
     fetchTasks()
-  }, [dispatch])
+  }, [dispatch, user])
   
   const currentDate = new Date(); 
+
+  // Filter tasks for In Progress and Past Due
+  
+  const inProgressTasks = tasks ? tasks.filter(task => new Date(task.date) > currentDate) : [];
+  const pastDueTasks = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
+  
+  const complete = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
   
   const priorityChange = (e) => {
     setPriorityLevel(e.target.value);
@@ -56,6 +78,12 @@ const Overview = () => {
     setStatus("All");
     setDueDate(""); // Clear the due date by setting it to an empty string
     setSearch(""); // Clear the search bar by setting it to an empty string
+  };
+  
+
+  const handleEditTask = (taskId) => {
+    //console.log(`Editing task with ID ${taskId}`);
+    navigate(`/editTask/${taskId}`);
   };
 
   const getTaskStatus = (task) => {
