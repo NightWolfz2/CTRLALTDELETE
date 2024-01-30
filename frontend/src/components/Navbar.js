@@ -62,15 +62,9 @@ const Navbar = () => {
       )}
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
-<<<<<<< Updated upstream
-      <div className='nav-username' style={{ marginRight: '20px' }}>
-        {user ? `${user.fname} ${user.lname}` : ''}
-      </div>
-=======
        <div className='nav-username' style={{ marginRight: '20px' }}>
         {user ? `${user.fname} ${user.lname}` : ''}
        </div>
->>>>>>> Stashed changes
 
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
