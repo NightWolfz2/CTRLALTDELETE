@@ -1,6 +1,5 @@
 import React, { Component,useState } from "react";
-import './../css/Overview.css'; // Import CSS file
-import editIcon from '../images/edit_icon.png';
+import './../css/History.css'; // Import CSS file
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
@@ -13,9 +12,9 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   const day = date.getDate();
-  const month = date.getMonth();
+  const month = date.getMonth() + 1; // adjust for zero-indexed months
   const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  return `${month}/${day}/${year}`; // mm/dd/yyyy
 };
 
 const Overview = () => {
@@ -74,7 +73,7 @@ const Overview = () => {
     setSearch(e.target.value);
   }
   
-  const clearFilters = () => {
+  const resetFilters = () => {
     setPriorityLevel("All");
     setStatus("All");
     setDueDate(""); // Clear the due date by setting it to an empty string
@@ -98,26 +97,26 @@ const Overview = () => {
 	};
 	
 	const getPriorityStatus = (priority) => {
-  switch (priority) {
-    case 0:
-      return 'Low';
-    case 1:
-      return 'Medium';
-    case 2:
-      return 'High';
-    default:
-      return 'Unknown';
-  }
-};
+    switch (priority) {
+      case 'Low':
+        return 'Low';
+      case 'Medium':
+        return 'Medium';
+      case 'High':
+        return 'High';
+      default:
+        return 'Unknown';
+    }
+  };  
 
   return (
-    <div className='Overview'>
+    <div className='History'>
       <div className="page-title">
         <h2>History</h2>
       </div>
 
 
-     <div className="priority-label">
+      <div className="priority-label">
         <label>Filter by Priority:</label>
         <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
           <option value="All">All</option>
@@ -127,6 +126,14 @@ const Overview = () => {
         </select>
       </div>
   
+      <div className="status-label">
+        <label>Filter by Status:</label>
+        <select className="status-select" value={status} onChange={statusChange}>
+          <option value="All">All</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Past Due">Past Due</option>
+        </select>
+      </div>
 
       <div className="due-date-label">
         <label>Filter by Due Date:</label>
@@ -149,10 +156,8 @@ const Overview = () => {
       </div>
 
       <div className="clear-button">
-        <button onClick={clearFilters}>Clear Filters</button>
+        <button onClick={resetFilters}>Reset Filters</button>
       </div>
-
-	
 	
 		<div className="additional-boxes">
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
@@ -176,10 +181,15 @@ const Overview = () => {
 				<div className="little-box1">
 					Status - {getTaskStatus(task)}
 				</div>
-				<div className={`little-box1 ${task.priority === 2 ? 'high-priority-box' : task.priority === 1 ? 'medium-priority-box' : 'low-priority-box'}`}>
-					Priority - {getPriorityStatus(task.priority)}
-				
-				</div>
+				<div className={`little-box1 ${
+          task.priority === 'High' ? 'high-priority-box' :
+          task.priority === 'Medium' ? 'medium-priority-box' :
+          task.priority === 'Low' ? 'low-priority-box' : '' // No class added if priority is null
+        }`}>
+          Priority - {task.priority || 'None'}
+        </div>
+
+
 				<div className="little-box1">
 					Due Date {formatDate(task.date)}
 				
