@@ -4,6 +4,7 @@ import './../css/Navbar.css'; // Import your CSS file
 import { useLogout } from '../hooks/useLogout';
 import {useAuthContext} from '../hooks/useAuthContext'
 
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -61,9 +62,16 @@ const Navbar = () => {
       )}
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
-        <div className='nav-username' style={{ marginRight: '20px' }}>
-          {user.fname + ' '+user.lname}
-        </div>
+<<<<<<< Updated upstream
+      <div className='nav-username' style={{ marginRight: '20px' }}>
+        {user ? `${user.fname} ${user.lname}` : ''}
+      </div>
+=======
+       <div className='nav-username' style={{ marginRight: '20px' }}>
+        {user ? `${user.fname} ${user.lname}` : ''}
+       </div>
+>>>>>>> Stashed changes
+
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>

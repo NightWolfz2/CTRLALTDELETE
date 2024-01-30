@@ -10,26 +10,37 @@ export const useLogin = () => {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('/api/user/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password})
-        })
-        const json = await response.json()
+        try {
+            const response = await fetch('/api/user/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password})
+            })
+            const json = await response.json()
 
-        if(!response.ok) {
-            setIsLoading(false)
-            setError(json.error)
-        }
-        if(response.ok) {
-            // saves user to local storage
-            localStorage.setItem('user', JSON.stringify(json))
+            console.log("Login response:", json);  // Debugging line
 
-            // update context
-            dispatch({type: 'LOGIN', payload: json})
+            if(!response.ok) {
+                setIsLoading(false)
+                setError(json.error)
+            } else {
+                // Check if json has necessary user data
+                if (json && json.fname && json.lname) {
+                    // Saves user to local storage
+                    localStorage.setItem('user', JSON.stringify(json))
 
-            setIsLoading(false)
+                    // Update context
+                    dispatch({type: 'LOGIN', payload: json})
+                } else {
+                    setError("Invalid user data received.");
+                }
+
+                setIsLoading(false)
+            }
+        } catch (err) {
+            setError("An error occurred during login.");
+            setIsLoading(false);
         }
     }
-    return {login, isLoading, error}
+    return { login, isLoading, error }
 }

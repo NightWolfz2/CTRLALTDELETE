@@ -9,53 +9,60 @@ const createToken = (_id) => {
 const loginUser = async (req, res) => {
     const {email, password} = req.body
     try {
-        const user = await User.login(email,password)
+        const user = await User.login(email, password)
         // create token for user
         const token = createToken(user._id)
-        res.status(200).json({email, token})
+        res.status(200).json({
+            email, 
+            fname: user.fname, 
+            lname: user.lname, 
+            token
+        })
     } catch (error) {
         res.status(400).json({error: error.message})
     }
 }
 
 const signupUser = async (req, res) => {
-    const {fname,lname,email, password} = req.body
+    const {fname, lname, email, password} = req.body
     try {
-        const user = await User.signup(fname,lname,email,password)
+        const user = await User.signup(fname, lname, email, password)
         // create token for user
         const token = createToken(user._id)
-        res.status(200).json({fname,lname,email, token})
+        res.status(200).json({fname, lname, email, token})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
 }
+
 const getfName = async(req, res) => {
-    const {_id} = req.params
+    const { _id } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such name' });
-      }
-    const fname = await fname.findById(_id);
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).json({ error: 'No such user' });
+    }
+    const user = await User.findById(_id);
     
-    if (!task) {
-        return res.status(404).json({ error: 'No such name' });
+    if (!user) {
+        return res.status(404).json({ error: 'No such user' });
     }
     
-      res.status(200).json(fname);
+    res.status(200).json({ fname: user.fname });
 }
+
 const getlName = async(req, res) => {
-    const {_id} = req.params
+    const { _id } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'No such name' });
-      }
-    const fname = await fname.findById(_id);
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(404).json({ error: 'No such user' });
+    }
+    const user = await User.findById(_id);
     
-    if (!task) {
-        return res.status(404).json({ error: 'No such name' });
+    if (!user) {
+        return res.status(404).json({ error: 'No such user' });
     }
     
-      res.status(200).json(lname);
+    res.status(200).json({ lname: user.lname });
 }
 
-module.exports = { signupUser, loginUser}
+module.exports = { signupUser, loginUser, getfName, getlName }
