@@ -49,7 +49,7 @@ const Navbar = () => {
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
-          <Link to="/loggedout" onClick={handleMenuItemClick}>Logout</Link>
+          <Link to="/loggedout" onClick={handleMenuItemClick}>Log Out</Link>
         </div>
       </div>
     </div>

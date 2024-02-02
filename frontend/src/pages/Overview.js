@@ -208,6 +208,12 @@ const Overview = () => {
 					<p>{task.history}</p>
 				
 				</div>
+
+        <div className="edit-button">
+        <button 
+          onClick={() => handleEditTask(task._id)}></button>
+        </div>
+        
 			  </div>
 			</div>
 		  ))}

@@ -5,7 +5,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+//import DatePicker from "react-datepicker";
 import './../css/Calendar.css'; // Import your CSS file
 
 const locales = {
