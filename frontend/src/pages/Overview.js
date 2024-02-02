@@ -1,5 +1,7 @@
 import React, { Component,useState } from "react";
 import './../css/Overview.css'; // Import CSS file
+import editIcon from '../images/edit_icon.png';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
@@ -11,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   const day = date.getDate();
-  const month = date.getMonth();
+  const month = date.getMonth()+1;
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 };
@@ -21,6 +23,7 @@ const Overview = () => {
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
+  const {user} = useAuthContext();
   
   const {tasks, dispatch} = useTasksContext()
 
@@ -28,16 +31,25 @@ const Overview = () => {
   
     useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks')
+      if(!user) {
+        return
+      }
+      const response = await fetch('/api/tasks', {
+        headers: {
+          'Authorization':`Bearer ${user.token}`
+        } 
+      })
       const json = await response.json()
 
       if (response.ok) {
         dispatch({type: 'SET_TASKS', payload: json})
       }
     }
-
-    fetchTasks()
-  }, [dispatch])
+    if(user) {
+      fetchTasks()
+    }
+    
+  }, [dispatch, user])
   
   const currentDate = new Date(); 
 
@@ -153,11 +165,6 @@ const Overview = () => {
 		<div className="additional-boxes">
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
-			
-
-      <div className="edit-button">
-        <button onClick={() => handleEditTask(task._id)}>Edit</button>
-      </div>
 
 			<div className="box2">
 				
@@ -201,19 +208,26 @@ const Overview = () => {
 				<div className="little-box">
 					<p><b>Task Description:</b></p>
 					<p>{task.description}</p>
+
+
 				
 				</div>
 				<div className="little-box">
 					<p><b>Edit History:</b></p>
 					<p>{task.history}</p>
+
+
 				
 				</div>
 
         <div className="edit-button">
         <button 
+          style={{ backgroundImage: `url(${editIcon})` }}
           onClick={() => handleEditTask(task._id)}></button>
+
+
+          
         </div>
-        
 			  </div>
 			</div>
 		  ))}

@@ -3,6 +3,7 @@ import { useTasksContext } from '../hooks/useTasksContext'
 import './../css/TaskForm.css'; // Import your CSS file
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 
 const EditHistory = () => {
@@ -10,6 +11,8 @@ const EditHistory = () => {
     const navigate = useNavigate(); //NEW
     const { dispatch, tasks } = useTasksContext();
     const { _id } = useParams(); // Get the task ID from the URL parameters
+    const {user} = useAuthContext();
+    
     //console.log("Received taskId:", taskId);
 
     // State variables for the form fields
@@ -22,10 +25,13 @@ const EditHistory = () => {
     const [emptyFields, setEmptyFields] = useState([])
 
     useEffect(() => {
+      if(!user) {
+        return
+      }
         // Find the task with the matching ID from the URL
         const taskToEdit = tasks.find((task) => task._id === _id);
     
-        if (taskToEdit) {
+        if (taskToEdit && user) {
           // Populate the form fields with the task details
           setTitle(taskToEdit.title);
           const formattedDate = taskToEdit.date.split('T')[0];
@@ -33,7 +39,7 @@ const EditHistory = () => {
           setDescription(taskToEdit.description);
           setPriority(taskToEdit.priority);
         }
-      }, [_id, tasks]);
+      }, [_id, tasks, user]);
 
     // Handler for the form submission
     const handleSubmit = async (e) => {
@@ -47,6 +53,7 @@ const EditHistory = () => {
           body: JSON.stringify(task),
           headers: {
             'Content-Type': 'application/json',
+            'Authorization':`Bearer ${user.token}`
           },
         });
     
@@ -70,6 +77,22 @@ const EditHistory = () => {
         }
       };
 
+      const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+      };
+
+      const handleDateChange = (e) => {
+        setDate(e.target.value);
+      }
+
+      const handlePriorityChange = (e) => {
+        setPriority(e.target.value);
+      }
+
+      const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+      }
+
     return (
       <div>
             {/* Start of the form */}
@@ -80,7 +103,7 @@ const EditHistory = () => {
                 <label>Task Title:</label>
                 <input
                     type="text"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleTitleChange}
                     value={title}
                     className={emptyFields.includes('title') ? 'error' : ''}
                 />
@@ -89,7 +112,7 @@ const EditHistory = () => {
                 <label>Due Date:</label>
                 <input 
                     type="date"
-                    onChange={(e) => setDate(e.target.value)} 
+                    onChange={handleDateChange} 
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
                 />
@@ -97,7 +120,7 @@ const EditHistory = () => {
                 {/* Dropdown for Priority selection */}
                 <label>Priority:</label>
                 <select
-                    onChange={(e) => setPriority(e.target.value)}
+                    onChange={handlePriorityChange}
                     value={priority}
                 >
                     <option value="">Select Priority</option>
@@ -138,7 +161,7 @@ const EditHistory = () => {
                 <label>Description:</label>
                 <textarea
                     rows="10"
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleDescriptionChange}
                     value={description}
                 ></textarea>
 

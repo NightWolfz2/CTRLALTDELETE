@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { useTasksContext } from '../hooks/useTasksContext'
+import { useTasksContext } from '../hooks/useTasksContext';
 import './../css/TaskForm.css'; // Import your CSS file
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskForm = () => {
-    // State variables for the form fields
-    const { dispatch } = useTasksContext()
+    const { dispatch } = useTasksContext();
+    const {user} = useAuthContext();
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
-    const [employees, setEmployees] = useState([{}]); // List of all added employees
-    const [error, setError] = useState(null)
-    const [emptyFields, setEmptyFields] = useState([])
+    const [employees, setEmployees] = useState([{}]);
+    const [error, setError] = useState(null);
+    const [emptyFields, setEmptyFields] = useState([]);
+
+    // Convert the local date and time to a UTC string
+    const convertToUTC = (localDateTime) => {
+        const localDate = new Date(localDateTime);
+        localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+        return localDate.toISOString();
+    };
 
     // Autofill function
     const autofill = () => {
@@ -32,61 +40,87 @@ const TaskForm = () => {
     // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(!user) {
+            setError('You must be logged in')
+            return
+        }
 
-        // Construct the task object
-        const task = { title, date, description, priority, employees };
+        // Convert the date to UTC before sending
+        const utcDate = convertToUTC(date);
+
+        // Construct the task object with the UTC date
+        const task = {
+            title,
+            date: utcDate, // Use the converted UTC date
+            description,
+            priority,
+            employees
+        };
+
         const response = await fetch('/api/tasks', {
             method: 'POST',
             body: JSON.stringify(task),
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization':`Bearer ${user.token}`
             }
-          })
-          const json = await response.json()
-      
-          if (!response.ok) {
-            setError(json.error)
-            setEmptyFields(json.emptyFields)
-          }
-          if (response.ok) {
-            setEmptyFields([])
-            setError(null)
-            setTitle('')
-            setDate('')
-            setDescription('')
-            setEmployees([{}])
-            dispatch({type: 'CREATE_WORKOUT', payload: json})
-          }
+        });
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError(json.error);
+            setEmptyFields(json.emptyFields);
+        } else {
+            setEmptyFields([]);
+            setError(null);
+            setTitle('');
+            setDate('');
+            setDescription('');
+            setEmployees([{}]);
+            dispatch({ type: 'CREATE_WORKOUT', payload: json });
+        }
+    };
+
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+    };
+
+    const handleDateChange = (e) => {
+        setDate(e.target.value);
+    };
+
+    const handlePriorityChange = (e) => {
+        setPriority(e.target.value);
+    };
+
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
     };
 
     return (
-      <div>
-            {/* Start of the form */}
+        <div>
             <form className="create" onSubmit={handleSubmit}>
                 <h3>Create Task</h3>
 
-                {/* Input field for Task Title */}
                 <label>Task Title:</label>
                 <input
                     type="text"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleTitleChange}
                     value={title}
                     className={emptyFields.includes('title') ? 'error' : ''}
                 />
 
-                {/* Input field for Due Date */}
                 <label>Due Date:</label>
                 <input 
                     type="datetime-local"
-                    onChange={(e) => setDate(e.target.value)} 
+                    onChange={handleDateChange} 
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
                 />
 
-                {/* Dropdown for Priority selection */}
                 <label>Priority:</label>
                 <select
-                    onChange={(e) => setPriority(e.target.value)}
+                    onChange={handlePriorityChange}
                     value={priority}
                 >
                     <option value="">Select Priority</option>
@@ -95,7 +129,6 @@ const TaskForm = () => {
                     <option value="low">Low</option>
                 </select>
 
-                {/* Dropdowns for Employee assignment */}
                 {employees.map((employee, index) => (
                     <div key={index}>
                         <label>Assigned Employee #{index + 1}:</label>
@@ -113,7 +146,6 @@ const TaskForm = () => {
                     </div>
                 ))}
 
-                {/* Buttons to add and remove employee dropdowns */}
                 <button type="button" className="add-employee-btn" onClick={() => setEmployees([...employees, {}])}>
                     <span className="symbol">&#43;</span> Add Employee
                 </button>
@@ -123,15 +155,13 @@ const TaskForm = () => {
                     </button>
                 )}
 
-                {/* Input field for Task Description */}
                 <label>Description:</label>
                 <textarea
                     rows="10"
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={handleDescriptionChange}
                     value={description}
                 ></textarea>
 
-                {/* Submit button */}
                 <button type="submit">Submit</button>
                 {error && <div className="error">{error}</div>}
                 {/*Autofill button*/}   
@@ -140,8 +170,8 @@ const TaskForm = () => {
                 </button>
                 {/*End Autofill button*/}  
             </form>
-            {/* End of the form */}
-            </div>
+        </div>
     );
 };
+
 export default TaskForm;
