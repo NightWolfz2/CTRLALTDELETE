@@ -3,7 +3,7 @@ import './../css/History.css'; // Import CSS file
 
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
-
+import editIcon from '../images/edit_icon.png';
 import TaskDetails from "../components/TaskDetails"
 
 import { useNavigate } from 'react-router-dom';
@@ -186,6 +186,15 @@ const Overview = () => {
 
 
 				</div>
+
+        <div className="edit-button">
+        <button 
+          style={{ backgroundImage: `url(${editIcon})` }}
+          onClick={() => handleEditTask(task._id)}></button>
+
+
+          
+        </div>
 
 			  </div>
 			</div>
