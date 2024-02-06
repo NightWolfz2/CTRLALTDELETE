@@ -14,17 +14,10 @@ const TaskForm = () => {
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
 
-    // Convert the local date and time to a UTC string
-    const convertToUTC = (localDateTime) => {
-        const localDate = new Date(localDateTime);
-        localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
-        return localDate.toISOString();
-    };
-
     // Autofill function
     const autofill = () => {
-      setTitle('AUTOFILLED TASK TITLE');
-      setDate('2023-12-31T12:00'); // Example date and time
+      setTitle('TASK TITLE');
+      setDate('2024-02-01T12:00'); // Example date and time
       setPriority('high');
       setDescription('AUTOFILLED TASK DESCRIPTION');
       setEmployees([{}]);
