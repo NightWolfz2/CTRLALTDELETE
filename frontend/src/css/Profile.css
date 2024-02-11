@@ -1,51 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f1f1f1; /* Lighter background color */
+}
+
 .profile {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Align items to the start (left) */
-}
-
-.info-container {
-  display: flex; 
-  margin-left: 1rem;
-}
-
-.info-details {
-  background: #fff;
-  border: 1px solid rgb(7, 7, 7);
-  border-radius: 4px;
-  margin: 1rem 1rem;
-  padding: 1rem 0;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem; 
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-  display: flex; /* Ensure that the container is a flexbox */
-  flex-direction: column; /* Stack children vertically */
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.info-header {
-  display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  margin-top: 50px;
 }
 
-.info-details h4 {
-  margin: 0;
-  font-size: 1.2em;
-  color: var(--primary); /* Replace with your color variable or specific color */
+.Profile .profile-content {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
 }
 
-button.resetPW {
+.Profile .profile-info {
+  width: 40%;
+  max-width: 800px;
+  padding: 40px 20px; /* Increase the top and bottom padding */
+  margin: 0 auto;
+  background-color: #353535;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-size: 16px;
+  color: #fff;
+  display: flex; /* Use flexbox to center items vertically */
+  flex-direction: column; /* Stack flex items vertically */
+  justify-content: center; /* Center vertically */
+  min-height: 200px; /* Or adjust this value as needed to make the box taller */
+}
+
+.Profile .profile-info-row {
+  margin-bottom: 20px; /* You can adjust this if you want more space between the rows */
+  align-items: center;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+}
+
+.Profile .icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.Profile .profile-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px; /* Adjust this value as needed to bring the button down */
+}
+
+.Profile .profile-button.resetPW {
+  background-color: #353535;
+  color: white;
+  border: 1px solid #fff;
+  padding: 12px 24px;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  /* If you want even more space, you could also adjust padding here */
 }
 
-button.resetPW:hover {
-  background-color: #7dc3f2;
-  border-radius: 4px;
+.Profile .profile-button.resetPW:hover {
+  background-color: #555;
 }
 
-/* Remove default focus outline from menu button */
-button.resetPW:focus {
-  outline: none;
+/* Additional detail sections for the profile */
+.Profile .detail-section {
+  background-color: #2a2a2a; /* Slightly lighter than the main bg */
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.Profile .detail-section h4 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.Profile .detail-section p {
+  color: #ddd; /* Lighter text for readability */
+  font-size: 16px;
+  line-height: 1.6;
 }
