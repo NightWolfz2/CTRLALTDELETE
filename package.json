@@ -1,5 +1,14 @@
 {
   "dependencies": {
     "react-datepicker": "^4.21.0"
+  },
+  "scripts": {
+    "postinstall": "npm install --save-dev concurrently",
+    "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+    "start-frontend": "cd frontend && npm start",
+    "start-backend": "cd backend && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
