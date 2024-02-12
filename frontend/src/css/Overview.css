@@ -1,47 +1,81 @@
-.overview {
+/*overview*/
+
   .priority-label {
     margin-top: 10px;
     height: 25px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+    padding-left: 20px;
   }
   
   .priority-select {
     margin-left: 50px;
-    width: 115px;
+    width: auto;
     display: flex;
+    margin-right: 10px;
   }
 
   .status-label {
     margin-top: 10px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+    padding-left: 20px;
   }
 
   .status-select {
     margin-left: 54px;
-    width: 115px;
+    width: auto;
+    margin-right: 10px;
   }
 
   .due-date-label {
-    margin-top: 10px;
+    margin-top: 12px;
     height: 25px;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+    padding-left: 20px;
   }
 
   .date-select {
-    margin-top: 20px;
+    margin-top: 0px;
     margin-left: 30px;
-    padding: 4px 4px;
-    width: inherit;
+    padding: 1px 1px;
+    width: auto;
+    margin-right: 10px;
   }
 
-  .clear-button {
-    margin-top: 10px;
-    margin-left: 230px;
+  .search-bar-label {
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-left: 20px;
   }
-}
+
+  .searchBar {
+    margin-right: 10px;
+    margin-left: 77px;
+    width: auto;
+  }
+
+  .clear-button button {
+    margin-top: 10px;
+    background-color: #2087e7;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 1em;
+    padding-left: 20px;
+    margin-left: 20px;
+  }
+
+  .clear-button button:hover {
+    background-color: #186db5; /* Darker blue for hover effect */
+  }
 
 .box-container {
   display: flex;
@@ -57,7 +91,7 @@
 }
 
 .medium-priority-box {
-  background-color: #b3b3ff;
+  background-color: #f3f899;
 }
 
 .box2 {
@@ -112,17 +146,48 @@
   font-size: 15px;
 }
 
+
+
 .little-box2 {
+  position: relative; 
+  top: 0px; 
+  left: 1160px; 
+  width: 135px; 
+  height: 20px; 
+  background-color: #adebad; 
+  border: 2px solid #000; 
+  margin: 0px 0px; 
+  padding: 1px; 
+  font-size: 15px;
+  transition: background-color 0.3s, border-color 0.3s; 
+  cursor: pointer;  
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+
+.little-box2:hover{
+	background-color: #cfe8cf; /* lighten background color on hover*/
+}
+
+.little-box2.completed {
   position: relative;
   top: 0px;
   left: 1160px;
   width: 135px;
   height: 20px;
-  background-color: #adebad;
+  background-color: 	rgb(8, 243, 161);
   border: 2px solid #101010;
   margin: 0px 0px;
   padding: 1px;
   font-size: 15px;
+  transition: background-color 0.3s, border-color 0.3s; 
+  cursor: pointer;  
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  
+}
+
+.little-box2.completed:hover {
+		background-color: #56615d; /* lighten background color on hover*/
+  
 }
 
 .task-box {
@@ -151,5 +216,4 @@
   overflow: hidden;
   position: absolute;
 }
-
 

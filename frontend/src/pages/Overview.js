@@ -74,7 +74,7 @@ const Overview = () => {
     setSearch(e.target.value);
   }
   
-  const clearFilters = () => {
+  const resetFilters = () => {
     setPriorityLevel("All");
     setStatus("All");
     setDueDate(""); // Clear the due date by setting it to an empty string
@@ -98,18 +98,29 @@ const Overview = () => {
 	};
 	
 	const getPriorityStatus = (priority) => {
-  switch (priority) {
-    case 0:
-      return 'Low';
-    case 1:
-      return 'Medium';
-    case 2:
-      return 'High';
-    default:
-      return 'Unknown';
-  }
+    switch (priority) {
+      case 'Low':
+        return 'Low';
+      case 'Medium':
+        return 'Medium';
+      case 'High':
+        return 'High';
+      default:
+        return 'Unknown';
+    }
+  };  
+
+const handleButtonClick = (taskId) => {
+  setCompletedStates((prevStates) => {
+    const newStates = new Map(prevStates);
+    newStates.set(taskId, !newStates.get(taskId));
+    return newStates;
+  });
 };
 
+const [completedStates, setCompletedStates] = useState(new Map());
+
+  
   return (
     <div className='Overview'>
       <div className="page-title">
@@ -157,7 +168,7 @@ const Overview = () => {
       </div>
 
       <div className="clear-button">
-        <button onClick={clearFilters}>Clear Filters</button>
+        <button onClick={resetFilters}>Reset Filters</button>
       </div>
 
 	
@@ -166,14 +177,15 @@ const Overview = () => {
 		  {tasks && tasks.slice(0, 200).map((task, index) => (
 			<div className="task-box" key={task._id}>
 
-			<div className="box2">
-				
-				<div className="little-box2">
-					<b>Mark Complete</b>
-				</div>
+             <button
+                className={`box2`}
+                onClick={() => handleButtonClick(task._id)}
+				>
+                <div className={`little-box2 ${completedStates.get(task._id) ? 'completed' : ''}`}>
+                  <b>{completedStates.get(task._id) ? 'Completed' : 'Mark Complete'}</b>
+                </div>
+              </button>
 
-        </div>
-			
 			<div className="box1">
 				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
 				
@@ -187,10 +199,10 @@ const Overview = () => {
 				<div className="little-box1">
 					Status - {getTaskStatus(task)}
 				</div>
-				<div className={`little-box1 ${task.priority === 2 ? 'high-priority-box' : task.priority === 1 ? 'medium-priority-box' : 'low-priority-box'}`}>
-					Priority - {getPriorityStatus(task.priority)}
-				
-				</div>
+        <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' : task.priority === 'Medium' ? 'medium-priority-box' : 'low-priority-box'}`}>
+        Priority - {getPriorityStatus(task.priority)}
+        </div>
+
 				<div className="little-box1">
 					Due Date {formatDate(task.date)}
 				
