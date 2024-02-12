@@ -1,8 +1,22 @@
 /*overview*/
+.Overview .page-title {
+  background-color: #b9b9b9;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border: 1px solid #ccc;
+  padding: 50px;
+  margin-bottom: 20px;
 
+}
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-right: auto; 
+  margin-left: 20px;
+}
   .priority-label {
     margin-top: 10px;
-    height: 25px;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -10,10 +24,13 @@
   }
   
   .priority-select {
-    margin-left: 50px;
-    width: auto;
-    display: flex;
-    margin-right: 10px;
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-right: 10px; 
   }
 
   .status-label {
@@ -25,14 +42,17 @@
   }
 
   .status-select {
-    margin-left: 54px;
-    width: auto;
-    margin-right: 10px;
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-right: 10px; 
   }
 
   .due-date-label {
-    margin-top: 12px;
-    height: 25px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -40,15 +60,17 @@
   }
 
   .date-select {
-    margin-top: 0px;
-    margin-left: 30px;
-    padding: 1px 1px;
-    width: auto;
-    margin-right: 10px;
+    width: 150px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 10px; 
   }
 
   .search-bar-label {
-    margin-top: 13px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -56,9 +78,13 @@
   }
 
   .searchBar {
-    margin-right: 10px;
-    margin-left: 77px;
-    width: auto;
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-right: 10px; 
   }
 
   .clear-button button {
@@ -70,11 +96,11 @@
     border-radius: 4px;
     font-size: 1em;
     padding-left: 20px;
-    margin-left: 20px;
+    margin-right: 850px;
   }
 
   .clear-button button:hover {
-    background-color: #186db5; /* Darker blue for hover effect */
+    background-color: #186db5;
   }
 
 .box-container {
@@ -146,8 +172,6 @@
   font-size: 15px;
 }
 
-
-
 .little-box2 {
   position: relative; 
   top: 0px; 
@@ -165,7 +189,7 @@
 }
 
 .little-box2:hover{
-	background-color: #cfe8cf; /* lighten background color on hover*/
+	background-color: #cfe8cf; 
 }
 
 .little-box2.completed {
@@ -182,11 +206,10 @@
   transition: background-color 0.3s, border-color 0.3s; 
   cursor: pointer;  
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-  
 }
 
 .little-box2.completed:hover {
-		background-color: #56615d; /* lighten background color on hover*/
+	background-color: #56615d; 
   
 }
 
@@ -216,4 +239,3 @@
   overflow: hidden;
   position: absolute;
 }
-
