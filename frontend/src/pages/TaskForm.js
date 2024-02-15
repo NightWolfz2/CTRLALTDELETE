@@ -14,6 +14,15 @@ const TaskForm = () => {
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
 
+    // Autofill function
+    const autofill = () => {
+      setTitle('TASK TITLE');
+      setDate('2024-02-01T12:00'); // Example date and time
+      setPriority('high');
+      setDescription('AUTOFILLED TASK DESCRIPTION');
+      setEmployees([{}]);
+    };
+
     // Convert the local date and time to a UTC string
     const convertToUTC = (localDateTime) => {
         const localDate = new Date(localDateTime);
@@ -148,6 +157,11 @@ const TaskForm = () => {
 
                 <button type="submit">Submit</button>
                 {error && <div className="error">{error}</div>}
+                {/*Autofill button*/}   
+                <button type="button" onClick={autofill}>
+                  Autofill Form
+                </button>
+                {/*End Autofill button*/}  
             </form>
         </div>
     );

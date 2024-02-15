@@ -1,25 +1,37 @@
-import './../css/Profile.css'; // Import CSS file
-import {useAuthContext} from '../hooks/useAuthContext'
+import React from 'react';
+import './../css/Profile.css';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { FaUserAlt, FaEnvelope, FaLock } from 'react-icons/fa';
+
 
 const Profile = () => { 
-  const {user} = useAuthContext()
+  const { user } = useAuthContext();
+  
   return (
-    <div className="profile">
+    <div className='Profile'>
       <div className="page-title">
         <h2>Profile</h2>
       </div>
-      <div className='info-container'>
-        <div className='info-details'>
-        <div className="info-header">
-          <h4>USER INFORMATION</h4>
+      <div className="profile-content">
+        <div className="profile-info">
+          <div className="profile-info-row">
+            <FaUserAlt className="icon" />
+            <span><strong>Name:</strong> {user.fname} {user.lname}</span>
+          </div>
+          <div className="profile-info-row">
+            <FaEnvelope className="icon" />
+            <span><strong>Email:</strong> {user.email}</span>
+          </div>
+          <div className="profile-action">
+            <button className="profile-button resetPW">
+              <FaLock className="icon" />
+              Reset Password
+            </button>
+          </div>
         </div>
-        <label>Name: {user.fname + ' '+user.lname}</label>
-        <label>Email: {user.email}</label>
-      <button className='resetPW'>Reset Password</button>
-      </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
