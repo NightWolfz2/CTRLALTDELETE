@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext'
 import './../css/TaskForm.css'; // Import your CSS file
 import { useParams } from "react-router-dom";
-import { useNavigate } from 'react-router';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 
 const EditHistory = () => {
 
-    const navigate = useNavigate(); //NEW
     const { dispatch, tasks } = useTasksContext();
     const { _id } = useParams(); // Get the task ID from the URL parameters
     const {user} = useAuthContext();
@@ -72,8 +70,7 @@ const EditHistory = () => {
           setPriority('');
     
           dispatch({ type: 'UPDATE_TASK', payload: json });
-    
-          navigate("/overview"); //NEW
+          
         }
       };
 
