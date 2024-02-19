@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
-
+const { generateToken, mailTransport, generateEmailTemplate } = require('../utils/mail')
+const verificationToken = require('../models/verificationToken')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
@@ -20,6 +21,11 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
+        required: true
+    },
+    verified: {
+        type: Boolean,
+        default: false,
         required: true
     }
 })
@@ -48,6 +54,20 @@ userSchema.statics.signup = async function(fname,lname,email, password) {
     const hash = await bcrypt.hash(password, extraMeasure)
     const user = await this.create({fname,lname,email, password: hash})
 
+    const OTP = generateToken()
+    const verifyToken = new verificationToken({
+        owner: user._id,
+        token: OTP
+    })
+
+    await verifyToken.save()
+
+    mailTransport().sendMail({
+        from: 'emailverification@email.com',
+        to: user.email,
+        subject: "Verify your email account",
+        html: generateEmailTemplate(OTP,user.fname),
+    })
     return user
 }
 
