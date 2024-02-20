@@ -3,6 +3,9 @@ import { useTasksContext } from "../hooks/useTasksContext";
 import './../css/Home.css'; // Import your CSS file
 import TaskDetails from "../components/TaskDetails";
 import {useAuthContext} from '../hooks/useAuthContext'
+import { useNavigate } from 'react-router-dom'; 
+import { useCustomFetch } from '../hooks/useCustomFetch'; 
+import { useLogout } from '../hooks/useLogout'; 
 
 const Home = () => {
   const { tasks, dispatch } = useTasksContext();
@@ -10,26 +13,28 @@ const Home = () => {
   const [selectedPriority, setSelectedPriority] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedDueDate, setSelectedDueDate] = useState('');
-  const {user} = useAuthContext()
+  const {user} = useAuthContext();
+  const customFetch = useCustomFetch(); 
+  const navigate = useNavigate(); 
+  const { logout } = useLogout(); 
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        }
-      });
-      const json = await response.json();
-
-      if (response.ok) {
+      if (!user) return; 
+      try {
+        const json = await customFetch('/api/tasks');
         dispatch({ type: 'SET_TASKS', payload: json });
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        if (error.message === 'Unauthorized') {
+          logout(); 
+          navigate('/login'); 
+        }
       }
     };
-    if(user) {
-      fetchTasks();
-    }
-    
-  }, [dispatch, user]);
+
+    fetchTasks();
+  }, []); 
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useTasksContext } from '../hooks/useTasksContext'
-import './../css/TaskForm.css'; // Import your CSS file
-import { useParams } from "react-router-dom";
-import { useAuthContext } from '../hooks/useAuthContext';
-
+import { useTasksContext } from '../hooks/useTasksContext';
+import { useCustomFetch } from '../hooks/useCustomFetch'; // Make sure to import useCustomFetch
+import { useNavigate, useParams } from 'react-router-dom';
+import './../css/TaskForm.css';
+import { useLogout } from '../hooks/useLogout'; // Import useLogout for handling token expiration
 
 const EditHistory = () => {
-
+    const navigate = useNavigate();
     const { dispatch, tasks } = useTasksContext();
-    const { _id } = useParams(); // Get the task ID from the URL parameters
-    const {user} = useAuthContext();
-    
-    //console.log("Received taskId:", taskId);
+    const { _id } = useParams();
+    const customFetch = useCustomFetch(); // Use the customFetch hook
+    const { logout } = useLogout(); // Destructure logout function from useLogout
 
     // State variables for the form fields
     const [title, setTitle] = useState('');
@@ -20,59 +19,38 @@ const EditHistory = () => {
     const [priority, setPriority] = useState('');
     const [employees, setEmployees] = useState([{}]); // List of all added employees
     const [error, setError] = useState(null);
-    const [emptyFields, setEmptyFields] = useState([])
+    const [emptyFields, setEmptyFields] = useState([]);
 
     useEffect(() => {
-      if(!user) {
-        return
-      }
-        // Find the task with the matching ID from the URL
         const taskToEdit = tasks.find((task) => task._id === _id);
-    
-        if (taskToEdit && user) {
-          // Populate the form fields with the task details
-          setTitle(taskToEdit.title);
-          const formattedDate = taskToEdit.date.split('T')[0];
-          setDate(formattedDate);
-          setDescription(taskToEdit.description);
-          setPriority(taskToEdit.priority);
+        if (taskToEdit) {
+            setTitle(taskToEdit.title);
+            const formattedDate = taskToEdit.date.split('T')[0];
+            setDate(formattedDate);
+            setDescription(taskToEdit.description);
+            setPriority(taskToEdit.priority);
         }
-      }, [_id, tasks, user]);
+    }, [_id, tasks]);
 
-    // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         const task = { title, date, description, priority };
-    
-        // Send a PUT request to update the task
-        const response = await fetch(`/api/tasks/${_id}`, {
-          method: 'PATCH',
-          body: JSON.stringify(task),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization':`Bearer ${user.token}`
-          },
-        });
-    
-        const json = await response.json();
-    
-        if (!response.ok) {
-          setError(json.error);
-          setEmptyFields(json.emptyFields)
+
+        try {
+            const json = await customFetch(`/api/tasks/${_id}`, 'PATCH', task);
+            dispatch({ type: 'UPDATE_TASK', payload: json });
+            navigate("/overview");
+        } catch (error) {
+            console.error("Error updating task:", error);
+            if (error.message === 'Unauthorized') {
+                logout(); // Logout the user
+                navigate('/login'); // Redirect to login page
+            } else {
+                setError(error.message);
+                setEmptyFields(error.emptyFields || []);
+            }
         }
-        else {
-          setEmptyFields([])
-          setError(null);
-          setTitle('');
-          setDate('');
-          setDescription('');
-          setPriority('');
-    
-          dispatch({ type: 'UPDATE_TASK', payload: json });
-          
-        }
-      };
+    };
 
       const handleTitleChange = (e) => {
         setTitle(e.target.value);

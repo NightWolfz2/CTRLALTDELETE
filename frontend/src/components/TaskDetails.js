@@ -1,23 +1,32 @@
+import React from 'react';
 import './../css/TaskDetails.css'; // Import your CSS file
-import { useTasksContext } from '../hooks/useTasksContext'
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useTasksContext } from '../hooks/useTasksContext';
+import { useCustomFetch } from '../hooks/useCustomFetch'; // Ensure this is correctly imported
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useLogout } from '../hooks/useLogout'; // Assuming you have a useLogout hook
 
 const TaskDetails = ({ task }) => {
   const { dispatch } = useTasksContext();
-  const {user} = useAuthContext();
-  const deleteClick = async() => { // delete handle click
-    if(!user) {
-      return
-    }
-    const response = await fetch('/api/tasks/' + task._id, {
-      method: 'DELETE',
-      headers: {
-        'Authorization':`Bearer ${user.token}`
+  const customFetch = useCustomFetch();
+  const navigate = useNavigate(); // For handling redirection
+  const { logout } = useLogout();  // For handling logout
+
+  const deleteClick = async () => {
+    try {
+      // Attempt to delete the task using customFetch
+      await customFetch('/api/tasks/' + task._id, 'DELETE');
+      // If deletion is successful, update the state to reflect this change
+      dispatch({ type: 'DELETE_TASK', payload: { _id: task._id } });
+    } catch (error) {
+      console.error("Error during task deletion:", error);
+      // If an error occurs, specifically check for unauthorized access
+      if (error.message === 'Unauthorized') {
+        // Here, call your logout function to clear any auth-related state or storage
+        logout();
+        // After logout, redirect to login page
+        navigate('/login');
       }
-    })
-    const json = await response.json()
-    if(response.ok) {
-      dispatch({type: 'DELETE_TASK', payload: json})
+      // Optionally, handle other types of errors as needed
     }
   };
 

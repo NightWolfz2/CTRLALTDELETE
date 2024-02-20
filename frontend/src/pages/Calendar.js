@@ -3,27 +3,23 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 //import DatePicker from "react-datepicker";
-import {useAuthContext} from '../hooks/useAuthContext'
+import { useCustomFetch } from '../hooks/useCustomFetch'; 
+import { useNavigate } from 'react-router-dom'; 
+import { useLogout } from '../hooks/useLogout'; 
 
 const localizer = momentLocalizer(moment);
 
 const CalendarPage = () => { 
   const [tasks, setTasks] = useState([]);
-  const {user} = useAuthContext()
+  const customFetch = useCustomFetch(); 
+  const navigate = useNavigate(); 
+  const { logout } = useLogout(); 
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        // Fetch tasks from database API
-        const response = await fetch('/api/tasks', {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch tasks');
-        }
-        const data = await response.json();
+        // Use customFetch to automatically handle authorization header and error handling
+        const data = await customFetch('/api/tasks');
 
         const now = new Date();
         const filteredTasks = data
@@ -37,13 +33,16 @@ const CalendarPage = () => {
         setTasks(filteredTasks);
       } catch (error) {
         console.error('Error fetching tasks:', error);
+        // Handle unauthorized error by logging out and redirecting to login
+        if (error.message === 'Unauthorized') {
+          logout();
+          navigate('/login');
+        }
       }
     };
 
-    if (user.token) {
-      fetchTasks();
-    }
-  }, [user.token]); // user.token is the only dependency
+    fetchTasks();
+  }, []); 
 
   return (
     <div className="calendar">
