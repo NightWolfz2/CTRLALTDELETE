@@ -1,167 +1,158 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
-import './../css/TaskForm.css'; // Import your CSS file
+import './../css/TaskForm.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskForm = () => {
     const { dispatch } = useTasksContext();
-    const {user} = useAuthContext();
+    const { user } = useAuthContext();
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('');
-    const [employees, setEmployees] = useState([{}]);
+    const [employees, setEmployees] = useState([]); // To store fetched employee data
+    const [currentEmployee, setCurrentEmployee] = useState('');
+    const [selectedEmployees, setSelectedEmployees] = useState([]);    
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
 
-    // Autofill function
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            if (!user) return;
+            
+            try {
+                // Update the fetch URL to include the correct port
+                const response = await fetch('http://localhost:4000/api/user/employees', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`, // Assuming you have user tokens for authorization
+                    },
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch employees');
+                }
+                
+                const employees = await response.json();
+                // Do something with the fetched employees data, like setting state
+                setEmployees(employees);
+            } catch (error) {
+                console.error(error);
+                setError(error.message || 'Failed to fetch employees');
+            }
+        };
+    
+        fetchEmployees();
+    }, [user]); // Dependency array, if you're using the 'user' state to store user information
+    
+
     const autofill = () => {
-      setTitle('TASK TITLE');
-      setDate('2024-02-01T12:00'); // Example date and time
-      setPriority('high');
-      setDescription('AUTOFILLED TASK DESCRIPTION');
-      setEmployees([{}]);
+        setTitle('TASK TITLE');
+        setDate('2024-02-01T12:00');
+        setPriority('high');
+        setDescription('AUTOFILLED TASK DESCRIPTION');
     };
 
-    // Convert the local date and time to a UTC string
     const convertToUTC = (localDateTime) => {
         const localDate = new Date(localDateTime);
         localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
         return localDate.toISOString();
     };
 
-    // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!user) {
-            setError('You must be logged in')
-            return
+        if (!user) {
+            setError('You must be logged in');
+            return;
         }
-
-        // Convert the date to UTC before sending
-        const utcDate = convertToUTC(date);
-
-        // Construct the task object with the UTC date
         const task = {
             title,
-            date: utcDate, // Use the converted UTC date
+            date: convertToUTC(date),
             description,
             priority,
-            employees
+            assignedTo: selectedEmployees,
         };
 
-        const response = await fetch('/api/tasks', {
-            method: 'POST',
-            body: JSON.stringify(task),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization':`Bearer ${user.token}`
-            }
-        });
-        const json = await response.json();
+        try {
+            const response = await fetch('/api/tasks', {
+                method: 'POST',
+                body: JSON.stringify(task),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                },
+            });
+            const json = await response.json();
 
-        if (!response.ok) {
-            setError(json.error);
-            setEmptyFields(json.emptyFields);
-        } else {
-            setEmptyFields([]);
-            setError(null);
-            setTitle('');
-            setDate('');
-            setDescription('');
-            setEmployees([{}]);
-            dispatch({ type: 'CREATE_WORKOUT', payload: json });
+            if (!response.ok) {
+                setError(json.error);
+                setEmptyFields(json.emptyFields || []);
+            } else {
+                dispatch({ type: 'CREATE_TASK', payload: json });
+                setTitle('');
+                setDate('');
+                setDescription('');
+                setPriority('');
+                setSelectedEmployees([]); // Clear selected employees after submission
+                setCurrentEmployee(''); // Reset current employee selection
+                setError(null);
+                setEmptyFields([]);
+            }
+        } catch (error) {
+            console.error("Failed to submit task:", error);
+            setError('Failed to submit task');
         }
     };
 
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value);
-    };
+    // Handlers for form inputs
+    const handleTitleChange = (e) => setTitle(e.target.value);
+    const handleDateChange = (e) => setDate(e.target.value);
+    const handlePriorityChange = (e) => setPriority(e.target.value);
+    const handleDescriptionChange = (e) => setDescription(e.target.value);
 
-    const handleDateChange = (e) => {
-        setDate(e.target.value);
+    const handleAddEmployee = () => {
+        // Prevent adding if no employee is selected or if the employee is already added
+        if (currentEmployee && !selectedEmployees.includes(currentEmployee)) {
+            setSelectedEmployees(prevSelectedEmployees => [...prevSelectedEmployees, currentEmployee]);
+            // Optionally reset currentEmployee to '' if you want to clear the selection after adding
+            setCurrentEmployee('');
+        }
     };
-
-    const handlePriorityChange = (e) => {
-        setPriority(e.target.value);
-    };
-
-    const handleDescriptionChange = (e) => {
-        setDescription(e.target.value);
-    };
-
+    
     return (
         <div>
             <form className="create" onSubmit={handleSubmit}>
                 <h3>Create Task</h3>
-
                 <label>Task Title:</label>
-                <input
-                    type="text"
-                    onChange={handleTitleChange}
-                    value={title}
-                    className={emptyFields.includes('title') ? 'error' : ''}
-                />
+                <input type="text" onChange={handleTitleChange} value={title} className={emptyFields.includes('title') ? 'error' : ''} />
 
                 <label>Due Date:</label>
-                <input 
-                    type="datetime-local"
-                    onChange={handleDateChange} 
-                    value={date}
-                    className={emptyFields.includes('date') ? 'error' : ''}
-                />
+                <input type="datetime-local" onChange={handleDateChange} value={date} className={emptyFields.includes('date') ? 'error' : ''} />
 
                 <label>Priority:</label>
-                <select
-                    onChange={handlePriorityChange}
-                    value={priority}
-                >
+                <select onChange={handlePriorityChange} value={priority}>
                     <option value="">Select Priority</option>
                     <option value="high">High</option>
                     <option value="medium">Medium</option>
                     <option value="low">Low</option>
                 </select>
 
-                {employees.map((employee, index) => (
-                    <div key={index}>
-                        <label>Assigned Employee #{index + 1}:</label>
-                        <select
-                            value={employee.name}
-                            onChange={(e) => {
-                                const newEmployees = [...employees];
-                                newEmployees[index] = { name: e.target.value };
-                                setEmployees(newEmployees);
-                            }}
-                        >
-                            <option value="">Select Employee</option>
-                            {/* Populate this dropdown from backend data in the future */}
-                        </select>
-                    </div>
-                ))}
+                <label>Assign Employee:</label>
+                <select value={currentEmployee} onChange={(e) => setCurrentEmployee(e.target.value)}>
+                    <option value="">Select Employee</option>
+                    {employees.map(employee => (
+                        <option key={employee._id} value={employee._id}>{employee.fname} {employee.lname}</option>
+                    ))}
+                </select>
 
-                <button type="button" className="add-employee-btn" onClick={() => setEmployees([...employees, {}])}>
-                    <span className="symbol">&#43;</span> Add Employee
-                </button>
-                {employees.length > 1 && (
-                    <button type="button" className="remove-employee-btn" onClick={() => setEmployees(employees.slice(0, -1))}>
-                        <span className="symbol">&#8722;</span> Remove Employee
-                    </button>
-                )}
+                <button type="button" onClick={handleAddEmployee}>Add Employee</button>
 
                 <label>Description:</label>
-                <textarea
-                    rows="10"
-                    onChange={handleDescriptionChange}
-                    value={description}
-                ></textarea>
+                <textarea rows="10" onChange={handleDescriptionChange} value={description}></textarea>
 
                 <button type="submit">Submit</button>
                 {error && <div className="error">{error}</div>}
-                {/*Autofill button*/}   
-                <button type="button" onClick={autofill}>
-                  Autofill Form
-                </button>
-                {/*End Autofill button*/}  
+                <button type="button" onClick={autofill}>Autofill Form</button>
             </form>
         </div>
     );

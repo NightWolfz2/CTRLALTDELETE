@@ -6,7 +6,14 @@ const taskRoutes = require('./routes/tasks')
 const userRoutes = require('./routes/user')
 
 // express app
-const app = express()
+const cors = require('cors');
+const app = express();
+
+// Add CORS configuration
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow your frontend domain
+  methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+}));
 
 // middleware
 app.use(express.json())
