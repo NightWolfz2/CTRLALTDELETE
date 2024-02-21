@@ -1,14 +1,11 @@
-import React, { Component,useState } from "react";
+import React, { useState, useEffect } from "react";
 import './../css/Overview.css'; // Import CSS file
 import editIcon from '../images/edit_icon.png';
-import { useAuthContext } from '../hooks/useAuthContext';
-
-import { useEffect } from "react"
-import { useTasksContext } from "../hooks/useTasksContext"
-
-import TaskDetails from "../components/TaskDetails"
-
+import { useTasksContext } from "../hooks/useTasksContext"; 
+import TaskDetails from "../components/TaskDetails";
 import { useNavigate } from 'react-router-dom';
+import { useCustomFetch } from '../hooks/useCustomFetch';
+import { useLogout } from '../hooks/useLogout';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -23,33 +20,26 @@ const Overview = () => {
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
-  const {user} = useAuthContext();
-  
-  const {tasks, dispatch} = useTasksContext()
+  const { tasks, dispatch } = useTasksContext(); 
+  const customFetch = useCustomFetch(); 
+  const navigate = useNavigate(); 
+  const { logout } = useLogout(); 
 
-  const navigate = useNavigate();
-  
-    useEffect(() => {
+  useEffect(() => {
     const fetchTasks = async () => {
-      if(!user) {
-        return
-      }
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        } 
-      })
-      const json = await response.json()
-
-      if (response.ok) {
+      try {
+        const json = await customFetch('/api/tasks');
         dispatch({type: 'SET_TASKS', payload: json})
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        if (error.message === 'Unauthorized') {
+          logout(); 
+          navigate('/login'); 
+        }
       }
     }
-    if(user) {
-      fetchTasks()
-    }
-    
-  }, [dispatch, user])
+    fetchTasks();
+  }, []);
   
   const currentDate = new Date(); 
 
@@ -69,21 +59,19 @@ const Overview = () => {
   const duedateChange = (e) => {
     setDueDate(e.target.value);
   };
-  
+
   const searchbarChange = (e) => {
     setSearch(e.target.value);
-  }
-  
+  };
+
   const resetFilters = () => {
     setPriorityLevel("All");
     setStatus("All");
-    setDueDate(""); // Clear the due date by setting it to an empty string
-    setSearch(""); // Clear the search bar by setting it to an empty string
+    setDueDate("");
+    setSearch("");
   };
-  
 
   const handleEditTask = (taskId) => {
-    //console.log(`Editing task with ID ${taskId}`);
     navigate(`/editTask/${taskId}`);
   };
 
@@ -96,8 +84,7 @@ const Overview = () => {
 		return "Past Due";
 	  }
 	};
-	
-	const getPriorityStatus = (priority) => {
+  const getPriorityStatus = (priority) => {
     switch (priority) {
       case 'Low':
         return 'Low';
@@ -109,7 +96,7 @@ const Overview = () => {
         return 'Unknown';
     }
   };  
-
+  const [completedStates, setCompletedStates] = useState(new Map());
 const handleButtonClick = (taskId) => {
   setCompletedStates((prevStates) => {
     const newStates = new Map(prevStates);
@@ -117,67 +104,85 @@ const handleButtonClick = (taskId) => {
     return newStates;
   });
 };
+//comment
+  const filterTasks = () => {
+    return tasks.filter(task => {
+      const priorityMatch = priorityLevel === 'All' || task.priority.toLowerCase() === priorityLevel.toLowerCase();
+      const statusMatch = status === 'All' || task.status.toLowerCase() === status.toLowerCase();
+      const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
+      const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
+      return priorityMatch && statusMatch && dueDateMatch && searchMatch;
+    });
+  };
 
-const [completedStates, setCompletedStates] = useState(new Map());
-
-  
   return (
     <div className='Overview'>
       <div className="page-title">
         <h2>Overview</h2>
+        <div className="filter-container">
+
+          <div className="priority-label">
+            <label>Priority:</label>
+            <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
+              <option value="All">All Priorities</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div className="status-label">
+            <label>Status:</label>
+            <select className="status-select" value={status} onChange={statusChange}>
+              <option value="All">All Statuses</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Past Due">Past Due</option>
+            </select>
+          </div>
+
+          <div className="due-date-label">
+            <label>Due Date:</label>
+            <input
+              className="date-select"
+              type="date"
+              value={dueDate}
+              onChange={duedateChange}
+            />
+          </div>
+
+          <div className="search-bar-label">
+            <label>Search:</label>
+            <input
+              className="searchBar"
+              type="text"
+              value={searchBar}
+              onChange={searchbarChange}
+            />
+          </div>
+        </div>
+        <div className="clear-button">
+          <button onClick={resetFilters}>Reset Filters</button>
+        </div>
       </div>
 
-
-     <div className="priority-label">
-        <label>Filter by Priority:</label>
-        <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
-          <option value="All">All</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
-  
-      <div className="status-label">
-        <label>Filter by Status:</label>
-        <select className="status-select" value={status} onChange={statusChange}>
-          <option value="All">All</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Past Due">Past Due</option>
-        </select>
-      </div>
-
-      <div className="due-date-label">
-        <label>Filter by Due Date:</label>
-        <input
-          className="date-select"
-          type="date"
-          value={dueDate}
-          onChange={duedateChange}
-        />
-      </div> 
-
-      <div className="search-bar-label">
-        <label>Search Text:</label>
-        <input
-          className="searchBar"
-          type="text"
-          value={searchBar}
-          onChange={searchbarChange}
-        />
-      </div>
-
-      <div className="clear-button">
-        <button onClick={resetFilters}>Reset Filters</button>
-      </div>
-
-	
-	
-		<div className="additional-boxes">
-		  {tasks && tasks.slice(0, 200).map((task, index) => (
-			<div className="task-box" key={task._id}>
-
-             <button
+      <div className="additional-boxes">
+        {filterTasks().map((task, index) => (
+          <div className="task-box" key={task._id}>
+            <div className="box1">
+              <p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
+            </div>
+            <div className="box1">
+              <div className="little-box1">
+                Status - {task.status}
+              </div>
+              <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' : task.priority === 'Medium' ? 'medium-priority-box' : 'low-priority-box'}`}>
+                Priority - {task.priority}
+              </div>
+              <div className="little-box1">
+                Due Date {formatDate(task.date)}
+              </div>
+            </div>
+            <button
                 className={`box2`}
                 onClick={() => handleButtonClick(task._id)}
 				>
@@ -186,65 +191,31 @@ const [completedStates, setCompletedStates] = useState(new Map());
                 </div>
               </button>
 
-			<div className="box1">
-				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
-				
-				
-			</div>
-			
-			  <div className="box1">
-			  
-				
-				
-				<div className="little-box1">
-					Status - {getTaskStatus(task)}
-				</div>
-        <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' : task.priority === 'Medium' ? 'medium-priority-box' : 'low-priority-box'}`}>
-        Priority - {getPriorityStatus(task.priority)}
-        </div>
-
-				<div className="little-box1">
-					Due Date {formatDate(task.date)}
-				
-				</div>
-			  </div>
-			  
-			  <div className="box">
-				<div className="little-box">
-				<p><b>Assigned Employee(s):</b></p>
-				<p>{task.employee}</p>
-				<p><b>Email:</b>{task.email}</p>
-				<p><b>Phone:</b>{task.phone}</p>
-				
-				</div>
-				<div className="little-box">
-					<p><b>Task Description:</b></p>
-					<p>{task.description}</p>
-
-
-				
-				</div>
-				<div className="little-box">
-					<p><b>Edit History:</b></p>
-					<p>{task.history}</p>
-
-
-				
-				</div>
-
-        <div className="edit-button">
-        <button 
-          style={{ backgroundImage: `url(${editIcon})` }}
-          onClick={() => handleEditTask(task._id)}></button>
-
-
-          
-        </div>
-			  </div>
-			</div>
-		  ))}
-		</div>
-		
+            <div className="box">
+              <div className="little-box">
+                <p><b>Assigned Employee(s):</b></p>
+                <p>{task.employee}</p>
+                <p><b>Email:</b>{task.email}</p>
+                <p><b>Phone:</b>{task.phone}</p>
+              </div>
+              <div className="little-box">
+                <p><b>Task Description:</b></p>
+                <p>{task.description}</p>
+              </div>
+              <div className="little-box">
+                <p><b>Edit History:</b></p>
+                <p>{task.history}</p>
+              </div>
+              <div className="edit-button">
+                <button
+                  style={{ backgroundImage: `url(${editIcon})` }}
+                  onClick={() => handleEditTask(task._id)}
+                ></button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

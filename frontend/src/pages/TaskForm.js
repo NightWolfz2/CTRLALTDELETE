@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
-import './../css/TaskForm.css';
-import { useAuthContext } from '../hooks/useAuthContext';
+import './../css/TaskForm.css'; // Import your CSS file
+import { useCustomFetch } from '../hooks/useCustomFetch'; 
+import { useNavigate } from 'react-router-dom'; 
+import { useLogout } from '../hooks/useLogout'; 
 
 const TaskForm = () => {
     const { dispatch } = useTasksContext();
-    const { user } = useAuthContext();
+    const customFetch = useCustomFetch(); 
+    const navigate = useNavigate(); 
+    const { logout } = useLogout(); 
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
@@ -65,9 +69,14 @@ const TaskForm = () => {
             setError('You must be logged in');
             return;
         }
+        
+        // Convert the date to UTC before sending
+        const utcDate = convertToUTC(date);
+
+        // Construct the task object with the UTC date
         const task = {
             title,
-            date: convertToUTC(date),
+            date: utcDate,
             description,
             priority,
             assignedTo: selectedEmployees,
