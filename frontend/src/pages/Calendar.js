@@ -31,7 +31,7 @@ const CalendarPage = () => {
           .map(task => ({
             ...task,
             start: moment(task.date).startOf('day').toDate(),
-            end: moment.utc(task.date).local().hours(12).toDate()
+            end: moment.utc(task.date).local().hours(12).toDate(),
           }));
 
         setTasks(filteredTasks);
@@ -44,6 +44,42 @@ const CalendarPage = () => {
       fetchTasks();
     }
   }, [user.token]); // user.token is the only dependency
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    let backgroundColor = '';
+    switch (event.priority) {
+      case 'High':
+        backgroundColor = '#ffad99';
+        break;
+      case 'Medium':
+        backgroundColor = '#f3f899';
+        break;
+      case 'Low':
+        backgroundColor = '#adebad';
+        break;
+      default:
+        backgroundColor = '#3174ad'; // Default color if priority is not defined
+    }
+  
+    let className = '';
+    if (isSelected) {
+      className = 'rbc-selected'; // Add the 'rbc-selected' class if the event is selected
+    }
+
+    return {
+      className: className,
+      style: {
+        backgroundColor: backgroundColor,
+        borderRadius: '5px',
+        opacity: 0.8,
+        color: 'black',
+        border: '0px',
+        display: 'block',
+        textAlign: 'center'
+      }
+    };
+  };
+  
 
   return (
     <div className="calendar">
@@ -61,6 +97,7 @@ const CalendarPage = () => {
           width: 1600, 
           margin: "50px"
         }} 
+        eventPropGetter={eventStyleGetter} // Apply custom styles to events
       />
     </div>
   )
