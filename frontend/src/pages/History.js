@@ -109,49 +109,52 @@ const Overview = () => {
       <div className="page-title">
         <h2>History</h2>
       </div>
-
-
-      <div className="priority-label">
-        <label>Filter by Priority:</label>
-        <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
-          <option value="All">All</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
   
-      <div className="status-label">
-        <label>Filter by Status:</label>
-        <select className="status-select" value={status} onChange={statusChange}>
-          <option value="All">All</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Past Due">Past Due</option>
-        </select>
-      </div>
-
-      <div className="due-date-label">
-        <label>Filter by Due Date:</label>
-        <input
-          className="date-select"
-          type="date"
-          value={dueDate}
-          onChange={duedateChange}
-        />
-      </div> 
-
-      <div className="search-bar-label">
-        <label>Search Text:</label>
-        <input
-          className="searchBar"
-          type="text"
-          value={searchBar}
-          onChange={searchbarChange}
-        />
-      </div>
-
-      <div className="clear-button">
-        <button onClick={resetFilters}>Reset Filters</button>
+      <div className="filters-bar">
+        <div className="filter-wrapper">
+          <label htmlFor="status">Status:</label>
+          <select id="status" className="filter-select" value={status} onChange={statusChange}>
+            <option value="All">All</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Past Due">Past Due</option>
+          </select>
+        </div>
+  
+        <div className="filter-wrapper">
+          <label htmlFor="priority">Priority:</label>
+          <select id="priority" className="filter-select" value={priorityLevel} onChange={priorityChange}>
+            <option value="All">All</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+  
+        <div className="filter-wrapper">
+          <label htmlFor="due-date">Due Date:</label>
+          <input
+            id="due-date"
+            className="filter-input"
+            type="date"
+            value={dueDate}
+            onChange={duedateChange}
+          />
+        </div> 
+  
+        <div className="filter-wrapper search-wrapper">
+          <label htmlFor="search">Search:</label>
+          <input
+            id="search"
+            className="filter-input"
+            type="text"
+            value={searchBar}
+            onChange={searchbarChange}
+          />
+        </div>
+  
+        <div className="clear-button">
+          <button onClick={resetFilters}>Reset Filters</button>
+        </div>
       </div>
 	
 		<div className="additional-boxes">
