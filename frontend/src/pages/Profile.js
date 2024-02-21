@@ -3,10 +3,13 @@ import './../css/Profile.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { FaUserAlt, FaEnvelope, FaLock } from 'react-icons/fa';
 
-
 const Profile = () => { 
   const { user } = useAuthContext();
+
   
+  console.log(user);
+            
+
   return (
     <div className='Profile'>
       <div className="page-title">
@@ -22,6 +25,13 @@ const Profile = () => {
             <FaEnvelope className="icon" />
             <span><strong>Email:</strong> {user.email}</span>
           </div>
+          <div className="profile-info-row">
+            <FaEnvelope className="icon" />
+            <span><strong>Verified:</strong> {'Verified?'}
+            
+            </span>
+          </div>
+          
           <div className="profile-action">
             <button className="profile-button resetPW">
               <FaLock className="icon" />

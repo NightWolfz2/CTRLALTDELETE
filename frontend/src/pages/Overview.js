@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import './../css/Overview.css'; // Import CSS file
 import editIcon from '../images/edit_icon.png';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { useTasksContext } from "../hooks/useTasksContext"; 
 import TaskDetails from "../components/TaskDetails";
 import { useNavigate } from 'react-router-dom';
+import { useCustomFetch } from '../hooks/useCustomFetch';
+import { useLogout } from '../hooks/useLogout';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -19,31 +20,26 @@ const Overview = () => {
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
   const [searchBar, setSearch] = useState("");
-  const { user } = useAuthContext();
   const { tasks, dispatch } = useTasksContext(); 
-  const navigate = useNavigate();
+  const customFetch = useCustomFetch(); 
+  const navigate = useNavigate(); 
+  const { logout } = useLogout(); 
 
- useEffect(() => {
+  useEffect(() => {
     const fetchTasks = async () => {
-      if(!user) {
-        return
-      }
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
-        } 
-      })
-      const json = await response.json()
-
-      if (response.ok) {
+      try {
+        const json = await customFetch('/api/tasks');
         dispatch({type: 'SET_TASKS', payload: json})
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        if (error.message === 'Unauthorized') {
+          logout(); 
+          navigate('/login'); 
+        }
       }
     }
-    if(user) {
-      fetchTasks()
-    }
-    
-  }, [dispatch, user])
+    fetchTasks();
+  }, []);
   
   const currentDate = new Date(); 
 

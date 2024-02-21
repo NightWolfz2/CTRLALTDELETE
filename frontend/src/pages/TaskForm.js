@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
 import './../css/TaskForm.css'; // Import your CSS file
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useCustomFetch } from '../hooks/useCustomFetch'; 
+import { useNavigate } from 'react-router-dom'; 
+import { useLogout } from '../hooks/useLogout'; 
 
 const TaskForm = () => {
     const { dispatch } = useTasksContext();
-    const {user} = useAuthContext();
+    const customFetch = useCustomFetch(); 
+    const navigate = useNavigate(); 
+    const { logout } = useLogout(); 
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
@@ -33,10 +37,6 @@ const TaskForm = () => {
     // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!user) {
-            setError('You must be logged in')
-            return
-        }
 
         // Convert the date to UTC before sending
         const utcDate = convertToUTC(date);
@@ -44,33 +44,31 @@ const TaskForm = () => {
         // Construct the task object with the UTC date
         const task = {
             title,
-            date: utcDate, // Use the converted UTC date
+            date: utcDate,
             description,
             priority,
             employees
         };
 
-        const response = await fetch('/api/tasks', {
-            method: 'POST',
-            body: JSON.stringify(task),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization':`Bearer ${user.token}`
-            }
-        });
-        const json = await response.json();
-
-        if (!response.ok) {
-            setError(json.error);
-            setEmptyFields(json.emptyFields);
-        } else {
-            setEmptyFields([]);
-            setError(null);
+        try {
+            const json = await customFetch('/api/tasks', 'POST', task);
+            dispatch({ type: 'CREATE_TASK', payload: json }); // Ensure the correct action type
+            // Reset form fields and state
             setTitle('');
             setDate('');
             setDescription('');
             setEmployees([{}]);
-            dispatch({ type: 'CREATE_WORKOUT', payload: json });
+            setError(null);
+            setEmptyFields([]);
+        } catch (error) {
+            console.error("Error creating task:", error);
+            if (error.message === 'Unauthorized') {
+                logout();
+                navigate('/login');
+            } else {
+                setError(error.message);
+                setEmptyFields(error.emptyFields || []);
+            }
         }
     };
 

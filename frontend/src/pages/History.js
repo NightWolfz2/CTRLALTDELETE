@@ -1,13 +1,11 @@
-import React, { Component,useState } from "react";
+import React, { Component, useState } from "react";
 import './../css/History.css'; // Import CSS file
-
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
-
 import TaskDetails from "../components/TaskDetails"
-
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useCustomFetch } from '../hooks/useCustomFetch';
+import { useLogout } from '../hooks/useLogout'; 
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -18,7 +16,6 @@ const formatDate = (dateStr) => {
 };
 
 const Overview = () => {
-  const {user} = useAuthContext();
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
@@ -27,26 +24,24 @@ const Overview = () => {
   const {tasks, dispatch} = useTasksContext()
 
   const navigate = useNavigate();
+  const customFetch = useCustomFetch(); 
+  const { logout } = useLogout(); 
   
-    useEffect(() => {
-      if(!user) {
-        return
-      }
+  useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks', {
-        headers: {
-          'Authorization':`Bearer ${user.token}`
+      try {
+        const json = await customFetch('/api/tasks');
+        dispatch({ type: 'SET_TASKS', payload: json });
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        if (error.message === 'Unauthorized') {
+          logout(); 
+          navigate('/login'); 
         }
-      })
-      const json = await response.json()
-
-      if (response.ok) {
-        dispatch({type: 'SET_TASKS', payload: json})
       }
-    }
-
-    fetchTasks()
-  }, [dispatch, user])
+    };
+    fetchTasks();
+  }, []);
   
   const currentDate = new Date(); 
 

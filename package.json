@@ -1,12 +1,16 @@
 {
   "dependencies": {
-    "react-datepicker": "^4.21.0"
+    "nodemailer": "^6.9.9",
+    "react-datepicker": "^4.21.0",
+    "react-icons": "^5.0.1"
   },
   "scripts": {
-    "postinstall": "npm install --save-dev concurrently && npm install --save-dev @babel/plugin-proposal-private-property-in-object",
+    "install": "npm install --save-dev concurrently && npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm run install-frontend && npm run install-backend",
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "cd frontend && npm start",
-    "start-backend": "cd backend && npm run dev"
+    "start-backend": "cd backend && npm run dev",
+    "install-backend": "cd backend && npm install && npm install express && npm install nodemailer && npm install dotenv",
+    "install-frontend": "cd frontend && npm install && npm install react-icons --save"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
