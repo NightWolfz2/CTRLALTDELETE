@@ -1,81 +1,62 @@
-.History { /*changed*/
+.History {
+  margin: 0;
+}
 
-  .priority-label {
-    margin-top: 10px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
-  
-  .priority-select {
-    margin-left: 50px;
-    width: auto;
-    display: flex;
-    margin-right: 10px;
-  }
+.History .page-title {
+  text-align: left;
+  padding-left: 30px;
+}
 
-  .status-label {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.History .filters-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 50px;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #b9b9b9;
+}
 
-  .status-select {
-    margin-left: 54px;
-    width: auto;
-    margin-right: 10px;
-  }
+.History .filter-wrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-right: 10px;
+  white-space: nowrap;
+}
 
-  .due-date-label {
-    margin-top: 12px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.History .filter-select,
+.History .filter-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 150px;
+  margin-left: 08px;
+  margin-bottom: 45px;
+}
 
-  .date-select {
-    margin-top: 0px;
-    margin-left: 30px;
-    padding: 1px 1px;
-    width: auto;
-    margin-right: 10px;
-  }
+.History .search-wrapper .filter-input {
+  flex-grow: 1;
+  width: auto;
+}
 
-  .search-bar-label {
-    margin-top: 13px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.History .clear-button button {
+  background-color: #2087e7;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  height: auto;
+  align-self: center;
+  margin: 0;
+  margin-bottom: 45px;
+  margin-left: 10px;
+}
 
-  .searchBar {
-    margin-right: 10px;
-    margin-left: 77px;
-    width: auto;
-  }
-
-  .clear-button button {
-    margin-top: 10px;
-    background-color: #2087e7;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    font-size: 1em;
-    padding-left: 20px;
-    margin-left: 20px;
-  }
-
-  .clear-button button:hover {
-    background-color: #186db5; /* Darker blue for hover effect */
-  }
+.History .clear-button button:hover {
+  background-color: #186db5;
+}
 
 .box-container {
   display: flex;
@@ -161,6 +142,4 @@
 
 .task-box {
   position: relative;
-}
-
 }
