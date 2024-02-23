@@ -1,20 +1,28 @@
 /*overview*/
+
+.page-title h2 {
+  margin-bottom: 100px;
+}
+
 .Overview .page-title {
   background-color: #b9b9b9;
   display: flex;
   align-items: center;
-  padding-left: 20px;
   border: 1px solid #ccc;
   padding: 50px;
-  margin-bottom: 20px;
-
+  text-align: left;
+  padding-left: 30px;
+  margin-bottom: 10px; 
+  
 }
 .filter-container {
   display: flex;
   align-items: center;
-  margin-right: auto; 
-  margin-left: 20px;
+  margin-right: auto;
+  margin-top: 30px; 
+  margin-left: -100px;
 }
+
   .priority-label {
     margin-top: 10px;
     display: flex;
@@ -88,7 +96,7 @@
   }
 
   .clear-button button {
-    margin-top: 10px;
+    margin-top: 30px;
     background-color: #2087e7;
     color: white;
     border: none;
@@ -96,7 +104,7 @@
     border-radius: 4px;
     font-size: 1em;
     padding-left: 20px;
-    margin-right: 850px;
+    margin-right: 950px;
   }
 
   .clear-button button:hover {

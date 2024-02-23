@@ -130,12 +130,12 @@ const Overview = () => {
 
   return (
     <div className='Overview'>
-      <div className="page-title">
+      <div className="page-title"> 
         <h2>Overview</h2>
         <div className="filter-container">
 
           <div className="priority-label">
-            <label>Priority:</label>
+            <label>Priority: </label>
             <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
               <option value="All">All Priorities</option>
               <option value="Low">Low</option>
@@ -145,7 +145,7 @@ const Overview = () => {
           </div>
 
           <div className="status-label">
-            <label>Status:</label>
+            <label>Status: </label>
             <select className="status-select" value={status} onChange={statusChange}>
               <option value="All">All Statuses</option>
               <option value="In Progress">In Progress</option>
@@ -154,7 +154,7 @@ const Overview = () => {
           </div>
 
           <div className="due-date-label">
-            <label>Due Date:</label>
+            <label>Due Date: </label>
             <input
               className="date-select"
               type="date"
@@ -164,7 +164,7 @@ const Overview = () => {
           </div>
 
           <div className="search-bar-label">
-            <label>Search:</label>
+            <label>Search: </label>
             <input
               className="searchBar"
               type="text"
