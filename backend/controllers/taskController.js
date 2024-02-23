@@ -29,6 +29,33 @@ const getTask = async (req, res) => {
   res.status(200).json(task);
 };
 
+const getCompletedTasks = async (req, res) => {
+  console.log("getCompleted is working")
+  try {
+    const completedTasks = await Task.find({ completed: true }).sort({ createdAt: -1 });
+    res.status(200).json(completedTasks);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const completeTask = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+
+  const task = await Task.findById(id);
+
+  if (!task) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+  task.completed = true;
+
+  res.status(200).json(task);
+  task.save()
+};
+
 // create a new task
 const createTask = async (req, res) => {
   const { title, date, description } = req.body;
@@ -92,5 +119,7 @@ module.exports = {
   getTask,
   createTask,
   deleteTask,
-  updateTask
+  updateTask,
+  getCompletedTasks,
+  completeTask
 };

@@ -97,13 +97,26 @@ const Overview = () => {
     }
   };  
   const [completedStates, setCompletedStates] = useState(new Map());
-const handleButtonClick = (taskId) => {
-  setCompletedStates((prevStates) => {
-    const newStates = new Map(prevStates);
-    newStates.set(taskId, !newStates.get(taskId));
-    return newStates;
-  });
-};
+  const handleButtonClick = async (taskId) => {
+    try {
+      // Fetch the data asynchronously
+      const response = await customFetch(`/api/tasks/complete-task/${taskId}`, 'PATCH');
+      const json = await response.json();
+  
+      // Dispatch the action with the updated task data
+      dispatch({ type: 'UPDATE_TASK', payload: json });
+  
+      // Update the completed states
+      setCompletedStates((prevStates) => {
+        const newStates = new Map(prevStates);
+        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
+        return newStates;
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors here
+    }
+  };
 //comment
   const filterTasks = () => {
     return tasks.filter(task => {
