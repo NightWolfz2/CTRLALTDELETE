@@ -124,7 +124,9 @@ const Overview = () => {
       const statusMatch = status === 'All' || task.status.toLowerCase() === status.toLowerCase();
       const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
       const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
-      return priorityMatch && statusMatch && dueDateMatch && searchMatch;
+      const notCompleted = !task.complted; // Check if task is not completed
+      const notDeleted = !task.deleted; //Check if task is not deleted
+    return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notDeleted;
     });
   };
 
