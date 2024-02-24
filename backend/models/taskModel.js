@@ -19,6 +19,15 @@ const taskSchema = new Schema({
     enum: ['High', 'Medium', 'Low'],
     required: true
   },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  deleted: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   status: {
     type: String,
     enum: ['In Progress', 'Past Due'],
