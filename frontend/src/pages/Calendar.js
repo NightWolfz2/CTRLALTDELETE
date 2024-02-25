@@ -2,13 +2,13 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-//import DatePicker from "react-datepicker";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 //import 'react-datepicker/dist/react-datepicker.css'; 
 import './../css/Calendar.css';
 import { useCustomFetch } from '../hooks/useCustomFetch'; 
 import { useNavigate } from 'react-router-dom'; 
 import { useLogout } from '../hooks/useLogout'; 
+import TaskDetails2 from '../components/TaskDetails';// Confirm the path is correct
 
 const localizer = momentLocalizer(moment);
 
@@ -66,6 +66,11 @@ const CalendarPage = () => {
   const handleSubmitTask = () => {
     setIsEditing(false)
   };
+  
+      const handleCloseDetails = () => {
+        setSelectedTask(null); // Set selectedTask to null to close the TaskDetails window
+    };
+
 
 
   const eventStyleGetter = (event, isSelected) => {
@@ -129,61 +134,14 @@ const CalendarPage = () => {
 
             <div className="task-info">
               <h3>Task Information</h3>
-
-              <label>Title: </label>
-            <input 
-                readOnly={!isEditing}
-                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
-                type="text" value={selectedTask.title}
-                >
-              </input>
-
-              <label>Due Date: </label> 
-              <input 
-                readOnly={!isEditing}
-                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
-                type="datetime-local" 
-                value={selectedTask.date}
-                >
-              </input>
-
-              <label>Priority: </label>
-              <input 
-                readOnly={!isEditing}
-                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
-                type="text" 
-                value={selectedTask.priority}
-                >
-              </input>
-
-              <label>Assignee: </label>
-              <input 
-                readOnly={!isEditing}
-                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
-                type="text" 
-                value="Assignee"
-                >
-              </input>
-
-              <label style={{paddingTop:"5%"}}>Description: </label>
-              <textarea 
-                readOnly={!isEditing}
-                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
-                value={selectedTask.description}
-                >
-              </textarea>
-
-              {!isEditing ? (
-               <React.Fragment>
-                  <button type="button" onClick={handleEditTask}>Edit</button>
-                  <button class="close-btn" onClick={handleClosePopup}>Close</button>
-                </React.Fragment>
-                ) : (
-                <button type="button" onClick={handleSubmitTask}>Submit</button>
-              )}
-              {isEditing && (
-                <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
-              )}
+				{selectedTask && (
+					<TaskDetails2
+						task={selectedTask}
+						onClose={handleCloseDetails}
+						
+					/>
+				)}
+          
             </div>
           </div>
         )}
