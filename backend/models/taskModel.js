@@ -25,8 +25,7 @@ const taskSchema = new Schema({
   },
   deleted: {
     type: Boolean,
-    required: false,
-    default: false,
+    default: false
   },
   status: {
     type: String,
