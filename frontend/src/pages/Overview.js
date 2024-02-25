@@ -97,13 +97,26 @@ const Overview = () => {
     }
   };  
   const [completedStates, setCompletedStates] = useState(new Map());
-const handleButtonClick = (taskId) => {
-  setCompletedStates((prevStates) => {
-    const newStates = new Map(prevStates);
-    newStates.set(taskId, !newStates.get(taskId));
-    return newStates;
-  });
-};
+  const handleButtonClick = async (taskId) => {
+    try {
+      // Fetch the data asynchronously
+      const response = await customFetch(`/api/tasks/complete-task/${taskId}`, 'PATCH');
+      const json = await response.json();
+  
+      // Dispatch the action with the updated task data
+      dispatch({ type: 'UPDATE_TASK', payload: json });
+  
+      // Update the completed states
+      setCompletedStates((prevStates) => {
+        const newStates = new Map(prevStates);
+        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
+        return newStates;
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors here
+    }
+  };
 //comment
   const filterTasks = () => {
     return tasks.filter(task => {
@@ -111,18 +124,20 @@ const handleButtonClick = (taskId) => {
       const statusMatch = status === 'All' || task.status.toLowerCase() === status.toLowerCase();
       const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
       const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
-      return priorityMatch && statusMatch && dueDateMatch && searchMatch;
+      const notCompleted = !task.completed; // Check if task is not completed
+      const notDeleted = !task.deleted; //Check if task is not deleted
+    return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notDeleted;
     });
   };
 
   return (
     <div className='Overview'>
-      <div className="page-title">
+      <div className="page-title"> 
         <h2>Overview</h2>
         <div className="filter-container">
 
           <div className="priority-label">
-            <label>Priority:</label>
+            <label>Priority: </label>
             <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
               <option value="All">All Priorities</option>
               <option value="Low">Low</option>
@@ -132,7 +147,7 @@ const handleButtonClick = (taskId) => {
           </div>
 
           <div className="status-label">
-            <label>Status:</label>
+            <label>Status: </label>
             <select className="status-select" value={status} onChange={statusChange}>
               <option value="All">All Statuses</option>
               <option value="In Progress">In Progress</option>
@@ -141,7 +156,7 @@ const handleButtonClick = (taskId) => {
           </div>
 
           <div className="due-date-label">
-            <label>Due Date:</label>
+            <label>Due Date: </label>
             <input
               className="date-select"
               type="date"
@@ -151,7 +166,7 @@ const handleButtonClick = (taskId) => {
           </div>
 
           <div className="search-bar-label">
-            <label>Search:</label>
+            <label>Search: </label>
             <input
               className="searchBar"
               type="text"

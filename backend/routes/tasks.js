@@ -4,7 +4,9 @@ const {
   getTask, 
   createTask, 
   deleteTask, 
-  updateTask
+  updateTask,
+  getCompletedTasks,
+  completeTask
 } = require('../controllers/taskController')
 
 const requireAuth = require('../middleware/requireAuth')
@@ -27,5 +29,11 @@ router.delete('/:id', deleteTask)
 
 // UPDATE a task
 router.patch('/:id', updateTask)
+
+router.get('/completed', getCompletedTasks)
+
+router.patch('/complete-task/:id', completeTask)
+
+
 
 module.exports = router
