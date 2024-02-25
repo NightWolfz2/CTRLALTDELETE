@@ -67,10 +67,11 @@ const Home = () => {
     return (taskList || []).filter(task => {
       const statusMatch = selectedStatus === 'all' || task.status === selectedStatus;
       const priorityMatch = selectedPriority === 'all' || task.priority.toLowerCase() === selectedPriority;
-      const dueDateMatch = !selectedDueDate || 
-                           toUTCStartOfDay(task.date).split('T')[0] === toUTCStartOfDay(selectedDueDate).split('T')[0];
+      const dueDateMatch = !selectedDueDate || toUTCStartOfDay(task.date).split('T')[0] === toUTCStartOfDay(selectedDueDate).split('T')[0];
       const searchMatch = !searchTerm || task.title.toLowerCase().includes(searchTerm.toLowerCase());
-      return statusMatch && priorityMatch && dueDateMatch && searchMatch;
+      const notCompleted = !task.completed; // Check if task is not completed or not deleted
+      const notdeleted = !task.deleted;
+    return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notdeleted;
     });
   };
 
