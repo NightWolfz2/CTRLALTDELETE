@@ -58,22 +58,34 @@ const completeTask = async (req, res) => {
 
 // create a new task
 const createTask = async (req, res) => {
-  const { title, date, description } = req.body;
+  
+  const { title, date, description, employees } = req.body; // Include 'assignedTo' in destructuring
+  console.log(req.body)
+  console.log("Received task creation request with assignedTo:", employees);
+
   let { priority } = req.body;
 
   // Capitalize the first letter of priority
   priority = capitalizeFirstLetter(priority);
 
   try {
-    const task = await Task.create({ title, date, description, priority });
+    const task = await Task.create({ 
+      title, 
+      date, 
+      description, 
+      priority,
+      employees // Include 'assignedTo' when creating a task
+    });
     res.status(200).json(task);
   } catch (error) {
+    // Error handling remains the same
     const emptyFields = error.message.includes("Path")
       ? error.message.match(/`(\w+)`/g).map(field => field.replace(/`/g, ""))
       : [];
     res.status(400).json({ error: error.message, emptyFields });
   }
 };
+
 
 // delete a task
 const deleteTask = async (req, res) => {
@@ -95,24 +107,30 @@ const deleteTask = async (req, res) => {
 // update a task
 const updateTask = async (req, res) => {
   const { id } = req.params;
-  let { priority } = req.body;
+  // Extract any fields you expect to update
+  const { title, date, description, priority, employees } = req.body;
 
-  // If priority is being updated, capitalize the first letter
-  if (priority) {
-    priority = capitalizeFirstLetter(priority);
-    req.body.priority = priority;
+  try {
+    // Prepare the update object, including only fields that are provided
+    const updateData = {};
+    if (title !== undefined) updateData.title = title;
+    if (date !== undefined) updateData.date = date;
+    if (description !== undefined) updateData.description = description;
+    if (priority !== undefined) updateData.priority = capitalizeFirstLetter(priority); // Capitalize priority
+    if (assignedTo !== undefined) updateData.employees = employees; // Include 'assignedTo' in the update
+
+    const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true });
+    
+    if (!task) {
+      return res.status(404).json({ error: 'No such task' });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  const task = await Task.findOneAndUpdate({ _id: id }, {
-    ...req.body
-  });
-
-  if (!task) {
-    return res.status(400).json({ error: 'No such task' });
-  }
-
-  res.status(200).json(task);
 };
+
 
 module.exports = {
   getTasks,
