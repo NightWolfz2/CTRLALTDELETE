@@ -1,15 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './../css/TaskDetails.css'; // Import your CSS file
 import { useTasksContext } from '../hooks/useTasksContext';
-import { useCustomFetch } from '../hooks/useCustomFetch'; // Ensure this is correctly imported
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-import { useLogout } from '../hooks/useLogout'; // Assuming you have a useLogout hook
+import { useCustomFetch } from '../hooks/useCustomFetch';
+import { useNavigate } from 'react-router-dom';
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskDetails = ({ task }) => {
   const { dispatch } = useTasksContext();
   const customFetch = useCustomFetch();
-  const navigate = useNavigate(); // For handling redirection
-  const { logout } = useLogout();  // For handling logout
+  const navigate = useNavigate();
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+  const [assignedEmployees, setAssignedEmployees] = useState([]);
+
+  useEffect(() => {
+    console.log("Assigned employee IDs in task:", task.employees); // Log to check the IDs
+  
+    const fetchAssignedEmployees = async () => {
+      if (task.employees?.length) {
+        const employeeNames = await Promise.all(task.employees.map(async (id) => {
+          try {
+            const response = await fetch(`http://localhost:4000/api/user/${id}`, {
+              headers: {
+                'Authorization': `Bearer ${user.token}`
+              }
+            });
+            if (!response.ok) throw new Error('Could not fetch employee details');
+            const data = await response.json();
+            return `${data.fname} ${data.lname}`;
+          } catch (error) {
+            console.error(error);
+            return 'Unknown Employee'; // Placeholder for any IDs that don't fetch properly
+          }
+        }));
+        console.log("Fetched assigned employees:", employeeNames); // Log to check the names
+        setAssignedEmployees(employeeNames);
+      }
+    };
+  
+    fetchAssignedEmployees();
+  }, [task.employees, user.token]);
+  
 
   const deleteClick = async () => {
     try {
@@ -63,7 +95,7 @@ const TaskDetails = ({ task }) => {
           <p className="task-desc-text">{task.description}</p> {/* This is the updated part */}
         </div>
         <p className="priority"><strong>Priority: </strong>{task.priority}</p>
-        <p><strong>Assigned: </strong></p>
+        <p><strong>Assigned To: </strong>{assignedEmployees.join(', ') || 'No one assigned'}</p>
         <button type="button" className="material-symbols-outlined" onClick={deleteClick}><span>delete</span></button>
       </div>
     </div>

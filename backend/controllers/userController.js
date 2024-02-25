@@ -93,6 +93,37 @@ const updateUserRole = async (req, res) => {
     }
 };
 
+const getUserById = async (req, res) => {
+    const { id } = req.params; // Make sure to use 'id' to match the route parameter
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send('No such user');
+    }
+
+    try {
+        const user = await User.findById(id).select('fname lname email role');
+        if (!user) {
+            return res.status(404).send('No such user');
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const getUserDetails = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.json({ fname: user.fname, lname: user.lname, email: user.email, role: user.role });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+
 // Consolidated module.exports
 module.exports = { signupUser, loginUser, getfName, getlName, getEmployees, updateUserRole };
 const verifyEmail = async(req, res) => {
@@ -122,4 +153,16 @@ const verifyEmail = async(req, res) => {
     return user
 }
 
-module.exports = { signupUser, loginUser,verifyEmail}
+// Consolidated module.exports
+module.exports = {
+    signupUser,
+    loginUser,
+    getfName,
+    getlName,
+    getEmployees,
+    getUserById,
+    updateUserRole,
+    verifyEmail,
+    getUserDetails,
+};
+
