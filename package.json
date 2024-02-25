@@ -9,7 +9,7 @@
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "cd frontend && npm start",
     "start-backend": "cd backend && npm run dev",
-    "install-backend": "cd backend && npm install && npm install express && npm install nodemailer && npm install dotenv",
+    "install-backend": "cd backend && npm install && npm install express && npm install nodemailer && npm install dotenv && npm install cors",
     "install-frontend": "cd frontend && npm install && npm install react-icons --save"
   },
   "devDependencies": {

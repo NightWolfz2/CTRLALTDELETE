@@ -1,16 +1,22 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-//import DatePicker from "react-datepicker";
+//import 'react-datepicker/dist/react-datepicker.css'; 
+import './../css/Calendar.css';
 import { useCustomFetch } from '../hooks/useCustomFetch'; 
 import { useNavigate } from 'react-router-dom'; 
 import { useLogout } from '../hooks/useLogout'; 
+import TaskDetails2 from '../components/TaskDetails';// Confirm the path is correct
 
 const localizer = momentLocalizer(moment);
 
 const CalendarPage = () => { 
   const [tasks, setTasks] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); 
   const customFetch = useCustomFetch(); 
   const navigate = useNavigate(); 
   const { logout } = useLogout(); 
@@ -18,12 +24,13 @@ const CalendarPage = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        // Use customFetch to automatically handle authorization header and error handling
+        // Fetch tasks from database API
         const data = await customFetch('/api/tasks');
-
+        
         const now = new Date();
+
         const filteredTasks = data
-          .filter(task => new Date(task.date) >= now)
+          //.filter(task => new Date(task.date) >= now)
           .map(task => ({
             ...task,
             start: moment(task.date).startOf('day').toDate(),
@@ -40,15 +47,37 @@ const CalendarPage = () => {
         }
       }
     };
+      fetchTasks();
+    }, []);
 
-    fetchTasks();
-  }, []); 
+  const handleEventClick = event => {
+    setShowPopup(true);
+    setSelectedTask(event);
+  };
 
-  const eventStyleGetter = (event, start, end, isSelected) => {
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  const handleEditTask = () => {
+    setIsEditing(true); // Set editing mode to true
+  };
+
+  const handleSubmitTask = () => {
+    setIsEditing(false)
+  };
+  
+      const handleCloseDetails = () => {
+        setSelectedTask(null); // Set selectedTask to null to close the TaskDetails window
+    };
+
+
+
+  const eventStyleGetter = (event, isSelected) => {
     let backgroundColor = '';
     switch (event.priority) {
       case 'High':
-        backgroundColor = '#ffad99';
+        backgroundColor = '#ffad99';  
         break;
       case 'Medium':
         backgroundColor = '#f3f899';
@@ -59,21 +88,25 @@ const CalendarPage = () => {
       default:
         backgroundColor = '#3174ad'; // Default color if priority is not defined
     }
+
+    let opacity ='';
+    // Check if the event is marked as "Past Due"
+    if (event.status === 'Past Due') {
+      opacity = 0.5;
+    }
   
     let className = '';
     if (isSelected) {
-      className = 'rbc-selected'; // Add the 'rbc-selected' class if the event is selected
+      className = 'rbc-event-content'; // Add the 'rbc-selected' class if the event is selected
     }
 
     return {
       className: className,
       style: {
         backgroundColor: backgroundColor,
+        opacity: opacity,
         borderRadius: '5px',
-        opacity: 0.8,
         color: 'black',
-        border: '0px',
-        display: 'block',
         textAlign: 'center'
       }
     };
@@ -81,23 +114,38 @@ const CalendarPage = () => {
   
 
   return (
-    <div className="calendar">
-      <div className="page-title">
-        <h2>Calendar</h2>
+    <div className="calendar-page">
+      <div className="my-rbc-container">
+        <Calendar 
+          localizer={localizer} 
+          events={tasks} 
+          startAccessor="start" // Use 'start' as the accessor for the start date
+          endAccessor="end" // Use 'end' as the accessor for the end date
+          eventPropGetter={eventStyleGetter} // Apply custom styles to events
+          onSelectEvent={handleEventClick} // Handle event click
+        />
       </div>
-      <Calendar 
-        localizer={localizer} 
-        events={tasks} // 
-        startAccessor="start" // Use 'start' as the accessor for the start date
-        endAccessor="end" // Use 'end' as the accessor for the end date
-        style={{  
-          fontSize: "inherit",
-          height: 800, 
-          width: 1600, 
-          margin: "50px"
-        }} 
-        eventPropGetter={eventStyleGetter} // Apply custom styles to events
-      />
+      <div className="side-container">
+        <div className="side-component">
+          <h3>Something goes here</h3>
+        </div>
+        {showPopup && (
+          <div className="task-info-container">
+
+            <div className="task-info">
+              <h3>Task Information</h3>
+				{selectedTask && (
+					<TaskDetails2
+						task={selectedTask}
+						onClose={handleCloseDetails}
+						
+					/>
+				)}
+          
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

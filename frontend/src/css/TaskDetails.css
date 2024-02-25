@@ -1,13 +1,13 @@
 .task-details {
-  background: #fff;
+  background: #DCDCDC;
   border: 1px solid rgb(7, 7, 7);
   border-radius: 4px;
   margin: 10px auto;
   padding: 15px;
   min-width: 15%;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-  display: flex; /* Ensure that the container is a flexbox */
-  flex-direction: column; /* Stack children vertically */
+  width: 280px; /* Fixed width */
+  height: 350px; /* Fixed height */
 }
 
 .task-details .task-header {

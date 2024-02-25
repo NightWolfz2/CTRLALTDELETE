@@ -103,6 +103,38 @@ const Overview = () => {
         return 'Unknown';
     }
   };  
+  const [completedStates, setCompletedStates] = useState(new Map());
+  const filterTasks = () => {
+    return tasks.filter(task => {
+      const priorityMatch = priorityLevel === 'All' || task.priority.toLowerCase() === priorityLevel.toLowerCase();
+      const statusMatch = status === 'All' || getTaskStatus(task) === status;
+      const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
+      const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
+      const isCompleted = task.completed; // Only include completed tasks
+      return priorityMatch && statusMatch && dueDateMatch && searchMatch && isCompleted;
+    });
+  };
+
+  const handleButtonClick = async (taskId) => {
+    try {
+      // Fetch the data asynchronously
+      const response = await customFetch(`/api/tasks/complete-task/${taskId}`, 'PATCH');
+      const json = await response.json();
+  
+      // Dispatch the action with the updated task data
+      dispatch({ type: 'UPDATE_TASK', payload: json });
+  
+      // Update the completed states
+      setCompletedStates((prevStates) => {
+        const newStates = new Map(prevStates);
+        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
+        return newStates;
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors here
+    }
+  };
 
   return (
     <div className='History'>
@@ -158,24 +190,14 @@ const Overview = () => {
       </div>
 	
 		<div className="additional-boxes">
-		  {tasks && tasks.slice(0, 200).map((task, index) => (
+		  {filterTasks().map((task, index) => (
 			<div className="task-box" key={task._id}>
-
 			<div className="box2">
-				
-
-        </div>
-			
+        </div>		
 			<div className="box1">
-				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
-				
-				
-			</div>
-			
-			  <div className="box1">
-			  
-				
-				
+				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>						
+			</div>		
+			  <div className="box1">			  							
 				<div className="little-box1">
 					Status - {getTaskStatus(task)}
 				</div>
@@ -187,12 +209,19 @@ const Overview = () => {
           Priority - {task.priority || 'None'}
         </div>
 
-
 				<div className="little-box1">
 					Due Date {formatDate(task.date)}
 				
 				</div>
 			  </div>
+        <button
+                className={`box2`}
+                onClick={() => handleButtonClick(task._id)}
+				>
+                <div className={`little-box2 ${completedStates.get(task._id) ? 'completed' : ''}`}>
+                  <b>{completedStates.get(task._id) ? 'Completed' : 'Complete'}</b>
+                </div>
+              </button>
 			  
 			  <div className="box">
 				<div className="little-box">
