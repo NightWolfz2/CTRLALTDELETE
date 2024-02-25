@@ -2,27 +2,27 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 const requireAuth = async (req, res, next) => {
-    // Authentication verification
-    const {authorization} = req.headers;
+    const { authorization } = req.headers;
 
     if (!authorization) {
-        return res.status(401).json({error: 'Authorization token required'});
+        return res.status(401).json({ error: 'Authorization token required' });
     }
-    // Get the token from the header
-    const token = authorization.split(' ')[1];
+
+    const token = authorization.split(' ')[1]; // Expecting "Bearer <token>"
 
     try {
-        const {_id} = jwt.verify(token, process.env.SECRET);
-        req.user = await User.findOne({_id}).select('_id');
+        const { _id } = jwt.verify(token, process.env.SECRET);
+        const user = await User.findOne({ _id }).select('_id role');
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        req.user = { id: user._id, role: user.role }; // Attach user info to the request
         next();
     } catch (error) {
-        // Specifically check for token expiration error
-        if (error.name === 'TokenExpiredError') {
-            res.status(401).json({error: 'Token expired'});
-        } else {
-            console.log(error);
-            res.status(401).json({error: 'Request not authorized'});
-        }
+        console.error(error); // Consider a more robust logging solution for production
+        res.status(401).json({ error: 'Request not authorized' });
     }
 };
 
