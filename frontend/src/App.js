@@ -21,10 +21,10 @@ function App() {
   const {user} = useAuthContext()
   
   return (
-    <div className="App">
+    <div className='App'>
       <BrowserRouter>
-      <Navbar />
-        <div className="pages">
+        <Navbar />
+        <div className='pages'>
           <Routes>
             <Route 
               path="/"
@@ -74,10 +74,10 @@ function App() {
               path="/verify-email"
               element = {user && !user.verified? < Verify />: <Navigate to="/" />}
             />
-          </Routes>
-        </div>
-        <Bottombar />
-      </BrowserRouter>
+            </Routes>
+          </div>
+          <Bottombar/>
+        </BrowserRouter>
     </div>
   );
 }

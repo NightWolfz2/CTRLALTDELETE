@@ -1,0 +1,219 @@
+.calendar-page {
+  display: flex;
+  background: #b9b9b9;
+  height: 100vh;
+}
+
+.my-rbc-container {
+  display: flex;
+  justify-content: center; /* Center the item horizontally */
+  align-items: center; /* Center the item vertically */
+
+  border-radius: 5px;
+  background: #353535;
+  position: relative;
+  margin: 1.5%;
+  margin-right: 0.75%;
+  padding: 1.5% 1%;
+  width: 70%;
+  height: 85%; /* Make the container match the height of its parent */
+}
+
+.side-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the item vertically */
+  
+  border-radius: 5px;
+  background: #b9b9b9;
+
+  position: relative;
+
+  margin: 1.5%;
+  margin-left: 0.75%;
+  width: 25%;
+  height: 91%; 
+
+}
+
+.side-component {
+  position: relative;
+  display: flex;
+  margin-bottom: 3%;
+
+  Color: #fff;
+  background: #353535;
+  border-radius: 5px;
+
+  width: 100%;
+  height: 30%;
+
+}
+
+.task-info-container {
+  position: relative;
+  margin-top: 3%;
+  height: 70%;
+  width: 100%;
+  border-radius: 5px;
+  background: #353535;
+}
+
+
+.rbc-calendar {
+  margin: auto;
+  width: 95%;
+  height: 95%;
+}
+
+/*Tool Bar*/
+.rbc-toolbar-label {
+  font-size: x-large;
+  font-weight: 500;
+  color: #fff;
+}
+
+.rbc-toolbar button {
+  background: #353535;
+  color: #fff !important;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #555 !important;
+}
+
+/*Month View*/
+.rbc-month-view {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.rbc-month-header {
+  height: 28px;
+  color: #fff;
+}
+
+.rbc-day-bg {
+  background: hsl(0, 0%, 80%);
+}
+
+.rbc-off-range-bg {
+  background: hsl(0, 0%, 60%);
+}
+
+/*Week View*/
+.rbc-time-view .rbc-row {
+  min-height: 28px;
+}
+
+.rbc-time-view .rbc-row-bg .rbc-day-bg {
+  background: #353535;
+}
+
+.rbc-header {
+  background: #353535;
+  font: inherit;
+  color: #fff;
+}
+
+.rbc-day-slot.rbc-time-column{
+  background: hsl(0, 0%, 60%);
+}
+
+.rbc-time-gutter {
+  color: #fff;
+}
+
+/*Agenda View*/
+.rbc-agenda-view .rbc-agenda-date-cell, .rbc-agenda-time-cell {
+  background: #353535;
+  color: #fff !important;
+}
+
+/*Button*/
+.rbc-active {
+  color: #fff !important;
+  background-color: #9B9B9B !important;
+}
+
+.rbc-month-view .rbc-button-link {
+  color: black;
+  font-weight: 500;
+}
+
+.rbc-events-container {
+  overflow: auto;
+}
+
+.rbc-current-time-indicator {
+  height: 3px;
+  color: rgb(0, 253, 0);
+}
+
+/*Pop-up*/
+.task-info {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  padding: 5% 8%;
+}
+
+.task-info h3{
+  text-align: center;
+  margin: 0;
+  padding-bottom: 5%;
+}
+.task-info label {
+  font: inherit;
+  font-size: medium;
+}
+.task-info input {
+  margin-bottom: 2%;
+  padding: 0 2%;
+  height: 2.5vh;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: small;
+
+}
+.task-info textarea {
+  padding: 0 2%;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  
+  box-sizing: border-box;
+  height: 15vh;
+
+  font-size: small;
+}
+.task-info input.read-only {
+  background: hsl(0, 0%, 80%); /* Change to the desired darker color */
+  border: 1px hsl(0, 0%, 80%);
+  color: black;
+}
+
+.task-info textarea.read-only {
+  background: hsl(0, 0%, 80%); /* Change to the desired darker color */
+  border: 1px hsl(0, 0%, 80%);
+  color: black;
+}
+.task-info button {
+  font-family: "Poppins";
+  background: #353535;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 2px 15px;
+  border-radius: 2px;
+  font-size: small;
+  cursor: pointer;
+  margin: 1.5%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  transition: background-color 0.3s;
+}
+.task-info button:hover {
+  background-color: #555;
+}
