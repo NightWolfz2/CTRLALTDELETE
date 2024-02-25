@@ -37,7 +37,7 @@ const CalendarPage = () => {
         // Fetch tasks from database API
         const data = await customFetch('/api/tasks');
         
-        //const now = new Date();
+        const now = new Date();
 
         const filteredTasks = data
           //.filter(task => new Date(task.date) >= now)
@@ -153,7 +153,7 @@ const CalendarPage = () => {
                 readOnly={!isEditing}
                 className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
                 type="datetime-local" 
-                value={formatDateTime(selectedTask.date)}
+                value={selectedTask.date}
                 >
               </input>
 
