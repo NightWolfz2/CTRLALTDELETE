@@ -21,23 +21,13 @@ const CalendarPage = () => {
   const navigate = useNavigate(); 
   const { logout } = useLogout(); 
 
-  function formatDateTime(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-  
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }
-
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         // Fetch tasks from database API
         const data = await customFetch('/api/tasks');
         
-        //const now = new Date();
+        const now = new Date();
 
         const filteredTasks = data
           //.filter(task => new Date(task.date) >= now)
@@ -153,7 +143,7 @@ const CalendarPage = () => {
                 readOnly={!isEditing}
                 className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
                 type="datetime-local" 
-                value={formatDateTime(selectedTask.date)}
+                value={selectedTask.date}
                 >
               </input>
 
