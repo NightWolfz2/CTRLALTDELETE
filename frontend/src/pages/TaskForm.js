@@ -1,22 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTasksContext } from '../hooks/useTasksContext';
-import './../css/TaskForm.css'; // Import your CSS file
-import { useCustomFetch } from '../hooks/useCustomFetch'; 
-import { useNavigate } from 'react-router-dom'; 
-import { useLogout } from '../hooks/useLogout'; 
+import './../css/TaskForm.css';
+import { useCustomFetch } from '../hooks/useCustomFetch';
+import { useNavigate } from 'react-router-dom';
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const TaskForm = () => {
-    const { dispatch } = useTasksContext();
-    const customFetch = useCustomFetch(); 
-    const navigate = useNavigate(); 
-    const { logout } = useLogout(); 
-    const [title, setTitle] = useState('');
-    const [date, setDate] = useState('');
-    const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('');
-    const [employees, setEmployees] = useState([{}]);
-    const [error, setError] = useState(null);
-    const [emptyFields, setEmptyFields] = useState([]);
+  const { dispatch } = useTasksContext();
+  const customFetch = useCustomFetch();
+  const navigate = useNavigate();
+  const { logout } = useLogout();
+  const { user } = useAuthContext(); // Ensure user is destructured here
+
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('');
+  const [employees, setEmployees] = useState([]);
+  const [currentEmployee, setCurrentEmployee] = useState('');
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [error, setError] = useState(null);
+  const [emptyFields, setEmptyFields] = useState([]);
+  
+    console.log("Creating task with assigned employees:", selectedEmployees);
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            if (!user) return;
+            
+            try {
+                // Update the fetch URL to include the correct port
+                const response = await fetch('http://localhost:4000/api/user/employees', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${user.token}`, // Assuming you have user tokens for authorization
+                    },
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch employees');
+                }
+                
+                const employees = await response.json();
+                // Do something with the fetched employees data, like setting state
+                setEmployees(employees);
+            } catch (error) {
+                console.error(error);
+                setError(error.message || 'Failed to fetch employees');
+            }
+        };
+    
+        fetchEmployees();
+    }, [user]); // Dependency array, if you're using the 'user' state to store user information
+    
+    useEffect(() => {
+        console.log("Selected Employees updated:", selectedEmployees);
+    }, [selectedEmployees]); // This useEffect will run every time selectedEmployees changes
 
     // Autofill function
     const autofill = () => {
@@ -37,27 +76,26 @@ const TaskForm = () => {
     // Handler for the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Convert the date to UTC before sending
-        const utcDate = convertToUTC(date);
-
-        // Construct the task object with the UTC date
+        console.log("Submitting with selectedEmployees:", selectedEmployees); // Debugging line
         const task = {
             title,
-            date: utcDate,
+            date: convertToUTC(date),
             description,
             priority,
-            employees
+            employees: selectedEmployees,
         };
-
+        console.log("Task object being sent to the server:", task);
         try {
             const json = await customFetch('/api/tasks', 'POST', task);
-            dispatch({ type: 'CREATE_TASK', payload: json }); // Ensure the correct action type
-            // Reset form fields and state
+            dispatch({ type: 'CREATE_TASK', payload: json });
+            
+            // Reset form fields and state after successful task creation
             setTitle('');
             setDate('');
             setDescription('');
-            setEmployees([{}]);
+            setPriority('');
+            setEmployees([]); // Assuming you want to clear the fetched employees list or reset selections
+            setSelectedEmployees([]);
             setError(null);
             setEmptyFields([]);
         } catch (error) {
@@ -71,6 +109,7 @@ const TaskForm = () => {
             }
         }
     };
+    
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -87,12 +126,46 @@ const TaskForm = () => {
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     };
+    
+  // Handler to add selected employee to the task
+// Handler to add selected employee to the task
+// Handler to add selected employee to the task
+const handleAddEmployee = () => {
+    console.log("Current Employee before adding:", currentEmployee);
+  
+    // Check if the currentEmployee is already in the selectedEmployees array
+    if (currentEmployee && !selectedEmployees.includes(currentEmployee)) {
+      // Update the state in a functional way to ensure the latest state is used
+      setSelectedEmployees(prevSelectedEmployees => {
+        // Create a new array for the updated state to avoid direct mutations
+        const updatedSelectedEmployees = [...prevSelectedEmployees, currentEmployee];
+        console.log("Selected Employees after adding:", updatedSelectedEmployees);
+        return updatedSelectedEmployees;
+      });
+      // Clear the current selection after adding the employee to the list
+      setCurrentEmployee('');
+    } else {
+      console.log("Employee already added or no employee selected.");
+    }
+  };
+  
+
+// Handler for currentEmployee state change
+const handleCurrentEmployeeChange = (e) => {
+    setCurrentEmployee(e.target.value);
+};
+
+// Handler to remove selected employee from the task
+const handleRemoveEmployee = (employeeId) => {
+    setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
+};
+
 
     return (
         <div>
             <form className="create" onSubmit={handleSubmit}>
                 <h3>Create Task</h3>
-
+    
                 <label>Task Title:</label>
                 <input
                     type="text"
@@ -100,7 +173,7 @@ const TaskForm = () => {
                     value={title}
                     className={emptyFields.includes('title') ? 'error' : ''}
                 />
-
+    
                 <label>Due Date:</label>
                 <input 
                     type="datetime-local"
@@ -108,7 +181,7 @@ const TaskForm = () => {
                     value={date}
                     className={emptyFields.includes('date') ? 'error' : ''}
                 />
-
+    
                 <label>Priority:</label>
                 <select
                     onChange={handlePriorityChange}
@@ -119,40 +192,38 @@ const TaskForm = () => {
                     <option value="medium">Medium</option>
                     <option value="low">Low</option>
                 </select>
-
-                {employees.map((employee, index) => (
-                    <div key={index}>
-                        <label>Assigned Employee #{index + 1}:</label>
-                        <select
-                            value={employee.name}
-                            onChange={(e) => {
-                                const newEmployees = [...employees];
-                                newEmployees[index] = { name: e.target.value };
-                                setEmployees(newEmployees);
-                            }}
-                        >
-                            <option value="">Select Employee</option>
-                            {/* Populate this dropdown from backend data in the future */}
-                        </select>
-                    </div>
-                ))}
-
-                <button type="button" className="add-employee-btn" onClick={() => setEmployees([...employees, {}])}>
-                    <span className="symbol">&#43;</span> Add Employee
-                </button>
-                {employees.length > 1 && (
-                    <button type="button" className="remove-employee-btn" onClick={() => setEmployees(employees.slice(0, -1))}>
-                        <span className="symbol">&#8722;</span> Remove Employee
-                    </button>
-                )}
-
+    
+                <label>Assign Employee:</label>
+                <select value={currentEmployee} onChange={handleCurrentEmployeeChange}>
+                    <option value="">Select Employee</option>
+                    {employees.map(employee => (
+                        <option key={employee._id} value={employee._id}>
+                            {employee.fname} {employee.lname}
+                        </option>
+                    ))}
+                </select>
+                <button type="button" onClick={handleAddEmployee}>Add Employee</button>
+    
+                {/* List of selected employees with a remove button */}
+                {selectedEmployees.map(employeeId => {
+                    const employee = employees.find(e => e._id === employeeId);
+                    return (
+                        <div key={employeeId} className="selectedEmployee">
+                            <span>{employee ? `${employee.fname} ${employee.lname}` : 'Loading...'}</span>
+                            <button type="button" onClick={() => handleRemoveEmployee(employeeId)}>
+                                Remove
+                            </button>
+                        </div>
+                    );
+                })}
+    
                 <label>Description:</label>
                 <textarea
                     rows="10"
                     onChange={handleDescriptionChange}
                     value={description}
                 ></textarea>
-
+    
                 <button type="submit">Submit</button>
                 {error && <div className="error">{error}</div>}
                 {/*Autofill button*/}   
@@ -163,6 +234,7 @@ const TaskForm = () => {
             </form>
         </div>
     );
+    
 };
 
 export default TaskForm;

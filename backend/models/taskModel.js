@@ -32,16 +32,12 @@ const taskSchema = new Schema({
     enum: ['In Progress', 'Past Due'],
     default: function() {
       const now = new Date();
-      // Convert 'now' to UTC
-      const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
-      const dueDate = new Date(this.date); // 'this.date' is already in UTC
-  
-      return dueDate < nowUTC ? 'Past Due' : 'In Progress';
+      return now > this.date ? 'Past Due' : 'In Progress';
     }
   },  
   employees: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Employee',
+    ref: 'User',
     required: false
   }]
 }, { timestamps: true });
