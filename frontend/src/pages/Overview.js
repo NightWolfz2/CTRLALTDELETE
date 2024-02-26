@@ -24,6 +24,10 @@ const Overview = () => {
   const customFetch = useCustomFetch(); 
   const navigate = useNavigate(); 
   const { logout } = useLogout(); 
+  const [editHistoryMessage, setEditHistoryMessage] = useState('');
+  const [taskChanged, setTaskChanged] = useState(false);
+  const [showEditHistory, setShowEditHistory] = useState(false); 
+
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -70,11 +74,40 @@ const Overview = () => {
     setDueDate("");
     setSearch("");
   };
-
+ 
   const handleEditTask = (taskId) => {
-    navigate(`/editTask/${taskId}`);
+
+    const editedTaskIndex = tasks.findIndex(task => task._id === taskId);
+  
+    if (editedTaskIndex !== -1) {
+      const editedTask = tasks[editedTaskIndex];
+      const editTimestamp = new Date().toLocaleString();
+      const editMessage = `The Task edited at ${editTimestamp}`;
+  
+      setEditHistoryMessage(editMessage);
+      setTaskChanged(true);
+  
+      const editedHistory = `${editedTask.history ? editedTask.history + '\n' : ''}${editMessage}`;
+      const updatedTasks = [...tasks];
+
+      updatedTasks[editedTaskIndex] = { ...editedTask, history: editedHistory };
+      dispatch({ type: 'SET_TASKS', payload: updatedTasks });
+      localStorage.setItem('editHistoryMessage', editMessage);
+  
+      setTimeout(() => {
+        navigate(`/editTask/${taskId}`); }, 100); 
+    } else {
+      console.error('Task not found');
+    }
   };
 
+  useEffect(() => {
+    const storedEditHistoryMessage = localStorage.getItem('editHistoryMessage');
+    if (storedEditHistoryMessage) {
+      setEditHistoryMessage(storedEditHistoryMessage);
+      setTaskChanged(true);
+    }
+  }, []);
   const getTaskStatus = (task) => {
 	  const taskDueDate = new Date(task.date);
 	  
@@ -219,7 +252,12 @@ const Overview = () => {
               </div>
               <div className="little-box">
                 <p><b>Edit History:</b></p>
+                {showEditHistory || task.history ? ( 
+                <div>
                 <p>{task.history}</p>
+                  {taskChanged && <p>Task was changed</p>}
+                </div> ) : ( 
+                <p>No edit history</p>  )}
               </div>
               <div className="edit-button">
                 <button

@@ -17,18 +17,28 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
+    },
+    role: {
+        type: String,
+        enum: ['employee', 'admin'],
+        required: true,
+        default: 'employee', // Default role
     },
     verified: {
         type: Boolean,
         default: false,
         required: true
-    }
-})
+    },
+});
+
+
+  
+
 // static user sign up method
 userSchema.statics.signup = async function(fname,lname,email, password) {
     // validation
@@ -41,7 +51,7 @@ userSchema.statics.signup = async function(fname,lname,email, password) {
     }
     // check if strong password
     if(!validator.isStrongPassword(password)) {
-        throw Error('Password not strong enough')
+        throw Error('Password does not meet security requirements. Please ensure your password is at least 8 characters long, includes a mix of upper and lower case letters, numbers, and special characters (e.g., !, @, #). Avoid common words and sequences to enhance security.')
     }
     const exists = await this.findOne({email})
     // check if email exists
