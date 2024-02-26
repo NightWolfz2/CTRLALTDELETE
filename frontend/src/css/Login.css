@@ -82,4 +82,25 @@ body {
   .login-container .btn-signup:first-child {
     margin-top: 0;
   }
+
+  
+}
+
+/* Forgot Password link styling */
+.forgot-password {
+  margin-top: 5px; /* Reduced space above the forgot password link */
+  margin-bottom: 20px; /* Adjust as needed to space before the login button */
+}
+
+.forgot-password a {
+  color: #ffffff; /* Sets the link color to white */
+  text-decoration: underline; /* Underlines the link for visibility */
+  font-weight: normal; /* Makes the font less bold */
+  font-size: 14px; /* Makes the font size smaller */
+  transition: color 0.3s ease; /* Adds a smooth color transition */
+}
+
+.forgot-password a:hover {
+  color: #dbd5d5; /* Changes to a lighter color on hover */
+  text-decoration: none; /* Removes underline on hover for a clean look */
 }

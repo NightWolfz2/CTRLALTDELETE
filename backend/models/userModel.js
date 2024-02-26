@@ -101,5 +101,35 @@ userSchema.statics.login = async function(email, password) {
     return user
 }
 
-module.exports = mongoose.model('User', userSchema)
+// Add a static method to the user schema for updating password
+userSchema.statics.updatePassword = async function(email, currentPassword, newPassword) {
+    if(!email || !currentPassword || !newPassword) {
+        throw Error('All fields must be filled')
+    }
 
+    const user = await this.findOne({email})
+    // check if email exists
+    if (!user) {
+        throw Error('User not found')
+    }
+    // check if current password matches
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password)
+    if(!passwordMatch) {
+        throw Error('Current password is incorrect')
+    }
+    // check if new password is strong
+    if(!validator.isStrongPassword(newPassword)) {
+        throw Error('New password is not strong enough')
+    }
+    // hashing new password
+    const extraMeasure = await bcrypt.genSalt(10)
+    const newPasswordHash = await bcrypt.hash(newPassword, extraMeasure)
+
+    // Update user's password
+    await this.updateOne({email}, {password: newPasswordHash})
+
+    return {message: 'Password updated successfully'}
+}
+
+
+module.exports = mongoose.model('User', userSchema)
