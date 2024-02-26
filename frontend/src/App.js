@@ -15,6 +15,8 @@ import LoggedOut from './pages/LogOut'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Verify from './pages/Verification'
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 
 function App() {
@@ -74,10 +76,18 @@ function App() {
               path="/verify-email"
               element = {user && !user.verified? < Verify />: <Navigate to="/" />}
             />
-            </Routes>
-          </div>
-          <Bottombar/>
-        </BrowserRouter>
+            <Route 
+            path="/forgot-password"
+            element={user ? <Navigate to="/" /> : <ForgotPassword />}
+            />
+            <Route 
+            path="/reset-password/:token" // Include the :token parameter in the path
+            element={user ? <Navigate to="/" /> : <ResetPassword />}
+            />
+          </Routes>
+        </div>
+        <Bottombar />
+      </BrowserRouter>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLogin } from '../hooks/useLogin';
-import './../css/Login.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Ensure Link is imported
+import './../css/Login.css'; // Import your CSS file
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -15,20 +15,23 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="create">
                 <h3>Login</h3>
                 <label>Email: </label>
-                <input 
+                <input
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                 />
                 <label>Password: </label>
-                <input 
+                <input
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                 />
+                <div className="forgot-password">
+                    <a href="/forgot-password">Forgot Password?</a>
+                </div>
                 <div className="button-container">
                     <button type="submit" className="auth-button" disabled={isLoading}>Login</button>
                     <Link to="/signup" className="auth-button btn-signup">Sign Up</Link>
