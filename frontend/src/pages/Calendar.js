@@ -38,6 +38,7 @@ const CalendarPage = () => {
           }));
 
         setTasks(filteredTasks);
+
       } catch (error) {
         console.error('Error fetching tasks:', error);
         // Handle unauthorized error by logging out and redirecting to login
@@ -131,23 +132,67 @@ const CalendarPage = () => {
         </div>
         {showPopup && (
           <div className="task-info-container">
-
             <div className="task-info">
               <h3>Task Information</h3>
-				{selectedTask && (
-					<TaskDetails2
-						task={selectedTask}
-						onClose={handleCloseDetails}
-						
-					/>
-				)}
-          
+              <label>Title: </label>
+              <input 
+                readOnly={!isEditing}
+                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
+                type="text" value={selectedTask.title}
+                >
+              </input>
+
+              <label>Due Date: </label> 
+              <input 
+                readOnly={!isEditing}
+                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
+                type="datetime-local" 
+                value={selectedTask.date}
+                >
+              </input>
+
+              <label>Priority: </label>
+              <input 
+                readOnly={!isEditing}
+                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
+                type="text" 
+                value={selectedTask.priority}
+                >
+              </input>
+
+              <label>Assignee: </label>
+              <input 
+                readOnly={!isEditing}
+                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
+                type="text" 
+                value="Assignee"
+                >
+              </input>
+
+              <label style={{paddingTop:"5%"}}>Description: </label>
+              <textarea 
+                readOnly={!isEditing}
+                className={isEditing ? '' : 'read-only'} // Apply 'read-only' class when not editing
+                value={selectedTask.description}
+                >
+              </textarea>
+
+                {!isEditing ? (
+                  <React.Fragment>
+                    <button type="button" onClick={handleEditTask}>Edit</button>
+                    <button class="close-btn" onClick={handleClosePopup}>Close</button>
+                  </React.Fragment>
+                  ) : (
+                    <button type="button" onClick={handleSubmitTask}>Submit</button>
+                )}
+                {isEditing && (
+                  <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+                )}
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  )}
 
 export default CalendarPage
