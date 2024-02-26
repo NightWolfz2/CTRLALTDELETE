@@ -60,6 +60,9 @@
 .task-details .task-info p.description {
   margin-bottom: 10px; 
 }
+.task-details .task-info .description {
+  color: #555;
+}
 
 
 .task-details .task-info p.priority {

@@ -117,7 +117,7 @@ const updateTask = async (req, res) => {
     if (date !== undefined) updateData.date = date;
     if (description !== undefined) updateData.description = description;
     if (priority !== undefined) updateData.priority = capitalizeFirstLetter(priority); // Capitalize priority
-    if (assignedTo !== undefined) updateData.employees = employees; // Include 'assignedTo' in the update
+    if (employees !== undefined) updateData.employees = employees; // Include 'assignedTo' in the update
 
     const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true });
     
