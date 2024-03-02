@@ -58,37 +58,21 @@ exports.generatePasswordTemplate = (code,fname) => {
   `
 }
 
-exports.mailTransport = () => nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
-
-exports.sendForgotPasswordEmail = async (email, user, resetToken) => {
-    const transporter = exports.mailTransport();
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+exports.sendForgotPasswordEmail = (url) => {
   
-    const emailTemplate = `
-    <p>Hi ${user.fname},</p>
+    return emailTemplate = `
+    <p>Hi,</p>
     <p>You requested a password reset. Please click on the link below to reset your password:</p>
-    <a href="${resetLink}">Reset Password</a>
+    <a href="${url}">Reset Password</a>
     <p>If you did not request a password reset, please ignore this email.</p>
     `;
+
+};
+exports.sendForgotPasswordEmailConfirm = () => {
   
-    try {
-        await transporter.sendMail({
-            from: '"NinjaManager" <no-reply@NinjaManager.com>',
-            to: email,
-            subject: 'Reset Your Password',
-            html: emailTemplate,
-        });
-  
-        console.log(`Forgot password email sent to ${email}`);
-    } catch (error) {
-        console.error(`Failed to send the forgot password email to ${email}:`, error);
-        throw error;
-    }
+  return emailTemplate = `
+  <p>Hi,</p>
+  <p>Your password has been reset.</p>
+  `;
+
 };

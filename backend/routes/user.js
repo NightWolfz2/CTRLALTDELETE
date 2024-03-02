@@ -4,6 +4,7 @@ const { loginUser, signupUser, verifyEmail, updateUserPassword, sendOTP, deleteO
 const requireAuth = require('../middleware/requireAuth'); // Assuming this middleware exists to check for authenticated users
 const { getUserById } = require('../controllers/userController');
 const { getUserDetails } = require('../controllers/userController');
+const { isResetTokenValid } = require('../middleware/user');
 const router = express.Router();
 
 // Route for user login
@@ -31,7 +32,11 @@ router.post('/delete-OTP', deleteOTP)
 
 router.post('/forgot-password', forgotPassword);
 
-router.post('/reset-password', resetPassword);
+router.post('/reset-password/', isResetTokenValid, resetPassword);
+
+router.get('/verify-token', isResetTokenValid, (req,res) => {
+    res.json({success: true});
+});
 
 
 module.exports = router;
