@@ -81,7 +81,7 @@ function App() {
             element={user ? <Navigate to="/" /> : <ForgotPassword />}
             />
             <Route 
-            path="/reset-password/:token" // Include the :token parameter in the path
+            path="/reset-password/" // Include the :token parameter in the path
             element={user ? <Navigate to="/" /> : <ResetPassword />}
             />
           </Routes>

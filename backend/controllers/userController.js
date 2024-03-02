@@ -1,9 +1,10 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const verificationToken = require('../models/verificationToken'); // Adjust the path as necessary to match your file structure
-const { sendForgotPasswordEmail } = require('../utils/mail');
-const crypto = require('crypto');
-const { generateToken, mailTransport, generatePasswordTemplate } = require('../utils/mail')
+const ResetToken = require('../models/resetToken')
+const bcrypt = require('bcrypt')
+const { generateToken, mailTransport, generatePasswordTemplate, sendForgotPasswordEmail, sendForgotPasswordEmailConfirm } = require('../utils/mail');
+const { createRandomBytes } = require('../utils/helper');
 
 const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'});
@@ -214,42 +215,60 @@ const updateUserPassword = async (req, res) => {
     
 
     const resetPassword = async (req, res) => {
-      const { token, newPassword } = req.body;
-      const verificationToken = await VerificationToken.findOne({ token: { $regex: token } });
-      if (!verificationToken || !await verificationToken.compareToken(token)) {
-        return res.status(400).send('Invalid or expired token.');
-      }
+      const {password} = req.body
+      const user = await User.findById(req.user._id)
+      if(!user) return res.status(404).send('user not found');
+
+      const userMatch = await bcrypt.compare(password, user.password)
+
+      if(userMatch) return res.status(404).send('New password must be different');
+
+      if(password.trim().length < 8 || password.trim().length > 20) return res.status(404).send('Must be 8 to 20 char long');
+      const extraMeasure = await bcrypt.genSalt(10)
+      const newPasswordHash = await bcrypt.hash(password, extraMeasure)
+
+      user.password = newPasswordHash;
     
-      const user = await User.findById(verificationToken.owner);
-      if (!user) {
-        return res.status(404).send('User not found.');
-      }
-    
-      user.password = await bcrypt.hash(newPassword, 8); // Hash the new password
       await user.save();
-      await verificationToken.delete();
-    
-      res.send('Password has been reset successfully.');
+      
+
+      await ResetToken.findOneAndDelete({owner: user._id})
+
+      mailTransport().sendMail({
+        from: 'NinjaManagerSecurity@gmail.com',
+        to: user.email,
+        subject: "Password Reset Successfully",
+        html: sendForgotPasswordEmailConfirm(),
+      });
+        res.json({success: true, message: "Password Changed"})
     };
       
     const forgotPassword = async (req, res) => {
       const { email } = req.body;
+      
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).send('No user with that email.');
       }
     
-      const resetToken = crypto.randomBytes(20).toString('hex');
-      await new verificationToken({
-        owner: user._id,
-        token: resetToken,
-      }).save();
-    
-      const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-      await sendForgotPasswordEmail(email, user, resetLink); // Adjusted to include resetLink
-      
-      res.send('Password reset email sent.');
+      const token = await ResetToken.findOne({owner: user._id})
+      if(token) return res.status(404).send('Only after one hour, send another token request')
+
+      const randBytes = await createRandomBytes()
+      const resetToken = ResetToken({owner: user._id, token: randBytes})
+
+      await resetToken.save();
+
+      mailTransport().sendMail({
+        from: 'NinjaManagerSecurity@gmail.com',
+        to: user.email,
+        subject: "Password Reset",
+        html: sendForgotPasswordEmail(`http://localhost:3000/reset-password?token=${randBytes}&id=${user._id}`),
+    });
+      res.json({success: true, message: 'Password Reset link is sent to your email.'})
     };
+
+    
     
 module.exports = {
     signupUser,
