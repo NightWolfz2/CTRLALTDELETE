@@ -5,7 +5,7 @@
     "react-icons": "^5.0.1"
   },
   "scripts": {
-    "install": "npm install --save-dev concurrently && npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm run install-frontend && npm run install-backend",
+    "install": "npm install --save-dev concurrently && npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm install query-string && npm install axios && npm run install-frontend && npm run install-backend",
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "cd frontend && npm start",
     "start-backend": "cd backend && npm run dev",
