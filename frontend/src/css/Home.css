@@ -24,6 +24,7 @@
   padding: 0 50px;
   gap: 10px; /* Reduced gap */
   margin-bottom: 20px;
+  margin-right: 10px; 
 }
 
 .filter-wrapper {
@@ -38,11 +39,27 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 150px; /* Set a fixed width for the filter bars */
+  margin-left: 10px; 
 }
 
 .search-wrapper .filter-input {
   flex-grow: 1; /* Allows the search bar to grow and fill the remaining space */
   width: auto; /* Adjust width as necessary, 'auto' makes it flexible */
+}
+
+.home .clear-button button {
+  background-color: #2087e7;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  height: auto;
+  align-self: center;
+  margin: 0;
+  margin-bottom: 0px;
+  margin-left: 10px;
 }
 
 .tasks {
