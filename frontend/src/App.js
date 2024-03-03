@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
+import React from 'react';
+import useTokenExpirationChecker from './hooks/useTokenExpirationChecker';
 
 // pages & components
 import Home from './pages/Home'
@@ -20,12 +22,19 @@ import ResetPassword from './pages/ResetPassword';
 
 
 function App() {
+
+  const TokenExpirationChecker = () => {
+    useTokenExpirationChecker();
+    return null; 
+  }; 
+
   const {user} = useAuthContext()
   
   return (
     <div className='App'>
       <BrowserRouter>
         <Navbar />
+        <TokenExpirationChecker />
         <div className='pages'>
           <Routes>
             <Route 

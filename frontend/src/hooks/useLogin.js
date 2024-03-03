@@ -1,47 +1,52 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
+import { useNavigate } from 'react-router-dom'; 
 
 export const useLogin = () => {
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(null)
-    const {dispatch} = useAuthContext()
+    const [isLoading, setIsLoading] = useState(false) 
+    const { dispatch } = useAuthContext()
+    const navigate = useNavigate(); 
 
-    const login = async (email, password) => {    //added verfied
+    const login = async (email, password) => {
         setIsLoading(true)
         setError(null)
 
         try {
             const response = await fetch('/api/user/login', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, password}) 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }) 
             })
             const json = await response.json()
 
-            console.log("Login response:", json);  // Debugging line
-           
-
-            if(!response.ok) {
+            if (!response.ok) {
                 setIsLoading(false)
                 setError(json.error)
             } else {
-                // Check if json has necessary user data
-                if (json && json.fname && json.lname) {
-                    // Saves user to local storage
-                    localStorage.setItem('user', JSON.stringify(json))
+                if (json.token && json.expiration) {
+                    // Saves user info and token expiration to local storage
+                    localStorage.setItem('user', JSON.stringify({
+                        ...json,
+                        expiration: json.expiration 
+                    }))
 
                     // Update context
-                    dispatch({type: 'LOGIN', payload: json})
-                } else {
-                    setError("Invalid user data received.");
-                }
+                    dispatch({ type: 'LOGIN', payload: json })
 
-                setIsLoading(false)
+                    setIsLoading(false)
+                    navigate('/'); // Redirect user to home page or dashboard
+                } else {
+                    setIsLoading(false)
+                    setError("Login response is missing token or expiration data.")
+                }
             }
         } catch (err) {
-            setError("An error occurred during login.");
-            setIsLoading(false);
+            console.error("Login error:", err);
+            setError("An error occurred during login.")
+            setIsLoading(false)
         }
     }
+
     return { login, isLoading, error }
 }

@@ -7,22 +7,30 @@ const { generateToken, mailTransport, generatePasswordTemplate, sendForgotPasswo
 const { createRandomBytes } = require('../utils/helper');
 
 const createToken = (_id) => {
-    return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'});
+    return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'}); 
+};
+
+const calculateTokenExpiration = () => {
+    const expiresIn = 72; // 3 days in hrs
+    return new Date(Date.now() + expiresIn * 60 * 60 * 1000).toISOString();
 };
 
 const loginUser = async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);
+        const expiration = calculateTokenExpiration(); // Calculate token's expiration time
+
         res.status(200).json({
-            email, 
-            fname: user.fname, 
-            lname: user.lname, 
-            token
+            email,
+            fname: user.fname,
+            lname: user.lname,
+            token,
+            expiration 
         });
     } catch (error) {
-        res.status(400).json({error: error.message});
+        res.status(400).json({ error: error.message });
     }
 };
 
