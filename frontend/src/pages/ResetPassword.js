@@ -37,13 +37,12 @@ function ResetPassword() {
       if (data.success) {
         setSuccess(true)
         navigate('/reset-password')
-
       }
     } catch (error) {
       setBusy(false);
       if(error?.response?.data) {
         const {data} = error.response;
-        if(!data.sucess) return setInvalidUser(data.error)
+        if(!data.sucess) return setError(error.response.data)
         return console.log(error.response.data)
       }
       console.log(error)
@@ -85,6 +84,7 @@ function ResetPassword() {
         <h1>Password reset successful</h1>
       </div>
     )
+    
   }
 
     
