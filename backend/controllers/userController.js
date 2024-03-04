@@ -76,8 +76,10 @@ const getlName = async(req, res) => {
 };
 
 const getEmployees = async (req, res) => {
+    const roles = ['employee', 'admin', 'owner'];
     try {
-        const employees = await User.find({ role: 'employee' }, 'fname lname email').exec();
+        //const employees = await User.find({ role: 'employee' }, 'fname lname email').exec();
+        const employees = await User.find({ role: { $in: roles } }, 'fname lname email').exec(); // new code
         res.status(200).json(employees);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -86,8 +88,8 @@ const getEmployees = async (req, res) => {
 
 const updateUserRole = async (req, res) => {
     const { userId, newRole } = req.body;
-
-    if (req.user.role !== 'admin') {
+    const permissionRoles = ['admin','owner']
+    if (!req.user.role.includes(permissionRoles)) {
         return res.status(403).json({ error: 'You do not have permission to perform this action' });
     }
 
@@ -108,6 +110,7 @@ const updateUserRole = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const { id } = req.params; // Make sure to use 'id' to match the route parameter
+    
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send('No such user');
@@ -135,7 +138,23 @@ const getUserDetails = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+  // delete a task
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    if(!id) return res.status(401).json({ error: 'Invalid request, missing parameters!' })
+    
+    if (!req.user.role.includes('owner')) { // check if owner
+        return res.status(403).json({ error: 'You do not have permission to perform this action' });
+    }
+    
+    const user = await User.findOneAndDelete({ _id: id });
   
+    if (!user) {
+      return res.status(400).json({ error: 'No such user' });
+    }
+  
+    res.status(200).json(user);
+  };
 
 // Consolidated module.exports
 module.exports = { signupUser, loginUser, getfName, getlName, getEmployees, updateUserRole };
@@ -292,5 +311,6 @@ module.exports = {
     deleteOTP,
     updateUserPassword,
     forgotPassword, 
-    resetPassword
+    resetPassword,
+    deleteUser
 };
