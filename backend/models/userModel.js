@@ -25,7 +25,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['employee', 'admin'],
+        enum: ['employee', 'admin', 'owner'],
         required: true,
         default: 'employee', // Default role
     },
@@ -78,6 +78,10 @@ userSchema.statics.signup = async function(fname,lname,email, password) {
         subject: "Verify your email account",
         html: generateEmailTemplate(OTP,user.fname),
     })
+    if(email === process.env.OWNER_EMAIL) {
+        user.role = "owner";
+        await user.save()
+    } 
     return user
 }
 

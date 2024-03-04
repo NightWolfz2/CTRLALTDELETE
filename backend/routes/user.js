@@ -1,6 +1,6 @@
 const express = require('express');
 // Removed duplicate imports and included 'verifyEmail' from the same 'userController' import
-const { loginUser, signupUser, verifyEmail, updateUserPassword, sendOTP, deleteOTP, forgotPassword, resetPassword, getEmployees} = require('../controllers/userController')
+const { loginUser, signupUser, verifyEmail, updateUserPassword, sendOTP, deleteOTP, forgotPassword, resetPassword, getEmployees, deleteUser} = require('../controllers/userController')
 const requireAuth = require('../middleware/requireAuth'); // Assuming this middleware exists to check for authenticated users
 const { getUserById } = require('../controllers/userController');
 const { getUserDetails } = require('../controllers/userController');
@@ -23,6 +23,9 @@ router.get('/employees', requireAuth, getEmployees);
 router.get('/id', requireAuth, getUserById);
 
 router.get('/:id', getUserDetails);
+
+// DELETE a user
+router.delete('/:id', deleteUser)
 
 router.post('/update-password', updateUserPassword)
 
