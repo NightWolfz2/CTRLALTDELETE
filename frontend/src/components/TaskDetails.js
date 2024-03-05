@@ -62,6 +62,22 @@ const TaskDetails2 = ({ task, onClose, context }) => {
     onClose(); // Call the onClose function passed from the parent component
   };
 
+  const markTaskAsDel = async () => {
+    try {
+      // Fetch the data asynchronously
+      
+      const response = await customFetch(`/api/tasks/mark-task-deleted/${task._id}`, 'PATCH');
+      const json = await response.json();
+  
+      // Dispatch the action with the updated task data
+      dispatch({ type: 'UPDATE_TASK', payload: json });
+  
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors here
+    }
+  };
+
   var taskDate = new Date(task.date);
   var hours = taskDate.getHours();
   var minutes = taskDate.getMinutes().toString().padStart(2, '0');
@@ -97,7 +113,7 @@ const TaskDetails2 = ({ task, onClose, context }) => {
           <p className="task-desc-text">{task.description}</p>
         </div>
         <p className="priority"><strong>Priority: </strong>{task.priority}</p>
-        <p><strong>Assigned To: </strong>{assignedEmployees.join(', ') || 'No one assigned'}</p>
+        <p><strong>Assigned: </strong></p>
         <button type="button" className="material-symbols-outlined" onClick={deleteClick}><span>delete</span></button>
       </div>
     </div>

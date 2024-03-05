@@ -6,7 +6,8 @@ const {
   deleteTask, 
   updateTask,
   getCompletedTasks,
-  completeTask
+  completeTask,
+  markTaskDeleted
 } = require('../controllers/taskController')
 
 const requireAuth = require('../middleware/requireAuth')
@@ -33,6 +34,9 @@ router.patch('/:id', updateTask)
 router.get('/completed', getCompletedTasks)
 
 router.patch('/complete-task/:id', completeTask)
+
+// mark a task deleted
+router.patch('/mark-task-deleted/:id', markTaskDeleted)
 
 
 
