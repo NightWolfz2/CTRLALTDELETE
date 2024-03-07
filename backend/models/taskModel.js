@@ -35,6 +35,9 @@ const taskSchema = new Schema({
       return now > this.date ? 'Past Due' : 'In Progress';
     }
   },  
+  editHistory: [{ 
+    type: String,
+  }],  
   employees: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
