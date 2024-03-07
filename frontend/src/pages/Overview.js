@@ -74,40 +74,23 @@ const Overview = () => {
     setDueDate("");
     setSearch("");
   };
- 
-  const handleEditTask = (taskId) => {
-
-    const editedTaskIndex = tasks.findIndex(task => task._id === taskId);
   
+  const handleEditTask = (taskId) => {
+    const editedTaskIndex = tasks.findIndex(task => task._id === taskId);
+    
     if (editedTaskIndex !== -1) {
       const editedTask = tasks[editedTaskIndex];
-      const editTimestamp = new Date().toLocaleString();
-      const editMessage = `The Task edited at ${editTimestamp}`;
-  
-      setEditHistoryMessage(editMessage);
-      setTaskChanged(true);
-  
-      const editedHistory = `${editedTask.history ? editedTask.history + '\n' : ''}${editMessage}`;
+    
       const updatedTasks = [...tasks];
-
-      updatedTasks[editedTaskIndex] = { ...editedTask, history: editedHistory };
       dispatch({ type: 'SET_TASKS', payload: updatedTasks });
-      localStorage.setItem('editHistoryMessage', editMessage);
-  
-      setTimeout(() => {
-        navigate(`/editTask/${taskId}`); }, 100); 
+    
+        navigate(`/editTask/${taskId}`);
     } else {
       console.error('Task not found');
     }
   };
+  
 
-  useEffect(() => {
-    const storedEditHistoryMessage = localStorage.getItem('editHistoryMessage');
-    if (storedEditHistoryMessage) {
-      setEditHistoryMessage(storedEditHistoryMessage);
-      setTaskChanged(true);
-    }
-  }, []);
   const getTaskStatus = (task) => {
 	  const taskDueDate = new Date(task.date);
 	  
@@ -150,7 +133,6 @@ const Overview = () => {
       // Handle errors here
     }
   };
-//comment
   const filterTasks = () => {
     return tasks.filter(task => {
       const priorityMatch = priorityLevel === 'All' || task.priority.toLowerCase() === priorityLevel.toLowerCase();
@@ -238,7 +220,6 @@ const Overview = () => {
                   <b>{completedStates.get(task._id) ? 'Completed' : 'Mark Complete'}</b>
                 </div>
               </button>
-
             <div className="box">
               <div className="little-box">
                 <p><b>Assigned Employee(s):</b></p>
@@ -252,12 +233,15 @@ const Overview = () => {
               </div>
               <div className="little-box">
                 <p><b>Edit History:</b></p>
-                {showEditHistory || task.history ? ( 
-                <div>
-                <p>{task.history}</p>
-                  {taskChanged && <p>Task was changed</p>}
-                </div> ) : ( 
-                <p>No edit history</p>  )}
+                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()}</p >
+                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()}</p>
+                {task.history && (
+              <div>
+                {task.history.split('\n').map((entry, index) => (
+                <p key={index}>{entry}</p>
+                ))}
+              </div>
+                )}
               </div>
               <div className="edit-button">
                 <button
