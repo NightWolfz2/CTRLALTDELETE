@@ -7,63 +7,24 @@
 .my-rbc-container {
   display: flex;
   justify-content: center; /* Center the item horizontally */
-  align-items: center; /* Center the item vertically */
 
-  border-radius: 5px;
-  background: #353535;
   position: relative;
   margin: 1.5%;
-  margin-right: 0.75%;
   padding: 1.5% 1%;
+
   width: 70%;
-  height: 85%; /* Make the container match the height of its parent */
-}
-
-.side-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center the item vertically */
-  
-  border-radius: 5px;
-  background: #b9b9b9;
-
-  position: relative;
-
-  margin: 1.5%;
-  margin-left: 0.75%;
-  width: 25%;
-  height: 91%; 
-
-}
-
-.side-component {
-  position: relative;
-  display: flex;
-  margin-bottom: 3%;
-
-  Color: #fff;
-  background: #353535;
-  border-radius: 5px;
-
-  width: 100%;
-  height: 30%;
-
-}
-
-.task-info-container {
-  position: relative;
-  margin-top: 3%;
-  height: 70%;
-  width: 100%;
+  height: 80%; 
   border-radius: 5px;
   background: #353535;
 }
-
 
 .rbc-calendar {
-  margin: auto;
-  width: 95%;
-  height: 95%;
+  background: #353535;
+  border-radius: 5px;
+  margin: 1.5%;
+  padding: 2.5% 2.5%;
+  width: 70%;
+  height: 90%; 
 }
 
 /*Tool Bar*/
@@ -89,6 +50,11 @@
   border-radius: 4px;
 }
 
+.rbc-month-view .rbc-event-content {
+  font-size: small;
+  font-weight: 500;
+}
+
 .rbc-month-header {
   height: 28px;
   color: #fff;
@@ -103,12 +69,27 @@
 }
 
 /*Week View*/
+.rbc-time-view .rbc-allday-cell  .rbc-row{
+
+}
+.rbc-time-view {
+  background: #b9b9b9;
+}
+
 .rbc-time-view .rbc-row {
   min-height: 28px;
 }
 
-.rbc-time-view .rbc-row-bg .rbc-day-bg {
+
+.rbc-time-header.rbc-overflowing {
   background: #353535;
+}
+
+.rbc-time-view .rbc-row-bg .rbc-day-bg {
+ 
+}
+.rbc-timeslot-group {
+
 }
 
 .rbc-header {
@@ -118,11 +99,16 @@
 }
 
 .rbc-day-slot.rbc-time-column{
-  background: hsl(0, 0%, 60%);
+
 }
 
-.rbc-time-gutter {
+.rbc-time-gutter.rbc-time-column {
+  background: #353535;
   color: #fff;
+}
+
+.rbc-label.rbc-time-header-gutter {
+  background: #353535;
 }
 
 /*Agenda View*/
@@ -151,6 +137,56 @@
   color: rgb(0, 253, 0);
 }
 
+/**/
+.side-container {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+  margin: 1.5%;
+  margin-left: 0;
+
+  width: 30%;
+  height: 90%; 
+
+  border-radius: 5px;
+  background: #b9b9b9;
+
+}
+
+.side-component {
+
+  margin-bottom: 5.347%;
+
+  Color: #fff;
+  background: #353535;
+  border-radius: 5px;
+
+  width: 100%;
+  height: 30%;
+
+}
+
+.side-component-stuff {
+  display: flex;
+  flex-direction: row;
+  color: #fff;
+  padding: 5% 5%;
+}
+
+.side-component h3{
+  text-align: center;
+  margin: 0;
+}
+
+.side-component-2 {
+  position: relative;
+  height: 70%;
+  width: 100%;
+  border-radius: 5px;
+  background: #353535;
+}
+
 /*Pop-up*/
 .task-info {
   display: flex;
@@ -175,7 +211,9 @@
   box-sizing: border-box;
   border: 1px solid #fff;
   border-radius: 4px;
+  font: inherit;
   font-size: small;
+  font-weight: 500;
 
 }
 .task-info textarea {
@@ -186,27 +224,30 @@
   box-sizing: border-box;
   height: 15vh;
 
-  font-size: small;
+  font-size: medium;
 }
 .task-info input.read-only {
-  background: hsl(0, 0%, 80%); /* Change to the desired darker color */
-  border: 1px hsl(0, 0%, 80%);
+  background: #b9b9b9; /* Change to the desired darker color */
+  border: 1px #b9b9b9;
   color: black;
 }
 
 .task-info textarea.read-only {
-  background: hsl(0, 0%, 80%); /* Change to the desired darker color */
-  border: 1px hsl(0, 0%, 80%);
+  background: #b9b9b9; /* Change to the desired darker color */
+  border: 1px #b9b9b9;
   color: black;
 }
+
+
 .task-info button {
   font-family: "Poppins";
   background: #353535;
   border: 1px solid #fff;
   color: #fff;
-  padding: 1.5% 10%;
+  width: 23%;
   border-radius: 2px;
-  font-size: small;
+  font-size: medium;
+  font-weight: 600;
   cursor: pointer;
   margin: 1.5%;
   margin-left: auto;
@@ -217,3 +258,37 @@
 .task-info button:hover {
   background-color: #555;
 }
+
+.rbc-day-bg.rbc-today {
+  background-color: #eaf6ff !important;
+}
+
+.filters {
+  display: flex;
+  flex-flow: column;
+  margin-left: 8%;
+}
+
+.filters input {
+  color: black;
+  font-size: large;
+  font-weight: 400;
+  width: 100%;
+  padding-left: 2%;
+}
+
+.react-datepicker {
+  font-family: inherit !important;
+}
+
+.react-datepicker__current-month {
+  font-weight: 500 !important;
+}
+
+.react-datepicker__day--today {
+  border-radius: 0.3rem;
+  background-color: rgb(138, 226, 138) !important;
+}
+.react-datepicker__day--selected {
+}
+
