@@ -76,12 +76,11 @@ const CalendarPage = () => {
         // Fetch tasks from database API
         const data = await customFetch('/api/tasks');
 
-        const allTasks = data
-          //.filter(task => new Date(task.date) >= now)
-          .map(task => ({
+        const allTasks = data.map(task => ({
+            //.filter(task => new Date(task.date) >= now)
             ...task,
             start: moment(task.date).startOf('day').toDate(),
-            end: moment.utc(task.date).local().hours(12).toDate(),
+            end: moment(task.date).toDate(),
           }));
 
         setTasks(allTasks);
@@ -216,16 +215,26 @@ const CalendarPage = () => {
 
   const components = {
     event: (props) => {
-      const taskPrio = props?.event?.priority
-      const taskStatus = props?.event?.status;
+      const { title, priority, status } = props?.event;
       // Combine styles for past due tasks and priority-based styling
       const combinedStyles = {
-        opacity: taskStatus === 'Past Due' ? 0.5 : 1,
-        backgroundColor: getTaskBgColor(taskPrio),
+        opacity: status === 'Past Due' ? 0.5 : 1,
+        backgroundColor: getTaskBgColor(priority),
         color: 'black'
       };
 
-      return <div style={combinedStyles}>{props.title}</div>;
+      return (
+        <div style={combinedStyles}>
+          <div>{title}</div>
+          <div>
+            {employees.map(employee => (
+              <span key={employee._id} value={employee._id}>
+                {employee.fname.charAt(0)}. {employee.lname}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
     }
   };
 
@@ -277,8 +286,20 @@ const CalendarPage = () => {
             </span>
           </div>
         </div>
-        {selectedTask && <div className="side-component-2">
-          {selectedTask && (
+        <div className="side-component-2">
+        {showTasks && (
+            <div className="task-info">
+              <h3>Tasks</h3>
+              <ul>
+                {tasksDue.map(task => (
+                <li key={task.id}>
+                  {task.title}
+                </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        {showTaskInfo && (
             <div className="task-info">
               <h3>Task Information</h3>
               <div className="scroll">
@@ -368,7 +389,6 @@ const CalendarPage = () => {
             </div>
           )}
         </div>
-        }
       </div>
     </div>
   )
