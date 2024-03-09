@@ -65,8 +65,8 @@
 .tasks {
   display: flex; /* Use flexbox for horizontal layout */
   gap: 20px; /* Space between individual tasks */
-  overflow-x: auto; /* Enables horizontal scrolling */
-  padding-bottom: 10px; /* Optional: adds space below the tasks for the scrollbar */
+  overflow-x: auto !important; /* Enables horizontal scrolling */
+  padding-bottom: 20px; /* Optional: adds space below the tasks for the scrollbar */
 }
 
 .task {

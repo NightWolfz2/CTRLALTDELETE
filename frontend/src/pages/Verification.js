@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useAuthContext } from '../hooks/useAuthContext'
 import {useVerify} from '../hooks/useVerify'
-
+import './../css/Verification.css';
 
 const Verification = () => {
     const {user} = useAuthContext();
     const [OTP, setOTP] = useState('');
-    const {verifyEmail, error, isLoading} = useVerify()
+    const {verifyEmail, error, isLoading, success} = useVerify()
     
 
     const handleSubmit = async (e) => {
@@ -19,6 +19,8 @@ const Verification = () => {
         <div>
             <form className="create" onSubmit={handleSubmit}>
                 <h2>Verification</h2>
+                {error && <div className="error">{error}</div>}
+                {success && <div className="success">{success}</div>}
                 <label>One Time Passcode:</label>
                     <input 
                         type="OTP"
@@ -26,7 +28,6 @@ const Verification = () => {
                         value = {OTP}
                     />
                 <button disabled={isLoading}>Sign Up</button>
-                {error && <div className="error">{error}</div>}
             </form>
         </div>
     )

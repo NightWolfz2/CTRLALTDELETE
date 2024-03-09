@@ -166,13 +166,13 @@ const verifyEmail = async(req, res) => {
     const user = await User.findOne({ email: email });
     console.log(email)
 
-    if(!user) return res.status(401).json({ error: 'User not found' })
+    if(!user) return res.status(401).json({ error: 'Invalid Code!' })
 
     if(user.verified) return res.status(401).json({ error: 'Account already verified' });
 
     const token = await verificationToken.findOne({owner: user._id})
 
-    if(!token) return res.status(401).json({ error: 'user not found!' });
+    if(!token) return res.status(401).json({ error: 'Invalid Code!' });
 
     const isMatched = await token.compareToken(otp)
 
@@ -181,7 +181,7 @@ const verifyEmail = async(req, res) => {
     user.verified = true;
     await user.save();
     await verificationToken.findByIdAndDelete(token._id);
-    res.status(200).json({sucess: user.verified, message: `Verified: ${user.fname}`})
+    res.status(200).json({sucess: user.verified, message: `Verified!`})
     return user
 }
 const deleteOTP = async(req, res) => {

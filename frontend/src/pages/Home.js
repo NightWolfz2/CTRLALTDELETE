@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useTasksContext } from "../hooks/useTasksContext";
 import './../css/Home.css'; // Import your CSS file
 import TaskDetails from "../components/TaskDetails";
-import {useAuthContext} from '../hooks/useAuthContext'
+import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom'; 
 import { useCustomFetch } from '../hooks/useCustomFetch'; 
 import { useLogout } from '../hooks/useLogout'; 
+import moment from 'moment-timezone';
 
 const Home = () => {
   const { tasks, dispatch } = useTasksContext();
@@ -13,7 +14,7 @@ const Home = () => {
   const [selectedPriority, setSelectedPriority] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedDueDate, setSelectedDueDate] = useState("");
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
   const customFetch = useCustomFetch(); 
   const navigate = useNavigate(); 
   const { logout } = useLogout(); 
@@ -34,7 +35,7 @@ const Home = () => {
     };
 
     fetchTasks();
-  }, [selectedStatus, selectedPriority, selectedDueDate, searchTerm]); 
+  }, [user, customFetch, dispatch, logout, navigate, selectedStatus, selectedPriority, selectedDueDate, searchTerm]); 
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -52,26 +53,18 @@ const Home = () => {
     setSelectedDueDate(e.target.value);
   };
 
-  const toUTCStartOfDay = (localDate) => {
-    const date = new Date(localDate);
-    date.setUTCHours(0, 0, 0, 0);
-    return date.toISOString();
-  };
-
+  // Adjusted to format UTC date to Pacific Time for display
   const convertUTCToLocalDate = (utcDate) => {
-    const date = new Date(utcDate);
-    return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    return moment.utc(utcDate).tz('America/Los_Angeles').format('YYYY-MM-DD HH:mm');
   };
 
   const filterTasks = (taskList) => {
     return (taskList || []).filter(task => {
       const statusMatch = selectedStatus === 'All' || task.status === selectedStatus;
-      const priorityMatch = selectedPriority === 'All' || task.priority.toLowerCase() === selectedPriority;
-      const dueDateMatch = !selectedDueDate || toUTCStartOfDay(task.date).split('T')[0] === toUTCStartOfDay(selectedDueDate).split('T')[0];
+      const priorityMatch = selectedPriority === 'All' || task.priority.toLowerCase() === selectedPriority.toLowerCase();
+      const dueDateMatch = !selectedDueDate || moment.utc(task.date).tz('America/Los_Angeles').format('YYYY-MM-DD') === selectedDueDate;
       const searchMatch = !searchTerm || task.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const notCompleted = !task.completed; // Check if task is not completed or not deleted
-      const notdeleted = !task.deleted;
-    return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notdeleted;
+      return statusMatch && priorityMatch && dueDateMatch && searchMatch;
     });
   };
 
@@ -169,6 +162,8 @@ const Home = () => {
           </div>
         </>
       )}
+
+      <div><br /><br /></div>
     </div>
   );
 };

@@ -86,6 +86,17 @@ const createTask = async (req, res) => {
   }
 };
 
+const moment = require('moment-timezone');
+
+// Example function within your controller
+exports.getTasks = async (req, res) => {
+  const tasks = await Task.find(); // Fetch tasks from the database
+  const tasksWithConvertedDates = tasks.map(task => ({
+    ...task._doc,
+    dueDate: moment(task.dueDate).tz('America/Los_Angeles').format(),
+  }));
+  res.json(tasksWithConvertedDates);
+};
 
 // delete a task
 const deleteTask = async (req, res) => {

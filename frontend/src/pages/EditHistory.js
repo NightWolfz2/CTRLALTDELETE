@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './../css/TaskForm.css';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout'; // Import useLogout for handling token expiration
+import moment from 'moment-timezone';
+
 
 const EditHistory = () => {
     const navigate = useNavigate();
@@ -25,6 +27,10 @@ const EditHistory = () => {
     const [error, setError] = useState(null);
     const [emptyFields, setEmptyFields] = useState([]);
 
+    const convertToUTC = (localDateTime) => {
+        return moment(localDateTime).tz('America/Los_Angeles').utc().format();
+    };
+
     useEffect(() => {
         const taskToEdit = tasks.find((task) => task._id === _id);
         if (taskToEdit) {
@@ -36,6 +42,7 @@ const EditHistory = () => {
             setEmployees(taskToEdit.employees);
         }
     }, [_id, tasks]);
+    
     useEffect(() => {
         const fetchEmployees = async () => {
             if (!user) return;
@@ -71,17 +78,18 @@ const EditHistory = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const task = { title, date, description, priority, employees: selectedEmployees };
+        const utcDate = convertToUTC(date + "T00:00:00"); // Append time part for conversion
+        const task = { title, date: utcDate, description, priority, employees: selectedEmployees };
 
         try {
-            const json = await customFetch(`/api/tasks/${_id}`, 'PATCH', task);
+            const json = await customFetch(`/api/tasks/${_id}`, 'PATCH', task, user.token);
             dispatch({ type: 'UPDATE_TASK', payload: json });
             navigate("/overview");
         } catch (error) {
             console.error("Error updating task:", error);
-            if (error.message === 'Unauthorized') {
-                logout(); // Logout the user
-                navigate('/login'); // Redirect to login page
+            if (error.message.includes('Unauthorized')) {
+                logout();
+                navigate('/login');
             } else {
                 setError(error.message);
                 setEmptyFields(error.emptyFields || []);
@@ -212,4 +220,4 @@ const EditHistory = () => {
             </div>
     );
 };
-export default EditHistory;
+export default EditHistory; 
