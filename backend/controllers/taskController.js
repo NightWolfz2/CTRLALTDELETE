@@ -39,6 +39,7 @@ const getCompletedTasks = async (req, res) => {
   }
 };
 
+//mark a task complete
 const completeTask = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -51,6 +52,24 @@ const completeTask = async (req, res) => {
     return res.status(404).json({ error: 'No such task' });
   }
   task.completed = true;
+
+  res.status(200).json(task);
+  task.save()
+};
+
+//mark a task deleted
+const markTaskDeleted = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+
+  const task = await Task.findById(id);
+
+  if (!task) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+  task.deleted = true;
 
   res.status(200).json(task);
   task.save()
@@ -150,5 +169,6 @@ module.exports = {
   deleteTask,
   updateTask,
   getCompletedTasks,
-  completeTask
+  completeTask,
+  markTaskDeleted
 };
