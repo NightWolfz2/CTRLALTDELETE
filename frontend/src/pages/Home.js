@@ -70,7 +70,7 @@ const Home = () => {
       const dueDateMatch = !selectedDueDate || toUTCStartOfDay(task.date).split('T')[0] === toUTCStartOfDay(selectedDueDate).split('T')[0];
       const searchMatch = !searchTerm || task.title.toLowerCase().includes(searchTerm.toLowerCase());
       const notCompleted = !task.completed; // Check if task is not completed or not deleted
-      const notdeleted = !task.deleted;
+      const notdeleted = !task.deleted; //// Check if task is not deleted
     return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notdeleted;
     });
   };
