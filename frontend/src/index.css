@@ -10,8 +10,9 @@
 .pages {
   height: 100vh;
 }
+
 body {
-  background: #f1f1f1;
+  background: #f1f1f1 !important;
   margin: 0;
   font-family: "Poppins";
 }

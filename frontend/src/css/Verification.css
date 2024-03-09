@@ -1,0 +1,15 @@
+.error {
+    display: inline-block;
+    padding: 1em 3em;
+    border-radius: 0.5em;
+    background-color: #FF6666;
+    margin-bottom: 1em;
+}
+
+.success {
+    display: inline-block;
+    padding: 1em 3em;
+    border-radius: 0.5em;
+    background-color: #3fda59;
+    margin-bottom: 1em;
+}

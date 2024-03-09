@@ -4,6 +4,7 @@ import { useAuthContext } from './useAuthContext'
 
 export const useVerify = () => {
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(null)
     const {dispatch} = useAuthContext()
     const verifyEmail = async (email,otp) => {
@@ -26,10 +27,10 @@ export const useVerify = () => {
             // saves user to local storage
             localStorage.setItem('user', JSON.stringify(json))
             // update context
-            dispatch({type: 'LOGOUT', payload: json}) // logout after verifying
+            setTimeout(() => dispatch({type: 'LOGOUT', payload: json}), 2000); // logout after verifying
             setIsLoading(false)
-            
+            setSuccess(json.message);
         }
     }
-    return {verifyEmail, isLoading, error}
+    return {verifyEmail, isLoading, error, success}
 }
