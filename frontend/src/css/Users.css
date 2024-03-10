@@ -1,0 +1,87 @@
+/* Users.css */
+
+.users-container {
+  background-color: #353535;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+.users-container h1 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+.users-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-item {
+  background-color: #dadada;
+  border: 2px solid #bababa;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth transitions for hover effects */
+  will-change: transform; /* Optimize for animations */
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  transform: translateX(-5px);
+}
+
+.user-item:hover {
+  opacity: 1;
+  transform: translateX(0);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Elevated shadow effect */
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.user-name, .user-email {
+  margin: 0 16px 0 8px; /* Adjust space to your preference */
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none; /* No border around the button */
+  margin-left: auto; /* Push the button to the end */
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button:hover .trash-icon,
+.delete-button:focus .trash-icon {
+  transform: scale(1.3); /* Enlarge just the trash icon on hover/focus */
+}
+
+.trash-icon {
+  color: #cc0000;
+  transition: transform 0.2s; /* Smooth transition for scaling effect */
+  font-size: 1.5rem; /* Adjust the size as necessary */
+}
+
+/* Additional styling to ensure alignment */
+.user-info {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0; /* Prevents flex item from growing past content size */
+}
+
+.user-name {
+  flex-basis: 30%;
+}
+
+.user-email {
+  flex-basis: 40%;
+}

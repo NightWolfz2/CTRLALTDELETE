@@ -4,11 +4,11 @@
   background-color: #353535;
   color: #fff;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Align items to the left */
   align-items: center;
   padding: 10px 25px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  position: relative; /* Add relative positioning here */
+  position: relative;
   width: auto;
 }
 
@@ -83,7 +83,7 @@ button.menu:hover {
 
 /* Dropdown menu container */
 .dropdown-menu {
-  display: flex; /* Hidden by default */
+  display: none; /* Hidden by default */
   position: absolute; /* Positioning relative to the navbar */
   background-color: #353535; /* Same as navbar background */
   top: 100%; /* Position right below the navbar */
@@ -118,5 +118,3 @@ button.menu:hover {
 .nav-links .dropdown-menu {
   display: none;
 }
-
-
