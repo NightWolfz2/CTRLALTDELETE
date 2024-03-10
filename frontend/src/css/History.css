@@ -133,7 +133,20 @@
   left: 1160px;
   width: 135px;
   height: 20px;
-  background-color: #adebad;
+  background-color: #7fff7f;
+  border: 2px solid #101010;
+  margin: 0px 0px;
+  padding: 1px;
+  font-size: 15px;
+}
+
+.deleted {
+  position: relative;
+  top: 0px;
+  left: 1160px;
+  width: 135px;
+  height: 20px;
+  background-color: #ff5858;
   border: 2px solid #101010;
   margin: 0px 0px;
   padding: 1px;

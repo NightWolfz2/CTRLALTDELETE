@@ -3,6 +3,8 @@ import './../css/History.css'; // Import CSS file
 import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
 import TaskDetails from "../components/TaskDetails"
+import editIcon from '../images/trash_icon.png';
+import trashIcon from '../images/edit_icon.png';
 import { useNavigate } from 'react-router-dom';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import { useLogout } from '../hooks/useLogout';
@@ -42,16 +44,9 @@ const Overview = () => {
     };
     fetchTasks();
   }, []);
-
-  const currentDate = new Date();
-
-  // Filter tasks for In Progress and Past Due
-
-  const inProgressTasks = tasks ? tasks.filter(task => new Date(task.date) > currentDate) : [];
-  const pastDueTasks = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
-
-  const complete = tasks ? tasks.filter(task => new Date(task.date) <= currentDate) : [];
-
+  
+  const currentDate = new Date(); 
+  
   const priorityChange = (e) => {
     setPriorityLevel(e.target.value);
   };
@@ -74,11 +69,19 @@ const Overview = () => {
     setDueDate(""); // Clear the due date by setting it to an empty string
     setSearch(""); // Clear the search bar by setting it to an empty string
   };
-
-
-  const handleEditTask = (taskId) => {
-    //console.log(`Editing task with ID ${taskId}`);
-    navigate(`/editTask/${taskId}`);
+  
+  const deleteClick = async (task) => {
+    try {
+      await customFetch('/api/tasks/' + task._id, 'DELETE');
+      dispatch({ type: 'DELETE_TASK', payload: { _id: task._id } });
+      //onClose(); // Close the task details after deletion
+    } catch (error) {
+      console.error("Error during task deletion:", error);
+      if (error.message === 'Unauthorized') {
+        logout();
+        navigate('/login');
+      }
+    }
   };
 
   const getTaskStatus = (task) => {
@@ -104,14 +107,16 @@ const Overview = () => {
     }
   };
   const [completedStates, setCompletedStates] = useState(new Map());
+  
   const filterTasks = () => {
+
     return tasks.filter(task => {
       const priorityMatch = priorityLevel === 'All' || task.priority.toLowerCase() === priorityLevel.toLowerCase();
-      const statusMatch = status === 'All' || getTaskStatus(task) === status;
+      const statusMatch = status === 'All' || (status === 'Complete' && task.completed) || (status === 'Deleted' && task.deleted);
       const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
       const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
-      const isCompleted = task.completed; // Only include completed tasks
-      return priorityMatch && statusMatch && dueDateMatch && searchMatch && isCompleted;
+      const isCompleteOrDeleted = task.completed || task.deleted; // Only include completed tasks
+      return priorityMatch && statusMatch && dueDateMatch && searchMatch && isCompleteOrDeleted;
     });
   };
 
@@ -147,8 +152,8 @@ const Overview = () => {
           <label htmlFor="status">Status:</label>
           <select id="status" className="filter-select" value={status} onChange={statusChange}>
             <option value="All">All</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Past Due">Past Due</option>
+            <option value="Complete">Complete</option>
+            <option value="Deleted">Deleted</option>
           </select>
         </div>
 
@@ -188,72 +193,64 @@ const Overview = () => {
           <button onClick={resetFilters}>Reset Filters</button>
         </div>
       </div>
+	
+		<div className="additional-boxes">
+		  {filterTasks().map((task, index) => (
+			<div className="task-box" key={task._id}>
+			<div className="box2">
+        </div>		
+			<div className="box1">
+				<p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>						
+			</div>		
+			  <div className="box1">			  							
+				<div className={`little-box1 ${
+          task.priority === 'High' ? 'high-priority-box' :
+          task.priority === 'Medium' ? 'medium-priority-box' :
+          task.priority === 'Low' ? 'low-priority-box' : '' // No class added if priority is null
+        }`}>
+          Priority - {task.priority || 'None'}
+        </div>
 
-      <div className="additional-boxes">
-        {filterTasks().map((task, index) => (
-          <div className="task-box" key={task._id}>
-            <div className="box2">
-            </div>
-            <div className="box1">
-              <p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
-            </div>
-            <div className="box1">
-              <div className="little-box1">
-                Status - {getTaskStatus(task)}
-              </div>
-              <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' :
-                  task.priority === 'Medium' ? 'medium-priority-box' :
-                    task.priority === 'Low' ? 'low-priority-box' : '' // No class added if priority is null
-                }`}>
-                Priority - {task.priority || 'None'}
-              </div>
-
-              <div className="little-box1">
-                Due Date {formatDate(task.date)}
-
-              </div>
-            </div>
-            <button
-              className={`box2`}
-              onClick={() => handleButtonClick(task._id)}
-            >
-              <div className={`little-box2 ${completedStates.get(task._id) ? 'completed' : ''}`}>
-                <b>{completedStates.get(task._id) ? 'Completed' : 'Complete'}</b>
-              </div>
-            </button>
-
-            <div className="box">
-              <div className="little-box">
-                <p><b>Assigned Employee(s):</b></p>
-                <p>{task.employee}</p>
-                <p><b>Email:</b>{task.email}</p>
-                <p><b>Phone:</b>{task.phone}</p>
-
-              </div>
-              <div className="little-box">
-                <p><b>Task Description:</b></p>
-                <p>{task.description}</p>
-
-
-
-              </div>
-              <div className="little-box">
-                <p><b>Edit History:</b></p>
-                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()}</p >
-                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()}</p>
-                {task.history && (
-                  <div>
-                    {task.history.split('\n').map((entry, index) => (
-                      <p key={index}>{entry}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+				<div className="little-box1">
+					Due Date {formatDate(task.date)}
+				
+				</div>
+			  
+        </div>
+        <button
+                className={`box2`}
+                onClick={() => handleButtonClick(task._id)}
+				>
+                <div className={`little-box2 ${task.deleted ? 'deleted' : completedStates.get(task._id) ? 'completed' : ''}`}>
+                <b>{task.deleted ? 'Deleted' : completedStates.get(task._id) ? 'Completed' : 'Complete'}</b>
+                </div>
+              </button>
+			  
+			  <div className="box">
+				<div className="little-box">
+				<p><b>Assigned Employee(s):</b></p>
+				<p>{task.employee}</p>
+				<p><b>Email:</b>{task.email}</p>
+				<p><b>Phone:</b>{task.phone}</p>
+				
+				</div>
+				<div className="little-box">
+					<p><b>Task Description:</b></p>
+					<p>{task.description}</p>
+          <div className="edit-button">
+                <button
+                  style={{ backgroundImage: `url(${trashIcon})` }}
+                  onClick={() => deleteClick(task)}
+                ></button>
           </div>
-        ))}
-      </div>
+				
+				</div>
 
+			  </div>
+			</div>
+		  ))}
+		</div>
+		
     </div>
   );
 };
