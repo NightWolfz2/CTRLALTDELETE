@@ -67,7 +67,7 @@
 
   .date-select {
     width: 150px;
-  height: 30px;
+  height: 20px;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -85,7 +85,7 @@
 
   .searchBar {
     width: 150px;
-    height: 30px;
+    height: 20px;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -102,7 +102,7 @@
     border-radius: 4px;
     font-size: 1em;
     padding-left: 20px;
-    margin-right: 950px;
+    margin-right: 1350px;
   }
 
   .clear-button button:hover {

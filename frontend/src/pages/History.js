@@ -6,6 +6,7 @@ import TaskDetails from "../components/TaskDetails"
 import { useNavigate } from 'react-router-dom';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import { useLogout } from '../hooks/useLogout';
+import moment from 'moment-timezone';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -108,7 +109,7 @@ const Overview = () => {
     return tasks.filter(task => {
       const priorityMatch = priorityLevel === 'All' || task.priority.toLowerCase() === priorityLevel.toLowerCase();
       const statusMatch = status === 'All' || getTaskStatus(task) === status;
-      const dueDateMatch = dueDate === '' || task.date.includes(dueDate);
+      const dueDateMatch = !dueDate || moment.utc(task.date).tz('America/Los_Angeles').format('YYYY-MM-DD') === dueDate;
       const searchMatch = searchBar === '' || task.title.toLowerCase().includes(searchBar.toLowerCase());
       const isCompleted = task.completed; // Only include completed tasks
       return priorityMatch && statusMatch && dueDateMatch && searchMatch && isCompleted;
