@@ -13,7 +13,7 @@ const TaskForm = () => {
   const navigate = useNavigate();
   const { logout } = useLogout();
   const { user } = useAuthContext();// Ensure user is destructured here
-
+  const [createdBy, updatedBy] = useState('');
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
@@ -71,7 +71,6 @@ const TaskForm = () => {
   const convertToUTC = (localDateTime) => {
     return moment(localDateTime, 'YYYY-MM-DDTHH:mm').tz('America/Los_Angeles').utc().format();
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting with selectedEmployees:", selectedEmployees); // Debugging line
@@ -186,9 +185,9 @@ return (
           value={priority}
       >
           <option value="">Select Priority</option>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
       </select>
 
       <label>Assign Employee:</label>

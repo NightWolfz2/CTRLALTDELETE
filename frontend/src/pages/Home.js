@@ -35,7 +35,7 @@ const Home = () => {
     };
 
     fetchTasks();
-  }, [user, customFetch, dispatch, logout, navigate, selectedStatus, selectedPriority, selectedDueDate, searchTerm]); 
+  }, [user, customFetch, dispatch, selectedStatus, selectedPriority, selectedDueDate, searchTerm]); 
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import { useLogout } from '../hooks/useLogout';
 import moment from 'moment-timezone';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
@@ -28,7 +29,51 @@ const Overview = () => {
   const [editHistoryMessage, setEditHistoryMessage] = useState('');
   const [taskChanged, setTaskChanged] = useState(false);
   const [showEditHistory, setShowEditHistory] = useState(false); 
+  const [employeeNamesMap, setEmployeeNamesMap] = useState({});
+  const { user } = useAuthContext();
 
+
+
+
+
+  const fetchEmployeeNames = async (employeeIds) => {
+    const details = await Promise.all(employeeIds.map(async (id) => {
+      try {
+        const response = await fetch(`http://localhost:4000/api/user/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
+        if (!response.ok) throw new Error('Could not fetch employee details');
+        const data = await response.json();
+        return { name: `${data.fname} ${data.lname}`, email: data.email };
+      } catch (error) {
+        console.error(error);
+        return { name: 'Unknown Employee', email: '' };
+      }
+    }));
+    return details.reduce((acc, curr, index) => {
+      acc[employeeIds[index]] = curr;
+      return acc;
+    }, {});
+  };
+
+  useEffect(() => {
+    if (tasks && tasks.length > 0) {
+      const allEmployeeIds = tasks.reduce((acc, task) => {
+        task.employees.forEach(id => {
+          if (!acc.includes(id)) {
+            acc.push(id);
+          }
+        });
+        return acc;
+      }, []);
+  
+      fetchEmployeeNames(allEmployeeIds).then(setEmployeeNamesMap);
+    }
+  }, [tasks]); // Make sure to include tasks as a dependency
+  
+  
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -200,7 +245,7 @@ const Overview = () => {
         {filterTasks().map((task, index) => (
           <div className="task-box" key={task._id}>
             <div className="box1">
-              <p> <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Task - {index + 1} {task.title}</b></p>
+              <p> <b># Task - {index + 1} {task.title}</b></p>
             </div>
             <div className="box1">
               <div className="little-box1">
@@ -222,20 +267,35 @@ const Overview = () => {
                 </div>
               </button>
             <div className="box">
-              <div className="little-box">
-                <p><b>Assigned Employee(s):</b></p>
-                <p>{task.employee}</p>
-                <p><b>Email:</b>{task.email}</p>
-                <p><b>Phone:</b>{task.phone}</p>
-              </div>
+            <div className="little-box">
+            <p><b>Assigned Employee(s):</b></p>
+            {task.employees && task.employees.length > 0 ? (
+              task.employees.map(id => (
+                <div key={id}>
+                  {employeeNamesMap[id] ? (
+                    <>
+                      <p>Name: {employeeNamesMap[id].name}</p>
+                      <p>Email: {employeeNamesMap[id].email}</p>
+                    </>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>No one assigned</p>
+            )}
+          </div>
+
               <div className="little-box">
                 <p><b>Task Description:</b></p>
                 <p>{task.description}</p>
               </div>
               <div className="little-box">
                 <p><b>Edit History:</b></p>
-                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()}</p >
-                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()}</p>
+                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()} <b>by:</b> {task.createdBy ? `${task.createdBy.fname} ${task.createdBy.lname}` : 'Unknown'}</p>
+                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()} <b>by:</b> {task.updatedBy ? `${task.updatedBy.fname} ${task.updatedBy.lname}` : 'Unknown'}</p>
+
                 {task.history && (
               <div>
                 {task.history.split('\n').map((entry, index) => (

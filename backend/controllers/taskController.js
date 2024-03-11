@@ -7,10 +7,22 @@ const capitalizeFirstLetter = (string) => {
 };
 
 // get all tasks
+// get all tasks with detailed createdBy and updatedBy information
 const getTasks = async (req, res) => {
-  const tasks = await Task.find({}).sort({ createdAt: -1 });
-  res.status(200).json(tasks);
+  try {
+    // Use .populate to include detailed information about the users in createdBy and updatedBy fields
+    const tasks = await Task.find({})
+                            .sort({ createdAt: -1 })
+                            .populate('createdBy', 'fname lname email') // Adjust the fields you need from the User model
+                            .populate('updatedBy', 'fname lname email'); // Same here
+
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 // get a single task
 const getTask = async (req, res) => {
@@ -76,34 +88,30 @@ const markTaskDeleted = async (req, res) => {
 };
 
 // create a new task
+// Inside your task creation route handler
 const createTask = async (req, res) => {
+  const { title, date, description, priority, employees } = req.body;
   
-  const { title, date, description, employees } = req.body; // Include 'assignedTo' in destructuring
-  console.log(req.body)
-  console.log("Received task creation request with assignedTo:", employees);
-
-  let { priority } = req.body;
-
-  // Capitalize the first letter of priority
-  priority = capitalizeFirstLetter(priority);
-
   try {
-    const task = await Task.create({ 
-      title, 
-      date, 
-      description, 
+    const task = new Task({
+      title,
+      date,
+      description,
       priority,
-      employees // Include 'assignedTo' when creating a task
+      employees, // Assuming this is an array of employee IDs
+      createdBy: req.user.id, // Use req.user.id from the authentication middleware
     });
-    res.status(200).json(task);
+
+    await task.save();
+    res.status(201).json(task);
   } catch (error) {
-    // Error handling remains the same
-    const emptyFields = error.message.includes("Path")
-      ? error.message.match(/`(\w+)`/g).map(field => field.replace(/`/g, ""))
-      : [];
-    res.status(400).json({ error: error.message, emptyFields });
+    console.log(error);
+    res.status(400).json({ error: error.message });
   }
 };
+
+
+
 
 const moment = require('moment-timezone');
 
@@ -135,31 +143,35 @@ const deleteTask = async (req, res) => {
 };
 
 // update a task
+// Inside your task update route handler
 const updateTask = async (req, res) => {
   const { id } = req.params;
-  // Extract any fields you expect to update
   const { title, date, description, priority, employees } = req.body;
 
   try {
-    // Prepare the update object, including only fields that are provided
-    const updateData = {};
-    if (title !== undefined) updateData.title = title;
-    if (date !== undefined) updateData.date = date;
-    if (description !== undefined) updateData.description = description;
-    if (priority !== undefined) updateData.priority = capitalizeFirstLetter(priority); // Capitalize priority
-    if (employees !== undefined) updateData.employees = employees; // Include 'assignedTo' in the update
+    const updateData = {
+      title,
+      date,
+      description,
+      priority,
+      employees,
+      updatedBy: req.user.id, // Use req.user.id here as well
+    };
 
-    const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true });
-    
+    const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true })
+      .populate('createdBy updatedBy', 'fname lname'); // Assuming you have these fields in your User model
+
     if (!task) {
       return res.status(404).json({ error: 'No such task' });
     }
 
     res.status(200).json(task);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 };
+
 
 
 module.exports = {

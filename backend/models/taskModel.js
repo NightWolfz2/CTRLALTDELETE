@@ -35,6 +35,16 @@ const taskSchema = new Schema({
       return now > this.date ? 'Past Due' : 'In Progress';
     }
   },  
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // This should match the model name you used when you called mongoose.model('User', userSchema)
+    required: true
+  },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false // This can be optional as not all tasks might be updated.
+  },
   editHistory: [{ 
     type: String,
   }],  
