@@ -54,12 +54,6 @@ const Navbar = () => {
         <Link to="/history">History</Link>
         
       </div>
-      {!user && (
-      <div className="nav-links">
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
-      </div>
-      )}
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
        <div className='nav-username' style={{ marginRight: '20px' }}>
@@ -69,6 +63,7 @@ const Navbar = () => {
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
+          <Link to="/users" onClick={handleMenuItemClick}>Users</Link>
           <Link to="/loggedout" onClick={handleLogOutClick}>Logout</Link>
         </div>
       </div>

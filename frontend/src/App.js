@@ -19,6 +19,7 @@ import Signup from './pages/Signup'
 import Verify from './pages/Verification'
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Users from './pages/Users';
 
 
 function App() {
@@ -67,7 +68,7 @@ function App() {
             />
             <Route 
               path="/loggedOut"
-              element={<LoggedOut />}
+              element={<Login />}
             />
             <Route 
               path="/login"
@@ -92,6 +93,10 @@ function App() {
             <Route 
             path="/reset-password/" // Include the :token parameter in the path
             element={user ? <Navigate to="/" /> : <ResetPassword />}
+            />
+            <Route 
+            path="/users"
+            element={user ? <Users /> : <Navigate to="/login" />}
             />
           </Routes>
         </div>

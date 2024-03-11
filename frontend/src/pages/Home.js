@@ -64,7 +64,9 @@ const Home = () => {
       const priorityMatch = selectedPriority === 'All' || task.priority.toLowerCase() === selectedPriority.toLowerCase();
       const dueDateMatch = !selectedDueDate || moment.utc(task.date).tz('America/Los_Angeles').format('YYYY-MM-DD') === selectedDueDate;
       const searchMatch = !searchTerm || task.title.toLowerCase().includes(searchTerm.toLowerCase());
-      return statusMatch && priorityMatch && dueDateMatch && searchMatch;
+      const notCompleted = !task.completed; // Check if task is not completed or not deleted
+      const notdeleted = !task.deleted; //// Check if task is not deleted
+    return priorityMatch && statusMatch && dueDateMatch && searchMatch && notCompleted && notdeleted;
     });
   };
 

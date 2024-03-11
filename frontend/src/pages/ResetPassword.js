@@ -4,112 +4,91 @@ import { useNavigate } from 'react-router-dom';
 import {useLocation} from "react-router";
 import queryString from 'query-string'
 import axios from "axios"
+import './../css/ResetPassword.css';
 
 function ResetPassword() {
   const navigate = useNavigate();
-  
+  const location = useLocation();
   const [newPassword, setNewPassword] = useState({
     password: '',
-    confirmPassword: ''
-  })
-  const [invalidUser, setInvalidUser] = useState("");
-  const [busy, setBusy] = useState(true)
+    confirmPassword: '',
+  });
+  const [invalidUser, setInvalidUser] = useState('');
+  const [busy, setBusy] = useState(true);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false)
-  const location = useLocation();
+  const [success, setSuccess] = useState(false);
+  const { token, id } = queryString.parse(location.search);
   const baseUrl = 'http://localhost:4000/api/user';
-  const {token, id} = queryString.parse(location.search)
 
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        setBusy(true);
+        await axios.post(`${baseUrl}/verify-token?token=${token}&id=${id}`);
+        setBusy(false);
+      } catch (error) {
+        if (error?.response?.data) {
+          const { data } = error.response;
+          if (!data.success) setInvalidUser(data.error);
+        }
+        setBusy(false);
+      }
+    };
+
+    verifyToken();
+  }, [token, id, baseUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {password,confirmPassword} = newPassword
-    if(password.trim().length < 8 || password.trim().length > 20) {
-      return setError('Password must be 8 to 20 characters.')
+    const { password, confirmPassword } = newPassword;
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
     }
-    if(password!==confirmPassword) {
-      return setError('Password does not match.')
-    }
+
     try {
-      const {token, id} = queryString.parse(location.search)
-      const {data } = await axios.post(`${baseUrl}/reset-password?token=${token}&id=${id}`,{password});
-      setBusy(false);
+      const { data } = await axios.post(`${baseUrl}/reset-password?token=${token}&id=${id}`, { password });
       if (data.success) {
-        setSuccess(true)
-        navigate('/reset-password')
+        setSuccess(true);
+        navigate('/login');
       }
     } catch (error) {
-      setBusy(false);
-      if(error?.response?.data) {
-        const {data} = error.response;
-        if(!data.sucess) return setError(error.response.data)
-        return console.log(error.response.data)
-      }
-      console.log(error)
+      setError('Failed to reset password.');
     }
   };
-  const verifyToken = async() => {
-    try {
-      setBusy(true)
-      const {data } = await axios.post(`${baseUrl}/verify-token?token=${token}&id=${id}`,{password: newPassword});
-      setBusy(false);
-      
-    } catch (error) {
-      if(error?.response?.data) {
-          const {data} = error.response;
-        if(!data.sucess) return setInvalidUser(data.error)
-        return console.log(error.response.data)
-      }
-      console.log(error)
-    }
-    
-  }
-  useEffect(() => {
-    verifyToken();
-  }, []);
-  const handleOnChange = ({target}) => {
-    const {name, value} = target;
-    setNewPassword({...newPassword, [name]:value})
-  }
-  if (invalidUser) {
-    return (
-      <div>
-        <h1>{invalidUser}</h1>
-      </div>
-    )
-  }
-  if (success) {
-    return (
-      <div>
-        <h1>Password reset successful</h1>
-      </div>
-    )
-    
-  }
 
-    
+  const handleOnChange = ({ target }) => {
+    const { name, value } = target;
+    setNewPassword({ ...newPassword, [name]: value });
+  };
+
+  if (busy) return <div>Loading...</div>;
+  if (invalidUser) return <div>{invalidUser}</div>;
+  if (success) return <div>Password reset successful</div>;
 
   return (
-    <div>
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          placeholder="**********"
-          name='password'
-          onChange={handleOnChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="**********"
-          name='confirmPassword'
-          onChange={handleOnChange}
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="reset-password-container">
+      <div className="reset-password-content">
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="password"
+            placeholder="New Password"
+            name="password"
+            onChange={handleOnChange}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirm New Password"
+            name="confirmPassword"
+            onChange={handleOnChange}
+            required
+          />
+          <button type="submit">Reset Password</button>
+        </form>
+        {error && <p>{error}</p>}
+      </div>
     </div>
   );
 }

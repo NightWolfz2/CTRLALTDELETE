@@ -181,7 +181,7 @@ const verifyEmail = async(req, res) => {
     user.verified = true;
     await user.save();
     await verificationToken.findByIdAndDelete(token._id);
-    res.status(200).json({sucess: user.verified, message: `Verified!`})
+    res.status(200).json({sucess: user.verified, message: `Verified: ${user.fname}`})
     return user
 }
 const deleteOTP = async(req, res) => {
