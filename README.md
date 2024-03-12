@@ -86,11 +86,11 @@ Environment set-up:
   
      	PORT=4000
      	MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
-      OWNER_EMAIL="owner_email@gmail.com"
-      SECRET=randomsecrethashedwordthatissecurectrlaltdelete
-      EMAIL_VERIFICATION_SECRET=randsecretemailverifwordctrlaltdelete
-      EMAIL_USERNAME="mailtrap_username"
-      EMAIL_PASSWORD="mailtrap_password"
+        OWNER_EMAIL="owner_email@gmail.com"
+        SECRET=randomsecrethashedwordthatissecurectrlaltdelete
+        EMAIL_VERIFICATION_SECRET=randsecretemailverifwordctrlaltdelete
+        EMAIL_USERNAME="mailtrap_username"
+        EMAIL_PASSWORD="mailtrap_password"
       
       
 Replace `<username>` and `<password>` with your actual credentials.
