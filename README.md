@@ -33,13 +33,12 @@ Make sure you have the following installed on your machine:
 - [Node.js](https://nodejs.org/) (version 18.18.1)
 - [npm](https://www.npmjs.com/) (version 9.8.1)
 
-### Backend Installation
+### Installation
 
 1. **Clone the Repository**
-2. **Install Backend Dependencies:**
+2. **Install Dependencies:**
    - In the backend directory, run:
      ```bash
-     cd backend
      npm install
      ```
    - Backend dependencies include:
@@ -49,6 +48,15 @@ Make sure you have the following installed on your machine:
      - mongoose (version 7.6.3)
      - update (version 15.0.4)
      - nodemon (version 3.0.1) (installed globally)
+  - Frontend dependencies include:
+     - @testing-library/jest-dom (version 5.17.0)
+     - @testing-library/react (version 13.4.0)
+     - @testing-library/user-event (version 13.5.0)
+     - react (version 18.2.0)
+     - react-datepicker (version 4.21.0)
+     - react-dom (version 18.2.0)
+     - react-router-dom (version 6.17.0)
+     - web-vitals (version 2.1.4)
 
 3. **Configuration:**
 	
@@ -63,47 +71,39 @@ Database set-up:
   
 To get your URI that will be used in the next step, navigate to ‘Database’ under ‘Deployment’. Locate your database and click on ‘Connect’. A pop-up window will appear. In this pop-up window, select the ‘Drivers’ option. Your database’s URI should be visible now. Copy it as it will be used in the next step.
 
+Mailtrap set-up:
+- Go to https://mailtrap.io/ and create a free mailtrap account.
+- After creating an account, click on "Sending Domains" located on the left menus.
+- Add your domain and verify to start sending emails.
+
+Once your domain is set-up, you will be able to find your mailtrap USER_NAME and PASSWORD on that same page or in settings. Add the following information using the Environment set-up below.
+
 Environment set-up:
 - Create a `.env` file in the backend folder.
 - Add your environment variables to the `.env` file.
 
   Example:
   
-     	PORT=400
+     	PORT=4000
      	MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
+      OWNER_EMAIL="owner_email@gmail.com"
+      SECRET=randomsecrethashedwordthatissecurectrlaltdelete
+      EMAIL_VERIFICATION_SECRET=randsecretemailverifwordctrlaltdelete
+      EMAIL_USERNAME="mailtrap_username"
+      EMAIL_PASSWORD="mailtrap_password"
+      
       
 Replace `<username>` and `<password>` with your actual credentials.
+Replace `OWNER_EMAIL` with your email.
+Replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your mailtrap username and password.
 
-4. **Connect to Backend Server and Database:**
-   - In the terminal, change to the backend directory and run:
-     ```bash
-     npm run dev
-     ```
-### Frontend Installation
-
-1. **Install Frontend Dependencies:**
-   - In the frontend directory, run:
-     ```bash
-     cd frontend
-     npm install
-     ```
-   - Frontend dependencies include:
-     - @testing-library/jest-dom (version 5.17.0)
-     - @testing-library/react (version 13.4.0)
-     - @testing-library/user-event (version 13.5.0)
-     - react (version 18.2.0)
-     - react-datepicker (version 4.21.0)
-     - react-dom (version 18.2.0)
-     - react-router-dom (version 6.17.0)
-     - web-vitals (version 2.1.4)
-
-2. **Start the React Development Server:**
-- In a separate terminal, change to the frontend directory and run:
+4. **Connect to Backend Server, Database, and starting Development Server:**
+   - In the terminal, run the following command in the root directory:
      ```bash
      npm start
      ```
 
-3. **App Startup:**
+5. **App Startup:**
    - The app should start up.
 
 
