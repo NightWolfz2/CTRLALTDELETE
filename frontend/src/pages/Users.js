@@ -1,23 +1,28 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useAuthContext } from './../hooks/useAuthContext'; // Make sure to import useAuthContext hook
-import { FaUserAlt, FaEnvelope, FaTrash } from 'react-icons/fa';
+import { FaUserAlt, FaEnvelope, FaTrash, FaChevronCircleUp , FaChevronCircleDown , FaCrown } from 'react-icons/fa';
+import { useNavigate} from 'react-router-dom';
 import './../css/Users.css';
 
 const Users = () => {
-  const { user } = useAuthContext(); // Getting the user and token from the context
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
+  const [error, setError] = useState('');
+  const [loggedUser, setLoggedUser] = useState(null); // Define loggedUser state
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      if (!user) return;
+    const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+    console.log('User from localStorage in delete:', userFromLocalStorage);
+    if (!userFromLocalStorage || !userFromLocalStorage.expiration) return;
+    setLoggedUser(userFromLocalStorage); // Set loggedUser state
 
+    const fetchEmployees = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/user/employees', { // Make sure this URL is correct
+        const response = await fetch('http://localhost:4000/api/user/employees', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${user.token}`, // Getting the token from the user context
+            'Authorization': `Bearer ${userFromLocalStorage.token}`,
           },
         });
 
@@ -26,7 +31,7 @@ const Users = () => {
         }
 
         const employeesData = await response.json();
-        setUsers(employeesData); // Assuming the response structure is an array of users
+        setUsers(employeesData);
       } catch (error) {
         console.error(error);
         setError(error.message || 'Failed to fetch employees');
@@ -36,27 +41,127 @@ const Users = () => {
     };
 
     fetchEmployees();
-  }, [user]); // Dependency array includes 'user' to re-run the effect when user changes
+  }, []);
+
+  
+
+  const deleteClick = async (userToDelete) => {
+    try {
+      const response = await fetch(`/api/user/delete/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${loggedUser.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ deletingUser: loggedUser, userToDelete}),
+      });
+      const json = await response.json()
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error)
+      } else {
+        setSuccess(json.success || true);
+        setTimeout(() => {
+          window.location.reload(); // Reload the page
+          navigate('/users'); // Refresh the page after 2 seconds
+        }, 1000);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const adminClick = async (userToAdmin) => {
+    setError(null)
+    
+    const response = await fetch('/api/user/assign-admin', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: loggedUser, updatingUser: userToAdmin})
+        
+    })
+    const json = await response.json()
+
+    if(!response.ok) {
+      setError(json.error)
+    }
+    if(response.ok) {
+      setSuccess(json.success || true);
+      setTimeout(() => {
+        window.location.reload(); // Reload the page
+        navigate('/users'); // Refresh the page after 2 seconds
+      }, 1000);
+    }
+    
+  };
+
+  const deAdminClick = async (userTodeAdmin) => {
+    setError(null)
+    
+    const response = await fetch('/api/user/unassign-admin', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({user: loggedUser, updatingUser: userTodeAdmin})
+        
+    })
+    const json = await response.json();
+    console.log('Response:', json); // Add this line to check the response
+
+
+    if(!response.ok) {
+      setError(json.error)
+    }
+    else {
+      setSuccess(json.success || true);
+      setTimeout(() => {
+        window.location.reload(); // Reload the page
+        navigate('/users'); // Refresh the page after 2 seconds
+      }, 1000);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+
 
   return (
     <div className="users-container">
       <h1>Users</h1>
       <ul>
-        {users.map(user => (
-          <li key={user._id} className="user-item">
-            <FaUserAlt className="icon user-icon" />
-            <span className="user-info user-name">{user.fname} {user.lname}</span>
-            <FaEnvelope className="icon email-icon" />
-            <span className="user-info user-email">{user.email}</span>
-            <button className="delete-button">
-              <FaTrash className="icon trash-icon" />
-            </button>
-          </li>
-        ))}
+        {users
+          // Filter out users with owner set to true
+          .filter(user => !user.owner && loggedUser.role !== "employee" )
+          .map(user => (
+            <li key={user._id} className="user-item">
+              <FaUserAlt className="icon user-icon" />
+              <span className="user-info user-name">{user.fname} {user.lname}</span>
+              <FaEnvelope className="icon email-icon" />
+              <span className="user-info user-email">{user.email}</span>
+              {user.role === 'admin' ? (
+              <FaCrown className="icon role-icon gold" />
+              ) : (
+              <FaCrown className="icon role-icon" />
+              )}
+              <span className="user-info user-email">{user.role}</span>
+              { user.email !== loggedUser.email && user.role !== "admin" &&(
+                <button className="delete-button" onClick={() => adminClick(user)}>
+                  <FaChevronCircleUp className="icon admin-icon" />
+                </button>
+              )}
+              {loggedUser.owner && user.role === "admin" && user.email !== loggedUser.email && (
+                <button className="delete-button" onClick={() => deAdminClick(user)}>
+                  <FaChevronCircleDown  className="icon deAdmin-icon" />
+                </button>
+              )}
+              {loggedUser.owner &user.email !== loggedUser.email &&(
+                <button className="delete-button" onClick={() => deleteClick(user)}>
+                  <FaTrash className="icon trash-icon" />
+                </button>
+              )}
+            </li>
+          ))}
       </ul>
+      {success && <div className="success">{success}</div>}
+      {error && <div className="error">{error}</div>}
     </div>
   );
 };
