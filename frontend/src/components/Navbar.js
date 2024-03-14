@@ -57,13 +57,15 @@ const Navbar = () => {
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto' }}>
        <div className='nav-username' style={{ marginRight: '20px' }}>
-        {user ? `${user.fname} ${user.lname}` : ''}
+       {user ? `${user.fname} ${user.lname}${user.role ? ` (${user.role})` : ''}` : ''}
        </div>
 
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
         <div className={`dropdown-menu ${isMenuOpen ? 'show' : ''}`} ref={menuRef}>
           <Link to="/profile" onClick={handleMenuItemClick}>Profile</Link>
-          <Link to="/users" onClick={handleMenuItemClick}>Users</Link>
+          {user && user.role !== 'employee' && ( // Check if user exists and is not an employee
+            <Link to="/users" onClick={handleMenuItemClick}>Users</Link>
+          )}
           <Link to="/loggedout" onClick={handleLogOutClick}>Logout</Link>
         </div>
       </div>

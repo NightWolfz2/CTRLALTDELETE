@@ -96,7 +96,7 @@ function App() {
             />
             <Route 
             path="/users"
-            element={user ? <Users /> : <Navigate to="/login" />}
+            element={user && user.role !== 'employee'? <Users /> : <Navigate to="/login" />}
             />
           </Routes>
         </div>

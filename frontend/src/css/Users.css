@@ -42,6 +42,7 @@
 
 .icon {
   margin-right: 8px;
+  font-size: 1.5rem; /* Adjust the size as necessary */
 }
 
 .user-name, .user-email {
@@ -70,6 +71,18 @@
   font-size: 1.5rem; /* Adjust the size as necessary */
 }
 
+.admin-icon {
+  color: #168101;
+  transition: transform 0.2s; /* Smooth transition for scaling effect */
+  font-size: 1.5rem; /* Adjust the size as necessary */
+}
+
+.deAdmin-icon {
+  color: #cc0000;
+  transition: transform 0.2s; /* Smooth transition for scaling effect */
+  font-size: 1.5rem; /* Adjust the size as necessary */
+}
+
 /* Additional styling to ensure alignment */
 .user-info {
   flex-grow: 1;
@@ -84,4 +97,15 @@
 
 .user-email {
   flex-basis: 40%;
+}
+.gold {
+  color: rgb(170, 1, 1); /* Change the color to gold */
+  font-size: 1.5rem; /* Adjust the size as necessary */
+}
+.error {
+  display: inline-block;
+  padding: 1em 3em;
+  border-radius: 0.5em;
+  background-color: #FF6666;
+  margin-bottom: 1em;
 }
