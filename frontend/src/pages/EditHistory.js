@@ -25,21 +25,19 @@ const EditHistory = () => {
     const [currentEmployee, setCurrentEmployee] = useState('');
     const [selectedEmployees, setSelectedEmployees] = useState([]); // List of all added employees
     const [error, setError] = useState(null);
-    const [emptyFields, setEmptyFields] = useState([]);
-
-    const convertToUTC = (localDateTime) => {
-        return moment(localDateTime).tz('America/Los_Angeles').utc().format();
-    };
+    const [notification, setNotification] = useState({ message: '', type: '' });
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         const taskToEdit = tasks.find((task) => task._id === _id);
         if (taskToEdit) {
             setTitle(taskToEdit.title);
-            const formattedDate = taskToEdit.date.split('T')[0];
+            const formattedDate = moment(taskToEdit.date).format('YYYY-MM-DDTHH:mm');
             setDate(formattedDate);
             setDescription(taskToEdit.description);
             setPriority(taskToEdit.priority);
-            setEmployees(taskToEdit.employees);
+            setSelectedEmployees(taskToEdit.employees);
+            console.log("Selected Employees:", taskToEdit.employees); //DEBUG LINE
         }
     }, [_id, tasks]);
     
@@ -76,26 +74,64 @@ const EditHistory = () => {
         console.log("Selected Employees updated:", selectedEmployees);
     }, [selectedEmployees]);
 
+    // Convert the local date and time to a UTC string
+    const convertToUTC = (localDateTime) => {
+        // Directly return the localDateTime if it's empty, letting the backend handle the missing date validation
+        if (!localDateTime) {
+            return localDateTime;
+        }
+    
+        // Convert the local date and time to a UTC string for non-empty dates
+        return moment(localDateTime, 'YYYY-MM-DDTHH:mm').tz('America/Los_Angeles').utc().format();
+     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const utcDate = convertToUTC(date + "T00:00:00"); // Append time part for conversion
-        const task = { title, date: utcDate, description, priority, employees: selectedEmployees };
+        
+        // Clear any existing errors
+        setError(null);
+    
+        const utcDate = convertToUTC(date);
 
+        const task = { 
+            title, 
+            date: utcDate, 
+            description, 
+            priority, 
+            employees: selectedEmployees, 
+        };
+    
         try {
             const json = await customFetch(`/api/tasks/${_id}`, 'PATCH', task, user.token);
             dispatch({ type: 'UPDATE_TASK', payload: json });
-            navigate("/overview");
+    
+            setSuccessMessage("Task Edited");
+    
+            setTimeout(() => {
+                setSuccessMessage('');
+                navigate('/overview');
+            }, 1000);
+
+            // Reset form fields and state after successful task edit
+            setTitle('');
+            setDate('');
+            setDescription('');
+            setPriority('');
+            setSelectedEmployees([]);
+            setError(null); // Clear any existing errors
+            
         } catch (error) {
             console.error("Error updating task:", error);
             if (error.message.includes('Unauthorized')) {
                 logout();
                 navigate('/login');
             } else {
+                // Directly use the error message returned from the customFetch
                 setError(error.message);
-                setEmptyFields(error.emptyFields || []);
+                setSuccessMessage('');
             }
         }
-    };
+    };    
 
       const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -126,8 +162,12 @@ const EditHistory = () => {
           });
           // Clear the current selection after adding the employee to the list
           setCurrentEmployee('');
+          setNotification({ message: '', type: '' });
         } else {
           console.log("Employee already added or no employee selected.");
+          setNotification({ message: 'Employee already assigned', type: 'error' });
+          setTimeout(() => setNotification({ message: '', type: '' }), 2500); 
+
         }
       };
       
@@ -142,6 +182,9 @@ const EditHistory = () => {
         setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
     };
 
+    console.log("Rendering - Selected Employees:", selectedEmployees); //DEBUG LINE
+    console.log("All Employees:", employees); //DEBUG LINE
+
     return (
       <div>
             {/* Start of the form */}
@@ -154,16 +197,16 @@ const EditHistory = () => {
                     type="text"
                     onChange={handleTitleChange}
                     value={title}
-                    className={emptyFields.includes('title') ? 'error' : ''}
+                    //className={emptyFields.includes('title') ? 'error' : ''}
                 />
 
                 {/* Input field for Due Date */}
                 <label>Due Date:</label>
                 <input 
-                    type="date"
+                    type="datetime-local"
                     onChange={handleDateChange} 
                     value={date}
-                    className={emptyFields.includes('date') ? 'error' : ''}
+                    //className={emptyFields.includes('date') ? 'error' : ''}
                 />
 
                 {/* Dropdown for Priority selection */}
@@ -214,7 +257,15 @@ const EditHistory = () => {
 
                 {/* Submit button */}
                 <button type="submit">Submit</button>
-                {error && <div className="error">{error}</div>}
+                {successMessage && <div className="success-message">{successMessage}</div>}
+                {
+                notification.message && (
+                    <div className={`notification ${notification.type}`}>
+                        {notification.message}
+                    </div>
+                )
+                }
+                {error && <div className="task-form-error">{error}</div>}
             </form>
             {/* End of the form */}
             </div>

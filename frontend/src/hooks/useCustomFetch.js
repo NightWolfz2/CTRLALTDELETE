@@ -1,4 +1,3 @@
-//NEW PAGE
 export const useCustomFetch = () => {
 
     const customFetch = async (url, method = 'GET', data = null) => {
@@ -24,12 +23,14 @@ export const useCustomFetch = () => {
       try {
         const response = await fetch(url, config);
         if (response.status === 401) {
-          // Handling unauthorized access by throwing an error
-          // The calling component can catch this error and decide on redirection or other actions
           throw new Error('Unauthorized');
         }
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorResponse = await response.json(); // Attempt to parse the error response
+          console.log("Raw error response:", errorResponse);
+          // Check for an 'errors' array and join the messages into a single string
+          const errorMessage = Array.isArray(errorResponse.errors) ? errorResponse.errors.join(' ') : `HTTP error! status: ${response.status}`;
+          throw new Error(errorMessage);
         }
         // Checking if the response has content and is of type 'application/json' before parsing
         const contentType = response.headers.get('Content-Type');

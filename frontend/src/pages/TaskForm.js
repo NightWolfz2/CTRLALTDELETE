@@ -22,7 +22,7 @@ const TaskForm = () => {
   const [currentEmployee, setCurrentEmployee] = useState('');
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [error, setError] = useState(null);
-  const [emptyFields, setEmptyFields] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
 
   console.log("Creating task with assigned employees:", selectedEmployees);
   useEffect(() => {
@@ -58,55 +58,59 @@ const TaskForm = () => {
     console.log("Selected Employees updated:", selectedEmployees);
 }, [selectedEmployees]); // This useEffect will run every time selectedEmployees changes
 
-    // Autofill function
-  const autofill = () => {
-    setTitle('TASK TITLE');
-    setDate(moment().tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm')); // Autofill with current Pacific Time
-    setDescription('AUTOFILLED TASK DESCRIPTION');
-    setPriority('High');
-    setEmployees([{}]);
-  };
-
    // Convert the local date and time to a UTC string
-  const convertToUTC = (localDateTime) => {
+   const convertToUTC = (localDateTime) => {
+    // Directly return the localDateTime if it's empty, letting the backend handle the missing date validation
+    if (!localDateTime) {
+      return localDateTime;
+    }
+  
+    // Convert the local date and time to a UTC string for non-empty dates
     return moment(localDateTime, 'YYYY-MM-DDTHH:mm').tz('America/Los_Angeles').utc().format();
-  };
+  };  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting with selectedEmployees:", selectedEmployees); // Debugging line
+    
+    // Convert the date; this will either pass through the empty value or convert a valid date to UTC
+    const utcDate = convertToUTC(date);
+  
     const task = {
       title,
-      date: convertToUTC(date), // Convert the date to UTC
+      date: utcDate, 
       description,
       priority,
       employees: selectedEmployees,
     };
-    console.log("Task object being sent to the server:", task);
+  
     try {
       const json = await customFetch('/api/tasks', 'POST', task);
       dispatch({ type: 'CREATE_TASK', payload: json });
-      
-  // Reset form fields and state after successful task creation
-  setTitle('');
-  setDate('');
-  setDescription('');
-  setPriority('');
-  setEmployees([]); // Assuming you want to clear the fetched employees list or reset selections
-  setSelectedEmployees([]);
-  setError(null);
-  setEmptyFields([]);
-} catch (error) {
-  console.error("Error creating task:", error);
-  if (error.message === 'Unauthorized') {
-      logout();
-      navigate('/login');
-  } else {
-      setError(error.message);
-      setEmptyFields(error.emptyFields || []);
-  }
-}
-};
 
+      setSuccessMessage("Task Created");
+
+      setTimeout(() => setSuccessMessage(''), 2500);
+  
+      // Reset form fields and state after successful task creation
+      setTitle('');
+      setDate('');
+      setDescription('');
+      setPriority('');
+      setSelectedEmployees([]);
+      setError(null); // Clear any existing errors
+
+    } catch (error) {
+      console.error("Error creating task:", error);
+      if (error.message.includes('Unauthorized')) {
+        logout();
+        navigate('/login');
+      } else {
+        // Directly use the error message returned from the customFetch
+        setError(error.message);
+        setSuccessMessage('');
+      }
+    }
+  };          
 
 const handleTitleChange = (e) => {
 setTitle(e.target.value);
@@ -124,8 +128,6 @@ const handleDescriptionChange = (e) => {
 setDescription(e.target.value);
 };
 
-// Handler to add selected employee to the task
-// Handler to add selected employee to the task
 // Handler to add selected employee to the task
 const handleAddEmployee = () => {
 console.log("Current Employee before adding:", currentEmployee);
@@ -168,7 +170,7 @@ return (
           type="text"
           onChange={handleTitleChange}
           value={title}
-          className={emptyFields.includes('title') ? 'error' : ''}
+          //className={emptyFields.includes('title') ? 'error' : ''}
       />
 
       <label>Due Date:</label>
@@ -176,7 +178,7 @@ return (
           type="datetime-local"
           onChange={handleDateChange} 
           value={date}
-          className={emptyFields.includes('date') ? 'error' : ''}
+          //className={emptyFields.includes('date') ? 'error' : ''}
       />
 
       <label>Priority:</label>
@@ -222,12 +224,8 @@ return (
       ></textarea>
 
       <button type="submit">Submit</button>
-      {error && <div className="error">{error}</div>}
-      {/*Autofill button*/}   
-      <button type="button" onClick={autofill}>
-        Autofill Form
-      </button>
-      {/*End Autofill button*/}  
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      {error && <div className="task-form-error">{error}</div>}
   </form>
 </div>
 );
