@@ -78,6 +78,11 @@ Mailtrap set-up:
 
 Once your domain is set-up, you will be able to find your mailtrap USER_NAME and PASSWORD on that same page or in settings. Add the following information using the Environment set-up below.
 
+NinjaManager Roles set-up:
+NinjaManager currently has 3 roles: employee, admin, and owner. Both owner and admins can assign admins to employees using the "users" dropdown menu which allows users with those roles to delete tasks from the "History" page, however, only the Owner can remove admin privileges and remove users from the database. To assign ownership, you can do one of the 2 options:
+- During your `.env` file setup, input your email for the variable "OWNER_EMAIL" BEFORE account creation, or
+- Creating the FIRST account after pulling this code will automatically assign ownership.
+
 Environment set-up:
 - Create a `.env` file in the backend folder.
 - Add your environment variables to the `.env` file.
@@ -87,6 +92,7 @@ Environment set-up:
      	PORT=4000
      	MONGO_URI=mongodb+srv://<username>:<password>@mernapp.l0dhnve.mongodb.net/?retryWrites=true&w=majority
         OWNER_EMAIL="owner_email@gmail.com"
+        DOMAIN_NAME="http://name_of_website.com"
         SECRET=randomsecrethashedwordthatissecurectrlaltdelete
         EMAIL_VERIFICATION_SECRET=randsecretemailverifwordctrlaltdelete
         EMAIL_USERNAME="mailtrap_username"
