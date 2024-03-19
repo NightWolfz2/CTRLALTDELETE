@@ -3,25 +3,13 @@
   background: #b9b9b9;
 }
 
-.my-rbc-container {
-  display: flex;
-  justify-content: center; /* Center the item horizontally */
-
-  position: relative;
-  margin: 1.5%;
-  padding: 1.5% 1%;
-
-  width: 70%;
-  height: 80%; 
-  border-radius: 5px;
-  background: #353535;
-}
-
 .rbc-calendar {
   background: #353535;
   border-radius: 5px;
   margin: 1.5%;
   padding: 2.5% 2.5%;
+  min-width: 993.383px;
+  min-height: 348.3px;
   width: 70%;
   height: 90%; 
 }
@@ -45,13 +33,18 @@
 
 /*Month View*/
 .rbc-month-view {
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-radius: 4px;
 }
-
+.rbc-month-view .rbc-event {
+  width: 100%;
+  padding: 2px 1px;
+  border-radius: 8px;
+}
 .rbc-month-view .rbc-event-content {
   font-size: small;
   font-weight: 500;
+  padding: 0 4px;
 }
 
 .rbc-month-header {
@@ -60,11 +53,18 @@
 }
 
 .rbc-day-bg {
-  background: hsl(0, 0%, 80%);
+  background: #b9b9b9;
+}
+
+/*CURRENT DAY*/
+.rbc-day-bg.rbc-today {
+  border: 2px solid #9B9B9B;
+  border-radius: 2px;
+  background-color: #eaf6ff;
 }
 
 .rbc-off-range-bg {
-  background: hsl(0, 0%, 60%);
+  background: #9B9B9B;
 }
 
 /*Week View*/
@@ -73,6 +73,10 @@
 }
 .rbc-time-view {
   background: #b9b9b9;
+}
+
+.rbc-time-view.rbc-allday-cell {
+  background-color: #b9b9b9 !important;
 }
 
 .rbc-time-view .rbc-row {
@@ -84,21 +88,25 @@
   background: #353535;
 }
 
-.rbc-time-view .rbc-row-bg .rbc-day-bg {
- 
-}
-.rbc-timeslot-group {
 
+
+.rbc-time-view .rbc-event-content {
+  margin: 0;
+  padding:0;
+
+}
+.rbc-day-slot .rbc-event {
+  border-radius: 1px;
+  padding: 0 !important;
+}
+.rbc-day-slot .rbc-event-label {
+  padding: 0;
 }
 
 .rbc-header {
   background: #353535;
   font: inherit;
   color: #fff;
-}
-
-.rbc-day-slot.rbc-time-column{
-
 }
 
 .rbc-time-gutter.rbc-time-column {
@@ -110,11 +118,12 @@
   background: #353535;
 }
 
-/*Agenda View*/
-.rbc-agenda-view .rbc-agenda-date-cell, .rbc-agenda-time-cell {
-  background: #353535;
-  color: #fff !important;
+.rbc-day-slot .rbc-event {
+  font-size: smaller;
+  font-weight: 500;
+  padding: 1px 4px;
 }
+
 
 /*Button*/
 .rbc-active {
@@ -128,7 +137,7 @@
 }
 
 .rbc-events-container {
-  overflow: auto;
+  margin-right: 0px !important;
 }
 
 .rbc-current-time-indicator {
@@ -143,8 +152,8 @@
 
   position: relative;
   margin: 1.5%;
-  margin-left: 0;
-
+  margin-right: 0;
+  min-width: 532.717px;
   width: 30%;
 
   border-radius: 5px;
@@ -153,9 +162,7 @@
 }
 
 .side-component {
-
   margin-bottom: 5.347%;
-
   Color: #fff;
   background: #353535;
   border-radius: 5px;
@@ -171,6 +178,8 @@
 }
 
 .side-component h3{
+  display: flex;
+  flex-direction: row;
   text-align: center;
   margin: 0;
 }
@@ -188,7 +197,7 @@
   display: flex;
   flex-direction: column;
   color: #fff;
-  padding: 5% 8%;
+  margin: 5% 8%;
 }
 
 .task-info .scroll {
@@ -201,7 +210,6 @@
 .task-info h3{
   text-align: center;
   margin: 0;
-  padding-bottom: 5%;
 }
 .task-info label {
   font: inherit;
@@ -209,13 +217,14 @@
 }
 .task-info input {
   margin-bottom: 2%;
-  padding: 0 2%;
+  padding: 1.5px 2%;
   height: 2.5vh;
   box-sizing: border-box;
   border: 1px solid #fff;
   border-radius: 4px;
-  font: inherit;
-  font-size: small;
+  font-family: "Poppins", sans-serif;
+  font-size: smaller;
+  font-weight: 500;
   }
   
   .task-info select {
@@ -225,7 +234,9 @@
     box-sizing: border-box;
     border: 1px solid #fff;
     border-radius: 4px;
-    font-size: small;
+    font-family: "Poppins", sans-serif;
+    font-size: smaller;
+    font-weight: 500;
   }
   
   .task-info select:disabled { 
@@ -278,9 +289,6 @@
   background-color: #555;
 }
 
-.rbc-day-bg.rbc-today {
-  background-color: #eaf6ff !important;
-}
 
 .filters {
   display: flex;
@@ -306,8 +314,70 @@
 
 .react-datepicker__day--today {
   border-radius: 0.3rem;
-  background-color: rgb(138, 226, 138) !important;
-}
-.react-datepicker__day--selected {
+  background-color: #eaf6ff !important;
+  font-weight: 600;
 }
 
+.react-datepicker__day--selected {
+  color: black;
+  background-color:#f0f0f0;
+
+}
+.react-datepicker__day--selected:hover {
+  background-color:  #f0f0f0; /* Change background color when hovered */
+}
+
+.react-datepicker__month-container {
+  background-color:#b9b9b9
+}
+
+.react-datepicker__header {
+  background-color: #353535;
+}
+
+.react-datepicker__current-month {
+  color: #fff;
+}
+
+.react-datepicker__day-name {
+  color: #fff ;
+}
+
+.react-datepicker__day--outside-month {
+  margin: 0;
+  padding: 0.166rem;;
+  opacity: 0.5;
+
+}
+
+.react-datepicker__day--keyboard-selected {
+  background: none;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 2px 20px;
+  border-radius: 2px;
+}
+
+
+.task-info .headers {
+  display: flex;
+  flex-direction: row;
+}
+
+.task-list li {
+  display: flex;
+  flex-direction: row;
+  color: #fff;
+  padding: 2px 5px;
+  margin: 5px !important; 
+  border: 1px solid #fff;
+}
+
+.task-info li:hover {
+  cursor: pointer;
+  opacity: 0.75;
+}
