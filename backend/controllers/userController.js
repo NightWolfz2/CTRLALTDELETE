@@ -26,6 +26,8 @@ const loginUser = async (req, res) => {
             email,
             fname: user.fname,
             lname: user.lname,
+            role: user.role,
+            owner: user.owner,
             token,
             expiration 
         });
@@ -79,33 +81,76 @@ const getEmployees = async (req, res) => {
     const roles = ['employee', 'admin', 'owner'];
     try {
         //const employees = await User.find({ role: 'employee' }, 'fname lname email').exec();
-        const employees = await User.find({ role: { $in: roles } }, 'fname lname email').exec(); // new code
+        const employees = await User.find({ role: { $in: roles } }, 'fname lname email owner role').exec(); // new code
         res.status(200).json(employees);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 
-const updateUserRole = async (req, res) => {
-    const { userId, newRole } = req.body;
-    const permissionRoles = ['admin','owner']
-    if (!req.user.role.includes(permissionRoles)) {
-        return res.status(403).json({ error: 'You do not have permission to perform this action' });
+const assignAdmin = async (req, res) => {
+    const {user, updatingUser} = req.body;
+ 
+    if (!user) {
+        return res.status(400).json({ error: 'Invalid request, deletingUser!' });
+    }
+    if (!updatingUser) {
+        return res.status(400).json({ error: 'Invalid request, missing updatingUser!' });
+    } 
+    if(user.email === updatingUser.email) {
+        return res.status(403).json({ error: 'You do not have permission to promote yourself' });
+    }
+    if(updatingUser.owner) {
+        return res.status(400).json({ error: 'Owner is maximum promotion' });
+    }
+    if(updatingUser.role === "admin" && user.role === "Admin") {
+        return res.status(400).json({ error: 'User is already admin' });
     }
 
-    if (!['employee', 'admin'].includes(newRole)) {
-        return res.status(400).json({ error: 'Invalid role specified' });
+    if(user.role === "employee") {
+        return res.status(401).json({ error: 'Only admins or owner can assign admins' });
     }
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: updatingUser }, // Filter criteria to find the user
+        { role: "admin" }, // Update to be applied
+        { new: true } // To return the updated document
+      );
+    if (!updatedUser) {
+        return res.status(400).json({ error: 'No such user' });
+    }
+    return res.status(200).json({success: `Assigned ${updatedUser.fname} to: ${updatedUser.role}`})
+};
 
-    try {
-        const user = await User.findByIdAndUpdate(userId, { role: newRole }, { new: true });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.status(200).json({ message: `User role updated to ${newRole}`, user });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+const unassignAdmin = async (req, res) => {
+    const {user, updatingUser} = req.body;
+
+    if (!user) {
+        return res.status(400).json({ error: 'Invalid request, deletingUser!' });
     }
+    if (!updatingUser) {
+        return res.status(400).json({ error: 'Invalid request, missing updatingUser!' });
+    } 
+    if(user.email === updatingUser.email) {
+        return res.status(403).json({ error: 'You do not have permission to demote yourself' });
+    }
+    if(updatingUser.owner) {
+        return res.status(400).json({ error: 'Owner is maximum promotion' });
+    }
+    if(updatingUser.role === "employee") {
+        return res.status(400).json({ error: 'User is already an employee' });
+    }
+    if(!user.owner) {
+        return res.status(401).json({ error: 'Only owner can unassign admins' });
+    }
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: updatingUser }, // Filter criteria to find the user
+        { role: "employee" }, // Update to be applied
+        { new: true } // To return the updated document
+      );
+    if (!updatedUser) {
+        return res.status(400).json({ error: 'No such user' });
+    }
+    return res.status(200).json({success: `Assigned ${updatedUser.fname} to: ${updatedUser.role}`})
 };
 
 const getUserById = async (req, res) => {
@@ -139,25 +184,39 @@ const getUserDetails = async (req, res) => {
     }
   };
   // delete a task
-const deleteUser = async (req, res) => {
-    const { id } = req.params;
-    if(!id) return res.status(401).json({ error: 'Invalid request, missing parameters!' })
+  const deleteUser = async (req, res) => {
+    const { deletingUser, userToDelete } = req.body; // Assuming you pass the ID of the user performing the deletion in the request body
     
-    if (!req.user.role.includes('owner')) { // check if owner
-        return res.status(403).json({ error: 'You do not have permission to perform this action' });
+    
+    if (!deletingUser) {
+        return res.status(400).json({ error: 'Invalid request, deletingUser!' });
+    }
+    if (!userToDelete) {
+        return res.status(400).json({ error: 'Invalid request, missing userToDelete!' });
+    } 
+    if(deletingUser.email === userToDelete.email) {
+        return res.status(403).json({ error: 'You do not have permission to delete yourself' });
+    }
+    if(userToDelete.owner) {
+        return res.status(403).json({ error: 'You do not have permission to delete the owner' });
+
+    }
+    if (deletingUser.owner) {
+        const deletedUser = await User.findOneAndDelete({ _id: userToDelete });
+        if (!deletedUser) {
+            return res.status(400).json({ error: 'No such user' });
+        }
+    } else {
+        return res.status(401).json({ error: 'You do not have permission to perform this action' });
     }
     
-    const user = await User.findOneAndDelete({ _id: id });
-  
-    if (!user) {
-      return res.status(400).json({ error: 'No such user' });
-    }
-  
-    res.status(200).json(user);
-  };
+    return res.status(200).json({success: `Deleted ${userToDelete.fname}..`})
+      
+};
+
 
 // Consolidated module.exports
-module.exports = { signupUser, loginUser, getfName, getlName, getEmployees, updateUserRole };
+module.exports = { signupUser, loginUser, getfName, getlName, getEmployees, assignAdmin, unassignAdmin };
 const verifyEmail = async(req, res) => {
     const {email, otp} = req.body
 
@@ -304,7 +363,7 @@ module.exports = {
     getlName,
     getEmployees,
     getUserById,
-    updateUserRole,
+    assignAdmin,
     verifyEmail,
     getUserDetails,
     sendOTP,
@@ -312,5 +371,6 @@ module.exports = {
     updateUserPassword,
     forgotPassword, 
     resetPassword,
-    deleteUser
+    deleteUser,
+    unassignAdmin
 };

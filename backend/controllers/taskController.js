@@ -91,27 +91,42 @@ const markTaskDeleted = async (req, res) => {
 // Inside your task creation route handler
 const createTask = async (req, res) => {
   const { title, date, description, priority, employees } = req.body;
-  
+  let errors = [];
+
+  // Check for missing fields and add appropriate messages to the errors array
+  if (!title) errors.push("The title field is required.");
+  if (!date) errors.push("Please provide a due date for the task.");
+  if (!description) errors.push("A task description is required.");
+  if (!priority) errors.push("Please select a priority level for the task.");
+
+  // If there are any errors, return a 400 response with the errors array
+  if (errors.length > 0) {
+    return res.status(400).json({ errors: errors });
+  }
+
   try {
+    // If 'employees' is not an array or is undefined, default to an empty array
+    const assignedEmployees = Array.isArray(employees) ? employees : [];
+
     const task = new Task({
       title,
       date,
       description,
       priority,
-      employees, // Assuming this is an array of employee IDs
-      createdBy: req.user.id, // Use req.user.id from the authentication middleware
+      employees: assignedEmployees, // accepts empty array
+      createdBy: req.user.id,
     });
 
     await task.save();
     res.status(201).json(task);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ error: error.message });
+    //console.log(error);
+    //res.status(400).json({ errors: ["Error creating task"] });
+    console.error("Error in createTask:", error);
+    // Send back a more detailed error message for debugging
+    res.status(400).json({ errors: ["An unexpected error occurred when creating the task.", error.message] });
   }
 };
-
-
-
 
 const moment = require('moment-timezone');
 
@@ -147,6 +162,19 @@ const deleteTask = async (req, res) => {
 const updateTask = async (req, res) => {
   const { id } = req.params;
   const { title, date, description, priority, employees } = req.body;
+  
+  let errors = [];
+
+  // Check for missing fields and add appropriate messages to the errors array
+  if (!title) errors.push("The title field is required.");
+  if (!date) errors.push("Please provide a due date for the task.");
+  if (!description) errors.push("A task description is required.");
+  if (!priority) errors.push("Please select a priority level for the task.");
+
+  // If there are any errors, return a 400 response with the errors array
+  if (errors.length > 0) {
+    return res.status(400).json({ errors: errors });
+  }
 
   try {
     const updateData = {
@@ -154,12 +182,12 @@ const updateTask = async (req, res) => {
       date,
       description,
       priority,
-      employees,
-      updatedBy: req.user.id, // Use req.user.id here as well
+      employees, // can be empty
+      updatedBy: req.user.id, 
     };
 
     const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true })
-      .populate('createdBy updatedBy', 'fname lname'); // Assuming you have these fields in your User model
+      .populate('createdBy updatedBy', 'fname lname'); 
 
     if (!task) {
       return res.status(404).json({ error: 'No such task' });
@@ -171,8 +199,6 @@ const updateTask = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
-
 
 module.exports = {
   getTasks,

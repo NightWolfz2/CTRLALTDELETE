@@ -113,7 +113,6 @@ const TaskDetails2 = ({ task, onClose, context }) => {
           <p className="task-desc-text">{task.description}</p>
         </div>
         <p className="priority"><strong>Priority: </strong>{task.priority}</p>
-        <p><strong>Assigned: </strong></p>
         <p><strong>Assigned To: </strong>{assignedEmployees.join(', ') || 'No one assigned'}</p>
         <button type="button" className="material-symbols-outlined" onClick={markTaskAsDel}><span>delete</span></button>
       </div>

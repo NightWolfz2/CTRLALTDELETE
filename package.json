@@ -9,12 +9,13 @@
     "react-icons": "^5.0.1"
   },
   "scripts": {
-    "install": "npm install --save-dev concurrently && npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm install cors && npm install query-string && npm install axios && npm run install-frontend && npm run install-backend",
+    "install": "npm install --save-dev concurrently && npm run install-libs && npm run install-frontend && npm run install-backend",
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
     "start-frontend": "cd frontend && npm start",
     "start-backend": "cd backend && npm run dev",
     "install-backend": "cd backend && npm install && npm install express && npm install nodemailer && npm install dotenv && npm install cors",
-    "install-frontend": "cd frontend && npm install && npm install react-icons --save"
+    "install-frontend": "cd frontend && npm install && npm install react-icons --save",
+    "install-libs": "npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm install cors && npm install query-string && npm install axios && npm install moment-timezone"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

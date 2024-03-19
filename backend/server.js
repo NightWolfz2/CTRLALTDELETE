@@ -8,20 +8,22 @@ const userRoutes = require('./routes/user');
 const cors = require('cors');
 
 
+
 // express app
 const app = express();
 
 // Add CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow your frontend domain
+  origin: process.env.DOMAIN_NAME,
   methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
 }));
+
 
 // middleware
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.path, req.method);
+  //console.log(req.path, req.method);
   next();
 });
 

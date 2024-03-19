@@ -34,10 +34,45 @@ const userSchema = new Schema({
         default: false,
         required: true
     },
+    owner: {
+        type: Boolean,
+        default: false,
+        required: true
+    }
 });
 
+userSchema.index({ owner: 1 }, { unique: true, partialFilterExpression: { owner: true } });
 
-  
+userSchema.pre('save', async function(next) {
+    if (!this.isNew) {
+        next(); // Skip if not a new user being created
+        return;
+    }
+
+    
+
+    // Check if the user's email matches process.env.OWNER_EMAIL
+    if (this.email === process.env.OWNER_EMAIL) {
+        // Set the current user as the owner
+        this.owner = true;
+        this.role = 'owner';
+
+        // If there are any existing owners, remove the owner flag from them
+        await this.model('User').updateMany({ owner: true }, { $set: { owner: false, role: 'employee' } });
+    } else {
+        const existingOwner = await this.model('User').findOne({ owner: true });
+        if (existingOwner) {
+            // If an owner already exists, do nothing and proceed with the save operation
+            next();
+            return;
+        }
+        this.owner = true;
+        this.role = 'owner';
+    }
+    
+
+    next();
+});
 
 // static user sign up method
 userSchema.statics.signup = async function(fname,lname,email, password) {
@@ -78,10 +113,6 @@ userSchema.statics.signup = async function(fname,lname,email, password) {
         subject: "Verify your email account",
         html: generateEmailTemplate(OTP,user.fname),
     })
-    if(email === process.env.OWNER_EMAIL) {
-        user.role = "owner";
-        await user.save()
-    } 
     return user
 }
 
@@ -90,18 +121,19 @@ userSchema.statics.login = async function(email, password) {
     if(!email || !password) {
         throw Error('All fields must be filled')
     }
-
     const user = await this.findOne({email})
+    console.log(user.email);
     // check if email exists
     if (!user) {
         throw Error('Incorrect email')
     }
+
     // check if password matches
     const userMatch = await bcrypt.compare(password, user.password)
     if(!userMatch) {
         throw Error('Incorrect credentials')
     }
-
+    await user.save()
     return user
 }
 
