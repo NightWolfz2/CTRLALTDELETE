@@ -14,9 +14,10 @@ const app = express();
 
 // Add CORS configuration
 app.use(cors({
-  origin: process.env.DOMAIN_NAME, // Allow your frontend domain
+  origin: process.env.DOMAIN_NAME,
   methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
 }));
+
 
 // middleware
 app.use(express.json());
