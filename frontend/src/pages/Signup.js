@@ -1,18 +1,26 @@
 import {useState} from 'react'
 import {useSignup} from "../hooks/useSignup"
 import './../css/TaskForm.css'; // Import your CSS file
+import PasswordStrengthBox from "../components/PasswordStrengthBox";
+import validator from 'validator';
 
 const Signup = () => {
     const [fname, setfName] = useState('')
     const [lname, setlName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [showPasswordStrengthBox, setShowPasswordStrengthBox] = useState(false);
     const {signup, error, isLoading} = useSignup()
 
 
 const handleSubmit = async (e) => {
     e.preventDefault()
-    await signup(fname,lname,email, password)
+
+    setShowPasswordStrengthBox(true);
+
+    if(validator.isStrongPassword(password)) {
+        setTimeout(() => signup(fname,lname,email, password), 1500);
+    }
 }
 
 return (
@@ -43,6 +51,7 @@ return (
                 onChange={(e) => setPassword(e.target.value)}
                 value = {password}
             />
+            <PasswordStrengthBox password={password} display={showPasswordStrengthBox} />
             <button disabled={isLoading}>Sign Up</button>
             {error && <div className="error">{error}</div>}
         </form>
