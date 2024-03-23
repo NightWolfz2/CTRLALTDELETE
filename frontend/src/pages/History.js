@@ -87,7 +87,7 @@ const Overview = () => {
     setPriorityLevel("All");
     setStatus("All");
     setDueDate(""); // Clear the due date by setting it to an empty string
-    setSearch(""); // Clear the search bar by setting it to an empty string
+    setSearch(""); // Clear the  search bar by setting it to an empty string
   };
   
   const deleteClick = async (task) => {
