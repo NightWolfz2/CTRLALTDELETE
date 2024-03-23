@@ -10,104 +10,105 @@
   padding: 50px;
   text-align: left;
   padding-left: 30px;
-  margin-bottom: 10px; 
-  
+  margin-bottom: 10px;
+
 }
+
 .filter-container {
   display: flex;
   align-items: center;
   margin-right: auto;
-  margin-top: 30px; 
+  margin-top: 30px;
   margin-left: -100px;
 }
 
-  .priority-label {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
-  
-  .priority-select {
-    width: 150px;
-    height: 30px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    margin-right: 10px; 
-  }
+.priority-label {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
 
-  .status-label {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.priority-select {
+  width: 150px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 10px;
+}
 
-  .status-select {
-    width: 150px;
-    height: 30px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    margin-right: 10px; 
-  }
+.status-label {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
 
-  .due-date-label {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.status-select {
+  width: 150px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 10px;
+}
 
-  .date-select {
-    width: 150px;
+.due-date-label {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+
+.date-select {
+  width: 150px;
   height: 20px;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
-  margin-right: 10px; 
-  }
+  margin-right: 10px;
+}
 
-  .search-bar-label {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-left: 20px;
-  }
+.search-bar-label {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
 
-  .searchBar {
-    width: 150px;
-    height: 20px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    margin-right: 10px; 
-  }
+.searchBar {
+  width: 150px;
+  height: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-right: 10px;
+}
 
-  .clear-button button {
-    margin-top: 30px;
-    background-color: #2087e7;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 4px;
-    font-size: 1em;
-    padding-left: 20px;
-    margin-right: 1350px;
-  }
+.clear-button button {
+  margin-top: 30px;
+  background-color: #2087e7;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-size: 1em;
+  padding-left: 20px;
+  margin-right: 1350px;
+}
 
-  .clear-button button:hover {
-    background-color: #186db5;
-  }
+.clear-button button:hover {
+  background-color: #186db5;
+}
 
 .box-container {
   display: flex;
@@ -124,6 +125,14 @@
 
 .medium-priority-box {
   background-color: #f3f899;
+}
+
+.in-progress-box {
+  background-color: #adebad;
+}
+
+.past-due-box {
+  background-color: #ff7e5d;
 }
 
 .box2 {
@@ -160,8 +169,8 @@
 }
 
 .Overview .little-box {
-  width: 325px; 
-  height: auto; 
+  width: 325px;
+  height: auto;
   background-color: #f2f2f2;
   border: 1px solid #000;
   margin: 10px;
@@ -179,23 +188,23 @@
 }
 
 .little-box2 {
-  position: relative; 
-  top: 0px; 
-  left: 1160px; 
-  width: 135px; 
-  height: 20px; 
-  background-color: #adebad; 
-  border: 2px solid #000; 
-  margin: 0px 0px; 
-  padding: 1px; 
+  position: relative;
+  top: 0px;
+  left: 1160px;
+  width: 135px;
+  height: 20px;
+  background-color: #adebad;
+  border: 2px solid #000;
+  margin: 0px 0px;
+  padding: 1px;
   font-size: 15px;
-  transition: background-color 0.3s, border-color 0.3s; 
-  cursor: pointer;  
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.little-box2:hover{
-	background-color: #cfe8cf; 
+.little-box2:hover {
+  background-color: #cfe8cf;
 }
 
 .little-box2.completed {
@@ -204,19 +213,19 @@
   left: 1160px;
   width: 135px;
   height: 20px;
-  background-color: 	rgb(8, 243, 161);
+  background-color: rgb(8, 243, 161);
   border: 2px solid #101010;
   margin: 0px 0px;
   padding: 1px;
   font-size: 15px;
-  transition: background-color 0.3s, border-color 0.3s; 
-  cursor: pointer;  
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .little-box2.completed:hover {
-	background-color: #56615d; 
-  
+  background-color: #56615d;
+
 }
 
 .task-box {
