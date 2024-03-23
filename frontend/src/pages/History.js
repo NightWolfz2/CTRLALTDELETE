@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import './../css/History.css'; // Import CSS file
+import { useEffect } from "react"
 import { useTasksContext } from "../hooks/useTasksContext"
+import TaskDetails from "../components/TaskDetails"
 import editIcon from '../images/trash_icon.png';
+import trashIcon from '../images/edit_icon.png';
 import { useNavigate } from 'react-router-dom';
 import { useCustomFetch } from '../hooks/useCustomFetch';
 import { useLogout } from '../hooks/useLogout';
@@ -26,6 +29,24 @@ const Overview = () => {
   const navigate = useNavigate();
   const customFetch = useCustomFetch();
   const { logout } = useLogout();
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const json = await customFetch('/api/tasks');
+        dispatch({ type: 'SET_TASKS', payload: json });
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        if (error.message === 'Unauthorized') {
+          logout();
+          navigate('/login');
+        }
+      }
+    };
+    fetchTasks();
+  }, []);
+  
+  const currentDate = new Date(); 
   
   const priorityChange = (e) => {
     setPriorityLevel(e.target.value);
@@ -63,6 +84,30 @@ const Overview = () => {
       }
     }
   };
+
+  const getTaskStatus = (task) => {
+    const taskDueDate = new Date(task.date);
+
+    if (taskDueDate > currentDate) {
+      return "In Progress";
+    } else {
+      return "Past Due";
+    }
+  };
+
+  const getPriorityStatus = (priority) => {
+    switch (priority) {
+      case 'Low':
+        return 'Low';
+      case 'Medium':
+        return 'Medium';
+      case 'High':
+        return 'High';
+      default:
+        return 'Unknown';
+    }
+  };
+  const [completedStates, setCompletedStates] = useState(new Map());
   
   const filterTasks = () => {
 
@@ -74,6 +119,27 @@ const Overview = () => {
       const isCompleteOrDeleted = task.completed || task.deleted; // Only include completed tasks
       return priorityMatch && statusMatch && dueDateMatch && searchMatch && isCompleteOrDeleted;
     });
+  };
+
+  const handleButtonClick = async (taskId) => {
+    try {
+      // Fetch the data asynchronously
+      const response = await customFetch(`/api/tasks/complete-task/${taskId}`, 'PATCH');
+      const json = await response.json();
+
+      // Dispatch the action with the updated task data
+      dispatch({ type: 'UPDATE_TASK', payload: json });
+
+      // Update the completed states
+      setCompletedStates((prevStates) => {
+        const newStates = new Map(prevStates);
+        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
+        return newStates;
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors here
+    }
   };
 
   return (
@@ -152,49 +218,42 @@ const Overview = () => {
 				</div>
 			  
         </div>
-        <button className={`box2`}>
-          <div className={`little-box2 ${task.deleted ? 'deleted' : ''}`} style={{ pointerEvents: 'none' }}>
-            <b>{task.deleted ? 'Deleted' : task.completed ? 'Complete' : ''}</b>
-          </div>
-        </button>
+        <button
+                className={`box2`}
+                onClick={() => handleButtonClick(task._id)}
+				>
+                <div className={`little-box2 ${task.deleted ? 'deleted' : completedStates.get(task._id) ? 'completed' : ''}`}>
+                <b>{task.deleted ? 'Deleted' : completedStates.get(task._id) ? 'Completed' : 'Complete'}</b>
+                </div>
+              </button>
 			  
 			  <div className="box">
-				<div className="little-box" style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
+				<div className="little-box">
 				<p><b>Assigned Employee(s):</b></p>
 				<p>{task.employee}</p>
 				<p><b>Email:</b>{task.email}</p>
 				<p><b>Phone:</b>{task.phone}</p>
-        </div>
-
-
-				<div className="little-box" style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
-                <p><b>Task Description:</b></p>
-                <p>{task.description}</p>
-              </div>
-              <div className="little-box" style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
-                <p><b>Edit History:</b></p>
-                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()} <b>by:</b> {task.createdBy ? `${task.createdBy.fname} ${task.createdBy.lname}` : 'Unknown'}</p>
-                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()} <b>by:</b> {task.updatedBy ? `${task.updatedBy.fname} ${task.updatedBy.lname}` : 'Unknown'}</p>
-
-                {task.history && (
-              <div>
-                {task.history.split('\n').map((entry, index) => (
-                <p key={index}>{entry}</p>
-                ))}
-              </div>
-                )}
-              </div>
-              <div className="edit-button">
+				
+				</div>
+				<div className="little-box">
+					<p><b>Task Description:</b></p>
+					<p>{task.description}</p>
+          <div className="edit-button">
                 <button
-                  style={{ backgroundImage: `url(${editIcon})` }}
+                  style={{ backgroundImage: `url(${trashIcon})` }}
                   onClick={() => deleteClick(task)}
                 ></button>
-              </div>
-            </div>
           </div>
-        ))}
-      </div>
+				
+				</div>
+
+			  </div>
+			</div>
+		  ))}
+		</div>
+		
     </div>
   );
 };
+
 export default Overview;
