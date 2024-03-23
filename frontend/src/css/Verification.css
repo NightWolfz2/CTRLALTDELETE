@@ -2,7 +2,7 @@
     display: inline-block;
     padding: 1em 3em;
     border-radius: 0.5em;
-    background-color: #FF6666;
+    background-color: #ffc2c2;
     margin-bottom: 1em;
 }
 
@@ -11,5 +11,10 @@
     padding: 1em 3em;
     border-radius: 0.5em;
     background-color: #3fda59;
-    margin-bottom: 1em;
+}
+
+.password-strength-box {
+    padding: 1em 2em;
+    border-radius: 0.5em;
+    display: block;
 }
