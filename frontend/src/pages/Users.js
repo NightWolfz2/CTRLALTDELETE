@@ -10,6 +10,7 @@ const Users = () => {
   const [loggedUser, setLoggedUser] = useState(null); // Define loggedUser state
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const [successMessages, setSuccessMessages] = useState({});
 
   useEffect(() => {
     const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
@@ -60,7 +61,7 @@ const Users = () => {
         const errorData = await response.json();
         setError(errorData.error)
       } else {
-        setSuccess(json.success || true);
+        // setSuccess(json.success || true);
         setTimeout(() => {
           window.location.reload(); // Reload the page
           navigate('/users'); // Refresh the page after 2 seconds
@@ -86,7 +87,10 @@ const Users = () => {
       setError(json.error)
     }
     if(response.ok) {
-      setSuccess(json.success || true);
+      // setSuccess(json.success || true);
+      setSuccessMessages({
+        [userToAdmin._id]: json.success
+      });
       setTimeout(() => {
         window.location.reload(); // Reload the page
         navigate('/users'); // Refresh the page after 2 seconds
@@ -112,7 +116,9 @@ const Users = () => {
       setError(json.error)
     }
     else {
-      setSuccess(json.success || true);
+      setSuccessMessages({
+        [userTodeAdmin._id]: json.success
+      });
       setTimeout(() => {
         window.location.reload(); // Reload the page
         navigate('/users'); // Refresh the page after 2 seconds
@@ -142,6 +148,7 @@ const Users = () => {
               <FaCrown className="icon role-icon" />
               )}
               <span className="user-info user-email">{user.role}</span>
+              {successMessages[user._id] && <div className="success" style={{marginRight: "2em", padding: "0.5em 1.5em"}}>{successMessages[user._id]}</div>}
               { user.email !== loggedUser.email && user.role !== "admin" &&(
                 <button className="delete-button" onClick={() => adminClick(user)}>
                   <FaChevronCircleUp className="icon admin-icon" />
