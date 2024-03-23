@@ -267,7 +267,7 @@ const Overview = () => {
                 </div>
               </button>
             <div className="box">
-            <div className="little-box">
+            <div className="little-box"style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
             <p><b>Assigned Employee(s):</b></p>
             {task.employees && task.employees.length > 0 ? (
               task.employees.map(id => (
@@ -287,11 +287,11 @@ const Overview = () => {
             )}
           </div>
 
-              <div className="little-box">
+              <div className="little-box"style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
                 <p><b>Task Description:</b></p>
                 <p>{task.description}</p>
               </div>
-              <div className="little-box">
+              <div className="little-box"style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
                 <p><b>Edit History:</b></p>
                 <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()} <b>by:</b> {task.createdBy ? `${task.createdBy.fname} ${task.createdBy.lname}` : 'Unknown'}</p>
                 <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()} <b>by:</b> {task.updatedBy ? `${task.updatedBy.fname} ${task.updatedBy.lname}` : 'Unknown'}</p>
