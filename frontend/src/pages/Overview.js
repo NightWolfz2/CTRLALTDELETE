@@ -245,10 +245,10 @@ const Overview = () => {
         {filterTasks().map((task, index) => (
           <div className="task-box" key={task._id}>
             <div className="box1">
-              <p> <b># Task - {index + 1} {task.title}</b></p>
+              <p> <b># Task {index + 1} - {task.title}</b></p>
             </div>
             <div className="box1">
-              <div className="little-box1">
+              <div className={`little-box1 ${task.status === "In Progress" ? 'in-progress-box' : 'past-due-box' }`}>
                 Status - {task.status}
               </div>
               <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' : task.priority === 'Medium' ? 'medium-priority-box' : 'low-priority-box'}`}>

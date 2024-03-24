@@ -4,6 +4,7 @@ import { useAuthContext } from './useAuthContext'
 
 export const useUpdatePassword = () => {
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(null)
     const {dispatch} = useAuthContext()
     const updatePassword = async (email,currentPassword,newPassword, otp) => {
@@ -23,13 +24,15 @@ export const useUpdatePassword = () => {
             setError(json.error)
         }
         if(response.ok) {
-            // saves user to local storage
-            localStorage.setItem('user', JSON.stringify(json))
-            // update context
-            dispatch({type: 'LOGOUT', payload: json}) // logout after verifying
-            setIsLoading(false)
-            
+            setSuccess("You have successfully updated your password!");
+            setTimeout(() => {
+                // saves user to local storage
+                localStorage.setItem('user', JSON.stringify(json))
+                // update context
+                dispatch({type: 'LOGOUT', payload: json}) // logout after verifying
+                setIsLoading(false)
+            }, 1500)
         }
     }
-    return {updatePassword, isLoading, error}
+    return {updatePassword, isLoading, error, success}
 }

@@ -266,6 +266,7 @@ const sendOTP = async(req,res) => {
         token: OTP
     })
 
+    await verificationToken.deleteMany({owner: user._id});
 
     await verifyToken.save()
 
@@ -282,13 +283,13 @@ const updateUserPassword = async (req, res) => {
     const user = await User.findOne({ email: email });
     const token = await verificationToken.findOne({owner: user._id})
 
-    if(!token) return res.status(401).json({ error: 'user not found!' });
+    if(!token) return res.status(401).json({ error: 'Please provide a valid token!' });
 
     const isMatched = await token.compareToken(otp)
+    await verificationToken.findByIdAndDelete(token._id);
 
     if(!isMatched) return res.status(401).json({ error: 'Please provide a valid token!' });
 
-    await verificationToken.findByIdAndDelete(token._id);
     if(isMatched) {
         try {
             const result = await User.updatePassword(email, currentPassword, newPassword)
