@@ -100,7 +100,7 @@ const TaskDetails2 = ({ task, onClose, context }) => {
   return (
     <div className="task-details">
       <div className="task-header">
-        <h4>{task.title}</h4>
+      <h4 title={task.title}>{task.title}</h4>
         <span className={`task-status ${statusClassName}`}>{task.status}</span>
       </div>
       <div className="task-info">
