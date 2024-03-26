@@ -4,6 +4,8 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import { FaUserAlt, FaEnvelope, FaLock } from 'react-icons/fa';
 import {useUpdatePassword} from '../hooks/useUpdatePassword';
 import { useSendOTP } from '../hooks/useSendOTP';
+import PasswordStrengthBox from "../components/PasswordStrengthBox";
+import validator from 'validator';
 
 const Profile = () => { 
   const { user } = useAuthContext();
@@ -11,15 +13,18 @@ const Profile = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [OTP, setOTP] = useState('');
-  const {updatePassword} = useUpdatePassword()
+  const {updatePassword, error, success} = useUpdatePassword()
   const {sendOTP,deleteOTP} = useSendOTP()
+  const [showPasswordStrengthBox, setShowPasswordStrengthBox] = useState(false);
 
   const handleResetPasswordClick = () => {
+    setShowPasswordStrengthBox(false);
     setShowResetPasswordForm(true);
     sendOTP(user.email)
   };
 
   const handleCancelResetPassword = () => {
+    setShowPasswordStrengthBox(false);
     deleteOTP(user.email)
     setShowResetPasswordForm(false);
     // Reset input fields
@@ -28,11 +33,10 @@ const Profile = () => {
   };
 
   const handleResetPasswordSubmit = async(e) => {
-    await updatePassword(user.email,currentPassword,newPassword, OTP)
-    // Reset input fields and hide the form
-    setCurrentPassword('');
-    setNewPassword('');
-    setShowResetPasswordForm(false);
+    setShowPasswordStrengthBox(true);
+
+    await updatePassword(user.email,currentPassword,newPassword, OTP);
+    // setShowResetPasswordForm(false);
   };          
 
   return (
@@ -70,6 +74,7 @@ const Profile = () => {
                   value={newPassword} 
                   onChange={(e) => setNewPassword(e.target.value)} 
                 />
+                <PasswordStrengthBox password={newPassword} display={showPasswordStrengthBox} />
                 <input 
                   type="OTP" 
                   placeholder="OTP" 
@@ -78,6 +83,8 @@ const Profile = () => {
                 />
                 <button onClick={handleResetPasswordSubmit}>Submit</button>
                 <button onClick={handleCancelResetPassword}>Cancel</button>
+                {error && <div className="error">{error}</div>}
+                {success && <div className="success">{success}</div>}
               </div>
             ) : (
               <button className="profile-button resetPW" onClick={handleResetPasswordClick}>
