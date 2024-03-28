@@ -1,15 +1,14 @@
 /* Navbar.css */
 /* Main navbar container */
 .navbar {
-  background-color: #353535;
+  background: #353535;
   color: #fff;
   display: flex;
   justify-content: flex-start; /* Align items to the left */
   align-items: center;
-  padding: 10px 25px;
+  padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   position: relative;
-  width: auto;
 }
 
 /* Navbar logo */
@@ -21,7 +20,7 @@
 .navbar-brand {
   font-size: xx-large;
   font-weight: bold;
-  padding-right: 5rem;
+  padding-right: 2%;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -51,9 +50,8 @@
 
 /* Username display in navbar */
 .nav-username {
+  margin: 0 2rem;
   margin-left: auto;
-  margin-right: 20px;
-  padding: 0 1.5rem;
   color: inherit;
   font-size: inherit;
   text-decoration: none;
@@ -69,6 +67,7 @@ button.menu {
   border: 1px solid whitesmoke;
   border-radius: 2px;
   cursor: pointer;
+  right: 0 !important; /* Align the button to the right side of its containing element */
 }
 
 /* Remove default focus outline from menu button */
