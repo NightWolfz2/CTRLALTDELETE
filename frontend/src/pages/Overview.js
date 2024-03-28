@@ -192,7 +192,7 @@ const Overview = () => {
   };
 
   return (
-    <div className='Overview'>
+    <div className='Overview' style={{ paddingBottom: "4rem" }}>
       <div className="page-title"> 
         <h2>Overview</h2>
         <div className="filter-container">
@@ -275,7 +275,6 @@ const Overview = () => {
                   {employeeNamesMap[id] ? (
                     <>
                       <p>Name: {employeeNamesMap[id].name}</p>
-                      <p>Email: {employeeNamesMap[id].email}</p>
                     </>
                   ) : (
                     <p>Loading...</p>
