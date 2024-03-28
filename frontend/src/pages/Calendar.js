@@ -287,43 +287,41 @@ const CalendarPage = () => {
           </div>
           <div className="side-component-2">
             {showTasks && (
-              <div className="task-info-c">
+              <div className="task-list" >
                 <h3 >Agenda</h3>
                 <h4>{agendaDate}</h4>
-                <div className="task-list" style={{ overflowY: 'auto' }}>
-                  <table style={{ width: '100%', padding:'2% 0' }}>
-                    <tr>
-                      <th>Due</th>
-                      <th>Task</th>
-                      <th>Complete</th>
-                    </tr>
-                    <tbody>
-                      {tasksDue.slice().sort((a, b) => new Date(a.date) - new Date(b.date)).map(task => (
-                        <tr key={task.id}>
-                          <td 
-                            style={{ 
-                              width: '25%', height: '16px', paddingRight: '20px', color: '#fff', 
-                              fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none'
-                            }}>
-                            {new Date(task.date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true, minimumIntegerDigits: 2 })}
-                          </td>
-                          <td 
-                            style={{ 
-                              width: '70%', padding: '0px 5px', borderRadius: '2px', color: 'black', backgroundColor: getTaskBgColor(task.priority), opacity: task.completed ? '0.5' : '1' }}>
-                            <span 
-                              onClick={() => handleTaskClick(task)} 
-                              style={{ cursor: 'pointer', fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none' }}>
-                              {task.title}</span>
-                          </td>
-                          <td style={{ width: '5%', padding: '0 10%'}}>
-                            <input style={{marginTop:'10%'}} type="checkbox" checked={task.completed === true} readOnly />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  </div>
-                </div>
+                <table style={{ width: '100%', padding: '2% 0' }}>
+                  <tr >
+                    <th>Due</th>
+                    <th>Task</th>
+                    <th style={{paddingLeft: '0.5rem'}}>Complete</th>
+                  </tr>
+                  <tbody>
+                    {tasksDue.slice().sort((a, b) => new Date(a.date) - new Date(b.date)).map(task => (
+                      <tr key={task.id}>
+                        <td 
+                          style={{ 
+                            width: '15%', height: '16px', paddingRight: '20px', color: '#fff', 
+                            fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none'
+                          }}>
+                          {new Date(task.date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true, minimumIntegerDigits: 2 })}
+                        </td>
+                        <td 
+                          style={{ 
+                            width: '40%', padding: '0px 5px', borderRadius: '2px', color: 'black', backgroundColor: getTaskBgColor(task.priority), opacity: task.completed ? '0.5' : '1' }}>
+                          <span 
+                            onClick={() => handleTaskClick(task)} 
+                            style={{ cursor: 'pointer', fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none' }}>
+                            {task.title}</span>
+                        </td>
+                        <td style={{ width: '15%', padding: '0 10%'}}>
+                          <input style={{marginTop:'10%'}} type="checkbox" checked={task.completed === true} readOnly />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
             {showTaskInfo && (
               <div className="task-info-c">
