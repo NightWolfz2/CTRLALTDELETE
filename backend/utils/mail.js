@@ -59,20 +59,31 @@ exports.generatePasswordTemplate = (code,fname) => {
 }
 
 exports.sendForgotPasswordEmail = (url) => {
-  
-    return emailTemplate = `
-    <p>Hi,</p>
-    <p>You requested a password reset. Please click on the link below to reset your password:</p>
-    <a href="${url}">Reset Password</a>
-    <p>If you did not request a password reset, please ignore this email.</p>
-    `;
-
-};
-exports.sendForgotPasswordEmailConfirm = () => {
-  
-  return emailTemplate = `
-  <p>Hi,</p>
-  <p>Your password has been reset.</p>
+  return `
+  <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+          <div style="border-bottom:1px solid #eee">
+              <a href="" style="font-size:1.4em;color: #353535;text-decoration:none;font-weight:600">Ninja Manager</a>
+          </div>
+          <p style="font-size:1.1em">Hi,</p>
+          <p>You requested a password reset. Please click on the link below to reset your password:</p>
+          <a href="${url}" style="display: inline-block; background-color: #353535; color: #ffffff; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: bold; margin-top: 20px;">Reset Password</a>
+          <p style="margin-top: 20px;">If you did not request a password reset, please ignore this email.</p>
+      </div>
+  </div>
   `;
+};
 
+exports.sendForgotPasswordEmailConfirm = () => {
+  return `
+  <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+      <div style="margin:50px auto;width:70%;padding:20px 0">
+          <div style="border-bottom:1px solid #eee">
+              <a href="" style="font-size:1.4em;color: #353535;text-decoration:none;font-weight:600">Ninja Manager</a>
+          </div>
+          <p style="font-size:1.1em">Hi,</p>
+          <p>Your password has been reset successfully.</p>
+      </div>
+  </div>
+  `;
 };
