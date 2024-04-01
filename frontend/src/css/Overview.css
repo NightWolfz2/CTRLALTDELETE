@@ -230,6 +230,7 @@
 
 .task-box {
   position: relative;
+  margin-left: 20px;
 }
 
 .edit-button {

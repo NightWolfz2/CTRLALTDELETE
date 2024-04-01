@@ -32,76 +32,76 @@ function App() {
   const {user} = useAuthContext()
   
   return (
-    <div className='App'>
+    <div>
       <BrowserRouter>
         <Navbar />
         <TokenExpirationChecker />
-        <div className='pages'>
-          <Routes>
-            <Route 
-              path="/"
-              element={user ? <Home /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/createTask"
-              element={user ?<TaskForm />: <Navigate to="/login" />}
-            />
-            <Route
-              path="/calendar"
-              element={user ?< CalendarPage />: <Navigate to="/login" />} // change this to calendar.js
-            />
-            <Route
-              path="/overview"
-              element={user ?<Overview />: <Navigate to="/login" />}
-            />
-            <Route
-              path="/history"
-              element={user ?<History />: <Navigate to="/login" />}
-            />
-            <Route
-              path="/editTask/:_id"
-              element={user ?<EditHistory />: <Navigate to="/login" />}
-            />
-            <Route
-              path="/profile"
-              element={user ?<Profile />: <Navigate to="/login" />}
-            />
-            <Route 
-              path="/loggedOut"
-              element={<Login />}
-            />
-            <Route 
-              path="/login"
-              element={!user ? <Login />: <Navigate to="/"/>}
-            />
-            <Route 
-              path="/signup"
-              element={!user ? <Signup /> : <Navigate to="/verify-email"/>}
-            />
-            <Route 
-              path="/signup"
-              element={user && user.verified ? <Signup /> : <Navigate to="/verify-email"/>}
-            />
-            <Route 
-              path="/verify-email"
-              element = {user && !user.verified? < Verify />: <Navigate to="/" />}
-            />
-            <Route 
-            path="/forgot-password"
-            element={user ? <Navigate to="/" /> : <ForgotPassword />}
-            />
-            <Route 
-            path="/reset-password/" // Include the :token parameter in the path
-            element={user ? <Navigate to="/" /> : <ResetPassword />}
-            />
-            <Route 
-            path="/users"
-            element={user && user.role !== 'employee'? <Users /> : <Navigate to="/login" />}
-            />
-          </Routes>
+        <div className='main-content'>
+            <Routes>
+              <Route 
+                path="/"
+                element={user ? <Home /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/createTask"
+                element={user ?<TaskForm />: <Navigate to="/login" />}
+              />
+              <Route
+                path="/calendar"
+                element={user ?< CalendarPage />: <Navigate to="/login" />} // change this to calendar.js
+              />
+              <Route
+                path="/overview"
+                element={user ?<Overview />: <Navigate to="/login" />}
+              />
+              <Route
+                path="/history"
+                element={user ?<History />: <Navigate to="/login" />}
+              />
+              <Route
+                path="/editTask/:_id"
+                element={user ?<EditHistory />: <Navigate to="/login" />}
+              />
+              <Route
+                path="/profile"
+                element={user ?<Profile />: <Navigate to="/login" />}
+              />
+              <Route 
+                path="/loggedOut"
+                element={<Login />}
+              />
+              <Route 
+                path="/login"
+                element={!user ? <Login />: <Navigate to="/"/>}
+              />
+              <Route 
+                path="/signup"
+                element={!user ? <Signup /> : <Navigate to="/verify-email"/>}
+              />
+              <Route 
+                path="/signup"
+                element={user && user.verified ? <Signup /> : <Navigate to="/verify-email"/>}
+              />
+              <Route 
+                path="/verify-email"
+                element = {user && !user.verified? < Verify />: <Navigate to="/" />}
+              />
+              <Route 
+              path="/forgot-password"
+              element={user ? <Navigate to="/" /> : <ForgotPassword />}
+              />
+              <Route 
+              path="/reset-password/" // Include the :token parameter in the path
+              element={user ? <Navigate to="/" /> : <ResetPassword />}
+              />
+              <Route 
+              path="/users"
+              element={user && user.role !== 'employee'? <Users /> : <Navigate to="/login" />}
+              />
+            </Routes>
         </div>
-        <Bottombar />
-      </BrowserRouter>
+          <Bottombar />
+          </BrowserRouter>
     </div>
   );
 }
