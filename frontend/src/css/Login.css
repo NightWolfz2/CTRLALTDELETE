@@ -1,106 +1,115 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
 
 body {
   font-family: "Poppins", sans-serif;
 }
 
 .login-container {
-  background-color: #353535;
-  padding: 40px;
-  border-radius: 5px;
-  max-width: 600px;
-  margin: 40px auto;
-  color: #fff;
-}
-
-.login-container h3 {
-  text-align: center;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.login-container label, 
-.login-container input {
-  display: block;
-  width: 100%;
-}
-
-.login-container input {
-  font-family: "Poppins", sans-serif;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f1f1f1;
-  color: #333;
-}
-
-/* Style for both buttons */
-.login-container button,
-.login-container .btn-signup {
-  font-family: "Poppins", sans-serif;
-  background-color: #353535;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
-  border: 1px solid #fff;
-  width: calc(50% - 10px);
-  text-align: center;
-  text-decoration: none;
-}
-
-.login-container button:hover,
-.login-container .btn-signup:hover {
-  background-color: #555;
-}
-
-/* Container for the buttons */
-.button-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  height: 80vh;
+  min-height: 500px;
+  background-color: #f1f1f1;
+  padding: 20px;
 }
 
-/* Responsive adjustments if needed */
+.form-container {
+  background-color: #4a4a4a;
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  width: 50%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container h3 {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+  line-height: 60px;
+  width: 100%;
+}
+
+.form-container form {
+  width: 100%;
+}
+
+.form-container input {
+  width: 90%;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 2px solid #bababa;
+  border-radius: 10px;
+  background-color: #dadada;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.form-container button,
+.form-container .btn-signup,
+.form-container .auth-button { /* Added .auth-button for the Login button */
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 30px;
+  border: none;
+  background-color: #353535;
+  color: #fff;
+  font-size: 1.2rem;
+  width: auto; /* Adjust if necessary to match the width on the other pages */
+  transition: background-color 0.3s;
+  text-align: center;
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make the buttons block to fill the container */
+}
+
+.form-container button:hover,
+.form-container .btn-signup:hover {
+  background-color: #555;
+}
+
+.forgot-password {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+  color: #dbd5d5;
+  text-decoration: none; /* Remove underline on hover */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Separates the buttons */
+}
+
+/* If you want to stack the buttons vertically on smaller screens */
 @media (max-width: 768px) {
   .button-container {
     flex-direction: column;
   }
   
-  .login-container button,
-  .login-container .btn-signup {
+  .form-container button,
+  .form-container .btn-signup {
     width: 100%;
     margin-top: 10px;
   }
   
-  .login-container button:first-child,
-  .login-container .btn-signup:first-child {
+  .form-container button:first-child,
+  .form-container .btn-signup:first-child {
     margin-top: 0;
   }
-
-  
-}
-
-/* Forgot Password link styling */
-.forgot-password {
-  margin-top: 5px; /* Reduced space above the forgot password link */
-  margin-bottom: 20px; /* Adjust as needed to space before the login button */
-}
-
-.forgot-password a {
-  color: #ffffff; /* Sets the link color to white */
-  text-decoration: underline; /* Underlines the link for visibility */
-  font-weight: normal; /* Makes the font less bold */
-  font-size: 14px; /* Makes the font size smaller */
-  transition: color 0.3s ease; /* Adds a smooth color transition */
-}
-
-.forgot-password a:hover {
-  color: #dbd5d5; /* Changes to a lighter color on hover */
-  text-decoration: none; /* Removes underline on hover for a clean look */
 }
