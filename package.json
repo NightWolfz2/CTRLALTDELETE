@@ -3,6 +3,7 @@
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "moment-timezone": "^0.5.45",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.9",
     "query-string": "^9.0.0",
     "react-datepicker": "^4.21.0",

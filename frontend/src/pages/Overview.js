@@ -31,7 +31,7 @@ const Overview = () => {
   const [showEditHistory, setShowEditHistory] = useState(false); 
   const [employeeNamesMap, setEmployeeNamesMap] = useState({});
   const { user } = useAuthContext();
-
+  const isPastDue = (date) => new Date(date) < new Date();
 
 
 
@@ -49,7 +49,7 @@ const Overview = () => {
         return { name: `${data.fname} ${data.lname}`, email: data.email };
       } catch (error) {
         console.error(error);
-        return { name: 'Unknown Employee', email: '' };
+        return { name: 'Deleted User', email: 'Deleted Email' };
       }
     }));
     return details.reduce((acc, curr, index) => {
@@ -76,10 +76,20 @@ const Overview = () => {
   
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchAndUpdateTasks = async () => {
       try {
+        // Fetch the latest tasks from the server
         const json = await customFetch('/api/tasks');
-        dispatch({type: 'SET_TASKS', payload: json})
+        
+        // Process the tasks if needed (e.g., update statuses based on current date)
+        const updatedTasks = json.map(task => ({
+          ...task,
+          // Assuming 'isPastDue' is a function to check if the task is past due
+          status: isPastDue(task.date) ? 'Past Due' : task.status
+        }));
+  
+        // Update the tasks in the state
+        dispatch({ type: 'SET_TASKS', payload: updatedTasks });
       } catch (error) {
         console.error("Error fetching tasks:", error);
         if (error.message === 'Unauthorized') {
@@ -87,9 +97,17 @@ const Overview = () => {
           navigate('/login'); 
         }
       }
-    }
-    fetchTasks();
-  }, []);
+    };
+  
+    // Fetch tasks when the component mounts
+    fetchAndUpdateTasks();
+  
+    // Set up a periodic update every 60 seconds (60000 milliseconds)
+    const intervalId = setInterval(fetchAndUpdateTasks, 60000);
+  
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [customFetch, dispatch, logout, navigate]);
   
   const currentDate = new Date(); 
 
@@ -248,7 +266,7 @@ const Overview = () => {
               <p> <b># Task {index + 1} - {task.title}</b></p>
             </div>
             <div className="box1">
-              <div className={`little-box1 ${task.status === "In Progress" ? 'in-progress-box' : 'past-due-box' }`}>
+              <div className={`little-box1 ${isPastDue(task.date) ? 'past-due-box' : 'in-progress-box'}`}>
                 Status - {task.status}
               </div>
               <div className={`little-box1 ${task.priority === 'High' ? 'high-priority-box' : task.priority === 'Medium' ? 'medium-priority-box' : 'low-priority-box'}`}>
@@ -292,9 +310,16 @@ const Overview = () => {
                 <p>{task.description}</p>
               </div>
               <div className="little-box"style={{ wordWrap: 'break-word', overflowY: 'auto' }}>
-                <p><b>Edit History:</b></p>
-                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()} <b>by:</b> {task.createdBy ? `${task.createdBy.fname} ${task.createdBy.lname}` : 'Unknown'}</p>
-                <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()} <b>by:</b> {task.updatedBy ? `${task.updatedBy.fname} ${task.updatedBy.lname}` : 'Unknown'}</p>
+              <p><b>Edit History:</b></p>
+                {/* Display message for createdBy user */}
+                <p><b>- Task was created on</b> {new Date(task.createdAt).toLocaleString()} <b>by:</b> {task.createdBy ? `${task.createdBy.fname} ${task.createdBy.lname}` : 'a user that no longer exists'}</p>
+                
+                {/* Display message for updatedBy user if the task has been edited */}
+                {task.updatedAt > task.createdAt ? (
+                  <p><b>- Task was last edited on</b> {new Date(task.updatedAt).toLocaleString()} <b>by:</b> {task.updatedBy ? `${task.updatedBy.fname} ${task.updatedBy.lname}` : 'a user that no longer exists'}</p>
+                ) : (
+                  <p><b>- Task has not been edited</b></p>
+                )}
 
                 {task.history && (
               <div>

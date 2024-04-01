@@ -27,12 +27,15 @@ const TaskDetails2 = ({ task, onClose, context }) => {
                 'Authorization': `Bearer ${user.token}`
               }
             });
-            if (!response.ok) throw new Error('Could not fetch employee details');
+            if (!response.ok) {
+              // Handle non-2xx responses as "Deleted User"
+              throw new Error('User not found or deleted');
+            }
             const data = await response.json();
             return `${data.fname} ${data.lname}`;
           } catch (error) {
             console.error(error);
-            return 'Unknown Employee'; // Placeholder for any IDs that don't fetch properly
+            return 'Deleted User'; // Placeholder for any IDs that don't fetch properly
           }
         }));
         console.log("Fetched assigned employees:", employeeNames); // Log to check the names

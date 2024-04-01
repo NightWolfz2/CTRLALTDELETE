@@ -185,34 +185,43 @@ const getUserDetails = async (req, res) => {
   };
   // delete a task
   const deleteUser = async (req, res) => {
-    const { deletingUser, userToDelete } = req.body; // Assuming you pass the ID of the user performing the deletion in the request body
-    
-    
+    const { deletingUser, userToDelete } = req.body;
+  
     if (!deletingUser) {
-        return res.status(400).json({ error: 'Invalid request, deletingUser!' });
+      return res.status(400).json({ error: 'Invalid request, deletingUser!' });
     }
     if (!userToDelete) {
-        return res.status(400).json({ error: 'Invalid request, missing userToDelete!' });
+      return res.status(400).json({ error: 'Invalid request, missing userToDelete!' });
     } 
-    if(deletingUser.email === userToDelete.email) {
-        return res.status(403).json({ error: 'You do not have permission to delete yourself' });
+    if (deletingUser.email === userToDelete.email) {
+      return res.status(403).json({ error: 'You do not have permission to delete yourself' });
     }
-    if(userToDelete.owner) {
-        return res.status(403).json({ error: 'You do not have permission to delete the owner' });
-
+    if (userToDelete.owner) {
+      return res.status(403).json({ error: 'You do not have permission to delete the owner' });
     }
-    if (deletingUser.owner) {
+  
+    try {
+      if (deletingUser.owner) {
         const deletedUser = await User.findOneAndDelete({ _id: userToDelete });
         if (!deletedUser) {
-            return res.status(400).json({ error: 'No such user' });
+          return res.status(404).json({ error: 'No such user' });
         }
-    } else {
+  
+        // Update tasks where the deleted user is referenced
+        await Task.updateMany({ createdBy: userToDelete }, { $set: { createdBy: null } });
+        await Task.updateMany({ updatedBy: userToDelete }, { $set: { updatedBy: null } });
+        await Task.updateMany({}, { $pull: { employees: userToDelete } }); // Remove from all employee arrays
+  
+        res.status(200).json({ message: `User ${deletedUser.email} deleted and tasks updated.` });
+      } else {
         return res.status(401).json({ error: 'You do not have permission to perform this action' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to delete user and update tasks' });
     }
-    
-    return res.status(200).json({success: `Deleted ${userToDelete.fname}..`})
-      
-};
+  };
+  
 
 
 // Consolidated module.exports

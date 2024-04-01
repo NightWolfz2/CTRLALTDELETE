@@ -138,6 +138,7 @@ const EditHistory = () => {
       };
 
       const handleDateChange = (e) => {
+        console.log("New Date:", e.target.value); // Debugging line
         setDate(e.target.value);
       }
 
@@ -239,7 +240,7 @@ const EditHistory = () => {
                     const employee = employees.find(e => e._id === employeeId);
                     return (
                         <div key={employeeId} className="selectedEmployee">
-                            <span>{employee ? `${employee.fname} ${employee.lname}` : 'Loading...'}</span>
+                            <span>{employee ? `${employee.fname} ${employee.lname}` : 'Deleted User'}</span>
                             <button type="button" onClick={() => handleRemoveEmployee(employeeId)}>
                                 Remove
                             </button>

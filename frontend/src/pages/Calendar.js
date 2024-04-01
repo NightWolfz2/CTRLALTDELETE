@@ -353,7 +353,7 @@ const CalendarPage = () => {
                   const employee = employees.find(e => e._id === employeeId);
                   return (
                     <div key={employeeId} className="selectedEmployee">
-                      <div>{employee ? `${employee.fname} ${employee.lname}` : 'Loading...'}</div>
+                      <div>{employee ? `${employee.fname} ${employee.lname}` : 'Deleted User'}</div>
                       <div>
                         {isEditing && <button type="button" onClick={() => handleRemoveEmployee(employeeId)}>
                           Remove

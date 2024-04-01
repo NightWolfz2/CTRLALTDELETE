@@ -6,11 +6,18 @@ const requireAuth = require('./middleware/requireAuth'); // Adjust the path as n
 const taskRoutes = require('./routes/tasks');
 const userRoutes = require('./routes/user');
 const cors = require('cors');
-
+const cron = require('node-cron');
+const taskController = require('./controllers/taskController');
 
 
 // express app
 const app = express();
+
+// Schedule a task to run every hour to update task statuses
+cron.schedule('0 * * * *', () => {
+  console.log('Updating task statuses');
+  taskController.updateTaskStatuses();
+});
 
 // Add CORS configuration
 app.use(cors({
