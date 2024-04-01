@@ -345,6 +345,18 @@ const CalendarPage = () => {
                     onChange={handleDateInputChange}
                   ></input>
 
+                <label>Priority: </label>
+                <select
+                  disabled={!isEditing}
+                  className={isEditing ? '' : 'read-only'}
+                  onChange={handlePriorityChange}
+                  value={selectedTask.priority}
+                >
+                  <option value="">Select Priority</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
                   <label>Priority: </label>
                   <select
                     disabled={!isEditing}
@@ -371,6 +383,20 @@ const CalendarPage = () => {
                     {isEditing && <button type="button" onClick={handleAddEmployee}>Add Employee</button>}
                   </div>
 
+                {/* List of selected employees with a remove button */}
+                {isEditing && selectedTask.employees.map(employeeId => {
+                  const employee = employees.find(e => e._id === employeeId);
+                  return (
+                    <div key={employeeId} className="selectedEmployee">
+                      <div>{employee ? `${employee.fname} ${employee.lname}` : 'Deleted User'}</div>
+                      <div>
+                        {isEditing && <button type="button" onClick={() => handleRemoveEmployee(employeeId)}>
+                          Remove
+                        </button>}
+                      </div>
+                    </div>
+                  );
+                })}
                   {/* List of selected employees with a remove button */}
                   {isEditing && selectedTask.employees.map(employeeId => {
                     const employee = employees.find(e => e._id === employeeId);

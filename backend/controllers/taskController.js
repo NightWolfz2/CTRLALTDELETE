@@ -10,18 +10,30 @@ const capitalizeFirstLetter = (string) => {
 // get all tasks with detailed createdBy and updatedBy information
 const getTasks = async (req, res) => {
   try {
-    // Use .populate to include detailed information about the users in createdBy and updatedBy fields
     const tasks = await Task.find({})
                             .sort({ createdAt: -1 })
-                            .populate('createdBy', 'fname lname email') // Adjust the fields you need from the User model
-                            .populate('updatedBy', 'fname lname email'); // Same here
-
-    res.status(200).json(tasks);
+                            .populate('createdBy', 'fname lname email')
+                            .populate('updatedBy', 'fname lname email');
+    const tasksWithCheck = tasks.map(task => {
+      task = task.toObject(); // Convert document to object for modification
+      // Check and handle deleted createdBy user
+      if (!task.createdBy) {
+        task.createdBy = { fname: "Deleted", lname: "User" }; // Placeholder for deleted createdBy user
+      }
+      // Check and handle deleted updatedBy user
+      if (!task.updatedBy) {
+        task.updatedBy = { fname: "Deleted", lname: "User" }; // Placeholder for deleted updatedBy user
+      }
+      return task;
+    });
+    res.status(200).json(tasksWithCheck);
   } catch (error) {
-    console.error(error); // Log the error for debugging purposes
+    console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 
 
 // get a single task
@@ -186,6 +198,9 @@ const updateTask = async (req, res) => {
       updatedBy: req.user.id, 
     };
 
+    const now = new Date();
+    updateData.status = new Date(date) > now ? 'In Progress' : 'Past Due';
+
     const task = await Task.findOneAndUpdate({ _id: id }, updateData, { new: true })
       .populate('createdBy updatedBy', 'fname lname'); 
 
@@ -198,6 +213,18 @@ const updateTask = async (req, res) => {
     console.log(error);
     res.status(400).json({ error: error.message });
   }
+};
+exports.updateTaskStatuses = async () => {
+  const tasks = await Task.find({ completed: false });
+  tasks.forEach(async (task) => {
+    const now = new Date();
+    const taskDueDate = new Date(task.date);
+    
+    if (taskDueDate < now && task.status !== 'Past Due') {
+      task.status = 'Past Due';
+      await task.save();
+    }
+  });
 };
 
 module.exports = {

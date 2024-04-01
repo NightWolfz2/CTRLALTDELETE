@@ -6,8 +6,9 @@
   padding: 15px;
   min-width: 15%;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-  width: 300px; /* Fixed width */
+  width: 300px; /* Consider using max-width for better responsiveness */
   height: 400px; /* Fixed height */
+  overflow-y: auto; /* Adds vertical scrollbar if content overflows */
 }
 
 .task-details .task-header {
@@ -17,9 +18,11 @@
 }
 
 .task-details h4 {
-  margin: 0;
-  font-size: 1.2em;
-  color: var(--primary); /* Replace with your color variable or specific color */
+  flex-grow: 1; /* Allows the title to grow but confines it within the header space */
+  margin-right: 10px; /* Adds some space between the title and the status */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .task-details .task-status {
@@ -62,6 +65,8 @@
 }
 .task-details .task-info .description {
   color: #555;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 
@@ -74,4 +79,5 @@
   overflow-wrap: break-word;
   white-space: normal;
   max-width: 100%;
+  overflow-y: auto;
 }
