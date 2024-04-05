@@ -6,6 +6,7 @@ function ForgotPassword() {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
+    setMessage();
     e.preventDefault();
     const response = await fetch('/api/user/forgot-password', {
       method: 'POST',

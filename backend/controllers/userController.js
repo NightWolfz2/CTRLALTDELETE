@@ -347,8 +347,7 @@ const updateUserPassword = async (req, res) => {
         return res.status(404).send('No user with that email.');
       }
     
-      const token = await ResetToken.findOne({owner: user._id})
-      if(token) return res.status(404).send('Only after one hour, send another token request')
+      await ResetToken.deleteMany({owner: user._id});
 
       const randBytes = await createRandomBytes()
       const resetToken = ResetToken({owner: user._id, token: randBytes})
