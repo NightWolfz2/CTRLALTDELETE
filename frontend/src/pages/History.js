@@ -239,12 +239,14 @@ const Overview = () => {
               </div>
                 )}
               </div>
-              <div className="edit-button">
-                <button
-                  style={{ backgroundImage: `url(${editIcon})` }}
-                  onClick={() => deleteClick(task)}
-                ></button>
-              </div>
+              {user.role !== 'employee' && (
+                <div className="edit-button">
+                  <button
+                    style={{ backgroundImage: `url(${editIcon})` }}
+                    onClick={() => deleteClick(task)}
+                  ></button>
+                </div>
+              )}
             </div>
           </div>
         ))}
