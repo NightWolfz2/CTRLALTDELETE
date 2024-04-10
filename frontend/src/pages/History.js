@@ -28,7 +28,6 @@ const Overview = () => {
   const customFetch = useCustomFetch();
   const { logout } = useLogout();
   
-  const currentDate = new Date(); 
 
   const fetchEmployeeNames = async (employeeIds) => {
     const details = await Promise.all(employeeIds.map(async (id) => {
