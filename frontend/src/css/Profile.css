@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f1f1f1; /* Lighter background color */
+  background-color: #f1f1f1;
 }
 
 .profile {
@@ -13,33 +13,44 @@ body {
   margin-top: 50px;
 }
 
+.Profile .profile-info h3 {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 30px;
+  font-size: 28px; 
+  line-height: 1.2;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+
 .Profile .profile-content {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 15vh; 
 }
 
 .Profile .profile-info {
-  width: 40%;
-  max-width: 800px;
-  padding: 40px 20px; /* Increase the top and bottom padding */
-  margin: 0 auto;
-  background-color: #353535;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  font-size: 16px;
+  background-color: #4a4a4a;
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   color: #fff;
-  display: flex; /* Use flexbox to center items vertically */
-  flex-direction: column; /* Stack flex items vertically */
-  justify-content: center; /* Center vertically */
-  min-height: 200px; /* Or adjust this value as needed to make the box taller */
+  width: 50%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  font-size: 18px;
 }
 
 .Profile .profile-info-row {
-  margin-bottom: 20px; /* You can adjust this if you want more space between the rows */
+  margin-bottom: 20px;
   align-items: center;
   display: flex;
-  justify-content: center; /* Center horizontally */
+  justify-content: center;
 }
 
 .Profile .icon {
@@ -65,29 +76,28 @@ body {
   font-size: 16px;
   display: inline-flex;
   align-items: center;
-  /* If you want even more space, you could also adjust padding here */
+
 }
 
 .Profile .profile-button.resetPW:hover {
   background-color: #555;
 }
 
-/* Updated styles for the reset password form and buttons */
 .reset-password-form {
-  background-color: #4a4a4a;
-  padding: 20px;
-  margin-top: 20px;
+  background-color: #454545;
+  padding: 50px;
+  margin-top: 0px;
+  margin-bottom: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 400px;
+  width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .reset-password-form input {
-  width: calc(100% - 20px);
+  width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 2px solid #bababa;
@@ -105,9 +115,9 @@ body {
   margin-top: 10px;
   border: none;
   background-color: #353535; /* Dark grey for buttons */
-  color: #fff; /* White text for buttons */
+  color: #fff;
   transition: background-color 0.3s;
-  width: calc(50% - 10px);
+  width: calc(75%);
   margin: 5px;
 }
 
@@ -122,7 +132,7 @@ body {
 
 /* Additional detail sections for the profile */
 .Profile .detail-section {
-  background-color: #2a2a2a; /* Slightly lighter than the main bg */
+  background-color: #2a2a2a;
   padding: 15px;
   margin-top: 10px;
   border-radius: 5px;

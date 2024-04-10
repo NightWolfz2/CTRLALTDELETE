@@ -41,11 +41,9 @@ const Profile = () => {
 
   return (
     <div className='Profile'>
-      <div className="page-title">
-        <h2>Profile</h2>
-      </div>
       <div className="profile-content">
         <div className="profile-info">
+        <h3>Profile</h3>
           <div className="profile-info-row">
             <FaUserAlt className="icon" />
             <span><strong>Name:</strong> {user.fname} {user.lname}</span>
