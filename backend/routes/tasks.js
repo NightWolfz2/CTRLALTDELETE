@@ -7,7 +7,9 @@ const {
   updateTask,
   getCompletedTasks,
   completeTask,
-  markTaskDeleted
+  markTaskDeleted,
+  uncompleteTask,
+  undeletedTask
 } = require('../controllers/taskController')
 
 const requireAuth = require('../middleware/requireAuth')
@@ -37,6 +39,12 @@ router.patch('/complete-task/:id', completeTask)
 
 // mark a task deleted
 router.patch('/mark-task-deleted/:id', markTaskDeleted)
+
+// restore deleted task
+router.patch('/mark-task-restore-deleted/:id', undeletedTask)
+
+// restore completed task
+router.patch('/mark-task-restore-completed/:id', uncompleteTask)
 
 
 

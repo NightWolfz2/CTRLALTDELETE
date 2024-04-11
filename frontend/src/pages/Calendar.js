@@ -259,13 +259,11 @@ const CalendarPage = () => {
 
 
   const handleAddEmployee = () => {
-    console.log("Current Employee before adding:", currentEmployee);
 
     // Check if the currentEmployee is already in the selectedEmployees array
     if (currentEmployee && !selectedTask.employees.includes(currentEmployee)) {
       // Update the state in a functional way to ensure the latest state is used
       const updatedSelectedEmployees = [...selectedTask.employees, currentEmployee];
-      console.log("Selected Employees after adding:", updatedSelectedEmployees);
       setSelectedEmployees(updatedSelectedEmployees);
       // Clear the current selection after adding the employee to the list
       setCurrentEmployee('');

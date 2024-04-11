@@ -232,7 +232,6 @@ const verifyEmail = async(req, res) => {
     if(!email || !otp) return res.status(401).json({ error: 'Invalid request, missing parameters!' })
 
     const user = await User.findOne({ email: email });
-    console.log(email)
 
     if(!user) return res.status(401).json({ error: 'Invalid Code!' })
 
