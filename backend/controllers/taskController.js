@@ -54,7 +54,6 @@ const getTask = async (req, res) => {
 };
 
 const getCompletedTasks = async (req, res) => {
-  console.log("getCompleted is working")
   try {
     const completedTasks = await Task.find({ completed: true }).sort({ createdAt: -1 });
     res.status(200).json(completedTasks);
@@ -76,6 +75,42 @@ const completeTask = async (req, res) => {
     return res.status(404).json({ error: 'No such task' });
   }
   task.completed = true;
+
+  res.status(200).json(task);
+  task.save()
+};
+
+//mark a task uncompleted
+const uncompleteTask = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+
+  const task = await Task.findById(id);
+
+  if (!task) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+  task.completed = false;
+
+  res.status(200).json(task);
+  task.save()
+};
+
+//mark a task complete
+const undeletedTask = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+
+  const task = await Task.findById(id);
+
+  if (!task) {
+    return res.status(404).json({ error: 'No such task' });
+  }
+  task.deleted = false;
 
   res.status(200).json(task);
   task.save()
@@ -132,10 +167,7 @@ const createTask = async (req, res) => {
     await task.save();
     res.status(201).json(task);
   } catch (error) {
-    //console.log(error);
-    //res.status(400).json({ errors: ["Error creating task"] });
     console.error("Error in createTask:", error);
-    // Send back a more detailed error message for debugging
     res.status(400).json({ errors: ["An unexpected error occurred when creating the task.", error.message] });
   }
 };
@@ -235,5 +267,7 @@ module.exports = {
   updateTask,
   getCompletedTasks,
   completeTask,
-  markTaskDeleted
+  markTaskDeleted,
+  uncompleteTask,
+  undeletedTask
 };

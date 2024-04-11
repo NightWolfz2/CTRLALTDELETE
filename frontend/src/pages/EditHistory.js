@@ -37,7 +37,6 @@ const EditHistory = () => {
             setDescription(taskToEdit.description);
             setPriority(taskToEdit.priority);
             setSelectedEmployees(taskToEdit.employees);
-            console.log("Selected Employees:", taskToEdit.employees); //DEBUG LINE
         }
     }, [_id, tasks]);
     
@@ -71,7 +70,6 @@ const EditHistory = () => {
     }, [user]); // Dependency array, if you're using the 'user' state to store user information
     
     useEffect(() => {
-        console.log("Selected Employees updated:", selectedEmployees);
     }, [selectedEmployees]);
 
     // Convert the local date and time to a UTC string
@@ -150,7 +148,6 @@ const EditHistory = () => {
         setDescription(e.target.value);
       }
       const handleAddEmployee = () => {
-        console.log("Current Employee before adding:", currentEmployee);
       
         // Check if the currentEmployee is already in the selectedEmployees array
         if (currentEmployee && !selectedEmployees.includes(currentEmployee)) {
@@ -158,7 +155,6 @@ const EditHistory = () => {
           setSelectedEmployees(prevSelectedEmployees => {
             // Create a new array for the updated state to avoid direct mutations
             const updatedSelectedEmployees = [...prevSelectedEmployees, currentEmployee];
-            console.log("Selected Employees after adding:", updatedSelectedEmployees);
             return updatedSelectedEmployees;
           });
           // Clear the current selection after adding the employee to the list
@@ -183,8 +179,7 @@ const EditHistory = () => {
         setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
     };
 
-    console.log("Rendering - Selected Employees:", selectedEmployees); //DEBUG LINE
-    console.log("All Employees:", employees); //DEBUG LINE
+    
 
     return (
       <div>
