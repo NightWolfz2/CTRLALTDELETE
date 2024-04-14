@@ -114,7 +114,32 @@ Replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your mailtrap username and pa
 
 
 # Deployment
-- Will be added in 191
+### Please refer to the following software and system requirements to ensure your machine can support our application.
+
+Software Requirements:
+- Node Js: v18.18.2. or later
+- Studio Visual Code: 1.88.1 or later
+- Any Compatible Browsers: Chrome, Safari, Edge, Firefox, etc
+- Cloned CtrlAltDelete Repository folder
+
+System Requirements
+- Windows: 10 or later
+- MacOS: X High Sierra or later
+- 1.6 GHz or faster processor
+- 1 GB of RAM
+
+Follow the steps below to deploy this project locally on your machine:
+1. Open Studio Visual Code.
+
+2. Go to File and click on Open Folder.
+
+3. Locate your CtrlAltDelete Repository folder and click on Open.
+
+4. Once opened, navigate to Terminal.
+
+5. Click anywhere inside the Terminal and input the following command: `npm start`
+
+6. Next, you should see mongoDB local server start on port 8000 & local host should open on default browser on port 3000.
 
 # Testing
 - Will be added in 191
@@ -124,7 +149,16 @@ Replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your mailtrap username and pa
 
 # Timeline
 
-### Key Milestones:
+### Key Milestones in CSC 190:
+- [x] Front-end Homepage
+- [x] Front-end Create task page
+- [x] Front-end Calendar page
+- [x] Front-end Overview page
+- [x] Front-end History page
+- [x] Setup Back-end MongoDB
+- [x] Setup Back-end Task Schema
+- [x] Task creation Functionality
+- [x] Setup Task creation to MongoDB
 
 ### What we expect to get done in 191
 - Add a profile/user database
@@ -136,6 +170,20 @@ Replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your mailtrap username and pa
 - Create Login page and security
 - "Mark Complete" button functionality
 - Connect employee database with tasks database
+
+### Key Milestones in CSC 191:
+- [x] Backend-end functionality to pages
+- [x] Profile/User database
+- [x] Account Creation and Login
+- [x] Email verification for account creation and change/reset password
+- [x] Admin privledges
+- [x] Users page for list of users to assign and deassign admins
+- [x] Linked Profile with Tasks  
+- [x] Added a "Completed" button on Overview page that sends to History Page
+- [x] Added a "Deleted" button on History page that sends to History Page
+- [x] Tasks on Calendar page with editing functionality
+- [x] Fully functional web pages
+
 
 # Credits
 
