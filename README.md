@@ -114,7 +114,32 @@ Replace `EMAIL_USERNAME` and `EMAIL_PASSWORD` with your mailtrap username and pa
 
 
 # Deployment
-- Will be added in 191
+### Please refer to the following software and system requirements to ensure your machine can support our application.
+
+Software Requirements:
+- Node Js: v18.18.2. or later
+- Studio Visual Code: 1.88.1 or later
+- Any Compatible Browsers: Chrome, Safari, Edge, Firefox, etc
+- Cloned CtrlAltDelete Repository folder
+
+System Requirements
+- Windows: 10 or later
+- MacOS: X High Sierra or later
+- 1.6 GHz or faster processor
+- 1 GB of RAM
+
+Follow the steps below to deploy this project locally on your machine:
+1. Open Studio Visual Code.
+
+2. Go to File and click on Open Folder.
+
+3. Locate your CtrlAltDelete Repository folder and click on Open.
+
+4. Once opened, navigate to Terminal.
+
+5. Click anywhere inside the Terminal and input the following command: `npm start`
+
+6. Next, you should see mongoDB local server start on port 8000 & local host should open on default browser on port 3000.
 
 # Testing
 - Will be added in 191
