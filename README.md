@@ -149,7 +149,16 @@ Follow the steps below to deploy this project locally on your machine:
 
 # Timeline
 
-### Key Milestones:
+### Key Milestones in CSC 190:
+- [x] Front-end Homepage
+- [x] Front-end Create task page
+- [x] Front-end Calendar page
+- [x] Front-end Overview page
+- [x] Front-end History page
+- [x] Setup Back-end MongoDB
+- [x] Setup Back-end Task Schema
+- [x] Task creation Functionality
+- [x] Setup Task creation to MongoDB
 
 ### What we expect to get done in 191
 - Add a profile/user database
@@ -161,6 +170,20 @@ Follow the steps below to deploy this project locally on your machine:
 - Create Login page and security
 - "Mark Complete" button functionality
 - Connect employee database with tasks database
+
+### Key Milestones in CSC 191:
+- [x] Backend-end functionality to pages
+- [x] Profile/User database
+- [x] Account Creation and Login
+- [x] Email verification for account creation and change/reset password
+- [x] Admin privledges
+- [x] Users page for list of users to assign and deassign admins
+- [x] Linked Profile with Tasks  
+- [x] Added a "Completed" button on Overview page that sends to History Page
+- [x] Added a "Deleted" button on History page that sends to History Page
+- [x] Tasks on Calendar page with editing functionality
+- [x] Fully functional web pages
+
 
 # Credits
 
