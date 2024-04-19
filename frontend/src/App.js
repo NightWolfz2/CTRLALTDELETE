@@ -7,19 +7,19 @@ import useTokenExpirationChecker from './hooks/useTokenExpirationChecker';
 import Home from './components/pages/Home'
 import Navbar from './components/Navbar'
 import Bottombar from './components/Bottombar'
-import TaskForm from './pages/TaskForm'
-import CalendarPage from './pages/Calendar'
-import Overview from './pages/Overview'
-import History from './pages/History'
-import EditHistory from './pages/EditHistory'
-import Profile from './pages/Profile'
-import LoggedOut from './pages/LogOut'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Verify from './pages/Verification'
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import Users from './pages/Users';
+import TaskForm from './components/pages/TaskForm'
+import CalendarPage from './components/pages/Calendar'
+import Overview from './components/pages/Overview'
+import History from './components/pages/History'
+import EditHistory from './components/pages/EditHistory'
+import Profile from './components/pages/Profile'
+import LoggedOut from './components/pages/LogOut'
+import Login from './components/pages/Login'
+import Signup from './components/pages/Signup'
+import Verify from './components/pages/Verification'
+import ForgotPassword from './components/pages/ForgotPassword';
+import ResetPassword from './components/pages/ResetPassword';
+import Users from './components/pages/Users';
 
 
 function App() {
