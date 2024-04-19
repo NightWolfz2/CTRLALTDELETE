@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {useLocation} from "react-router";
 import queryString from 'query-string'
 import axios from "axios"
-import './../css/ResetPassword.css';
+import '../../css/ResetPassword.css';
 
 function ResetPassword() {
   const navigate = useNavigate();

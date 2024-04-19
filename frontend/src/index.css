@@ -5,12 +5,13 @@
 :root {
   --primary: #333;
   --error: #FF6666;
-  width: 100vw;
+  height: 100vh;
 }
-.main-content {
-  margin: 1px 0;
-  margin-bottom: 2.2%;
+.main-content { 
+  height: 92vh;
+  overflow-y: auto;
 }
+
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */

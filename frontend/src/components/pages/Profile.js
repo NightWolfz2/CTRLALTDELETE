@@ -1,10 +1,10 @@
 import {useState, React} from 'react';
-import './../css/Profile.css';
-import { useAuthContext } from '../hooks/useAuthContext';
+import '../../css/Profile.css';
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { FaUserAlt, FaEnvelope, FaLock } from 'react-icons/fa';
-import {useUpdatePassword} from '../hooks/useUpdatePassword';
-import { useSendOTP } from '../hooks/useSendOTP';
-import PasswordStrengthBox from "../components/PasswordStrengthBox";
+import {useUpdatePassword} from '../../hooks/useUpdatePassword';
+import { useSendOTP } from '../../hooks/useSendOTP';
+import PasswordStrengthBox from "../../components/PasswordStrengthBox";
 import validator from 'validator';
 
 const Profile = () => { 

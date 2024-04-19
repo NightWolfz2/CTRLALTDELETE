@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useVerify } from '../hooks/useVerify';
-import './../css/Verification.css';
-import { useSendOTP } from '../hooks/useSendOTP'; // Added for resending OTP
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useVerify } from '../../hooks/useVerify';
+import '../../css/Verification.css';
+import { useSendOTP } from '../../hooks/useSendOTP'; // Added for resending OTP
 
 const Verification = () => {
     const { user } = useAuthContext();

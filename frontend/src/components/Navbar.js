@@ -57,7 +57,7 @@ const Navbar = () => {
       {user && (
       <div className="nav-links" style={{ marginLeft: 'auto'}}>
        <div className='nav-username'>
-       {user ? `${user.fname} ${user.lname.charAt(0)}. ${user.role && user.role !== 'employee' ? ` (${user.role})` : ''}` : ''}
+       {user ? `${user.fname} ${user.lname} ${user.role && user.role !== 'employee' ? ` (${user.role})` : ''}` : ''}
        </div>
 
         <button className={`menu ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>Menu</button>
