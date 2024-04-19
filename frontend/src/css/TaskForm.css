@@ -1,16 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
 
 body {
-  font-family: "Poppins"
+  font-family: "Poppins";
+  background-color: #f1f1f1;
 }
 
 .create {
-  background-color: #353535;
-  padding: 40px;
-  border-radius: 5px;
-  max-width: 600px;
-  margin: 40px auto;
+  background-color: #4a4a4a;
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   color: #fff;
+  width: 50%;
+  max-width: 800px;
+  margin: 5vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 18px;
 }
 
 .create h3 {
@@ -41,52 +48,29 @@ body {
 }
 
 .create button {
-  font-family: "Poppins";
-  background-color: #353535;
-  border: 1px solid #fff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 15px 30px;
+  border-radius: 10px;
   cursor: pointer;
-  margin-top: 20px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom:30px;
+  margin-top: 30px;
+  border: none;
+  background-color: #353535;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
   transition: background-color 0.3s;
+  align-self: center;
+  margin-left: 10px;
 }
 
 .create button:hover {
   background-color: #555;
 }
 
-.add-employee-btn {
-  background-color: #353535;
-  border: 1px solid #fff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 20px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  transition: background-color 0.3s;
-}
-
-.add-employee-btn:hover {
-  background-color: #555;
-}
-
-/* Style for the symbols on the buttons */
 .symbol {
-  font-size: 18px;  /* Adjust size as needed */
-  font-weight: bold; /* Makes it bolder */
-  margin-right: 5px;  /* Space between the symbol and the text */
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 5px; 
 }
-
 
 /* Description box */
 textarea {
@@ -95,12 +79,12 @@ textarea {
   margin-top: 10px;
   margin-bottom: 20px;
   width: 100%;
-  height: 200px;  /* Adjust the height as needed */
+  height: 200px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
-  resize: vertical;  /* Allows users to resize the textarea vertically */
-  overflow-y: auto;  /* Ensures the scrollbar appears when content exceeds the height */
+  resize: vertical;
+  overflow-y: auto;
   font-size: 16px;
 }
 
@@ -129,4 +113,3 @@ textarea {
   margin-left: auto;
   margin-right: auto;
 }
-

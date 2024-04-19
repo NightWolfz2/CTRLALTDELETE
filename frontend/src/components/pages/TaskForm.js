@@ -24,7 +24,6 @@ const TaskForm = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
 
-  console.log("Creating task with assigned employees:", selectedEmployees);
   useEffect(() => {
     const fetchEmployees = async () => {
     if (!user) return;
@@ -55,7 +54,6 @@ const TaskForm = () => {
   }, [user]);
 
   useEffect(() => {
-    console.log("Selected Employees updated:", selectedEmployees);
 }, [selectedEmployees]); // This useEffect will run every time selectedEmployees changes
 
    // Convert the local date and time to a UTC string
@@ -130,22 +128,20 @@ setDescription(e.target.value);
 
 // Handler to add selected employee to the task
 const handleAddEmployee = () => {
-console.log("Current Employee before adding:", currentEmployee);
 
-// Check if the currentEmployee is already in the selectedEmployees array
-if (currentEmployee && !selectedEmployees.includes(currentEmployee)) {
-// Update the state in a functional way to ensure the latest state is used
-setSelectedEmployees(prevSelectedEmployees => {
-// Create a new array for the updated state to avoid direct mutations
-const updatedSelectedEmployees = [...prevSelectedEmployees, currentEmployee];
-console.log("Selected Employees after adding:", updatedSelectedEmployees);
-return updatedSelectedEmployees;
-});
-// Clear the current selection after adding the employee to the list
-setCurrentEmployee('');
-} else {
-console.log("Employee already added or no employee selected.");
-}
+  // Check if the currentEmployee is already in the selectedEmployees array
+  if (currentEmployee && !selectedEmployees.includes(currentEmployee)) {
+    // Update the state in a functional way to ensure the latest state is used
+    setSelectedEmployees(prevSelectedEmployees => {
+    // Create a new array for the updated state to avoid direct mutations
+    const updatedSelectedEmployees = [...prevSelectedEmployees, currentEmployee];
+    return updatedSelectedEmployees;
+  });
+    // Clear the current selection after adding the employee to the list
+    setCurrentEmployee('');
+  } else {
+    console.log("Employee already added or no employee selected.");
+  }
 };
 
 

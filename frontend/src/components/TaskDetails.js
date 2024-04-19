@@ -16,7 +16,6 @@ const TaskDetails2 = ({ task, onClose, context }) => {
   const [assignedEmployees, setAssignedEmployees] = useState([]);
 
   useEffect(() => {
-    console.log("Assigned employee IDs in task:", task.employees); // Log to check the IDs
   
     const fetchAssignedEmployees = async () => {
       if (task.employees?.length) {
@@ -38,7 +37,6 @@ const TaskDetails2 = ({ task, onClose, context }) => {
             return 'Deleted User'; // Placeholder for any IDs that don't fetch properly
           }
         }));
-        console.log("Fetched assigned employees:", employeeNames); // Log to check the names
         setAssignedEmployees(employeeNames);
       }
     };

@@ -16,7 +16,7 @@ const formatDate = (dateStr) => {
   return `${month}/${day}/${year}`; // mm/dd/yyyy
 };
 
-const Overview = () => {
+const History = () => {
   const [priorityLevel, setPriorityLevel] = useState("All");
   const [status, setStatus] = useState("All");
   const [dueDate, setDueDate] = useState("");
@@ -28,7 +28,6 @@ const Overview = () => {
   const customFetch = useCustomFetch();
   const { logout } = useLogout();
   
-  const currentDate = new Date(); 
 
   const fetchEmployeeNames = async (employeeIds) => {
     const details = await Promise.all(employeeIds.map(async (id) => {
@@ -103,6 +102,31 @@ const Overview = () => {
       }
     }
   };
+
+const restoreDeletedClick = async (task) => {
+  try {
+    // Fetch the data asynchronously
+    const response = await customFetch(`/api/tasks/mark-task-restore-deleted/${task._id}`, 'PATCH');
+    // Update the task locally to mark it as restored
+    const json = await response.json();
+    dispatch({ type: 'UPDATE_TASK', payload: json});
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle errors here
+  }
+};
+
+const restoreCompletedClick = async (task) => {
+  try {
+    // Fetch the data asynchronously
+    const response = await customFetch(`/api/tasks/mark-task-restore-completed/${task._id}`, 'PATCH');
+    const json = await response.json();
+    dispatch({ type: 'UPDATE_TASK', payload: json});
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle errors here
+  }
+};
 
   
   const filterTasks = () => {
@@ -193,13 +217,19 @@ const Overview = () => {
 				</div>
 			  
         </div>
-          <button className={`box2`}>
-            <div className={`little-box2 ${task.deleted ? 'deleted' : ''}`} style={{ pointerEvents: 'none' }}>
-              <b>{task.deleted ? 'Deleted' : task.completed ? 'Complete' : ''}</b>
-            </div>
-          </button>
+        <div className="box2">
+            {task.deleted ? (
+              <div className="deleted-box">
+                <button className="restore-deleted" onClick={() => restoreDeletedClick(task)}>Restore Deleted</button>
+              </div>
+            ) : task.completed ? (
+              <div className="completed-box">
+                <button className="restore-completed" onClick={() => restoreCompletedClick(task)}>Restore Completed</button>
+              </div>
+            ) : null}
+          </div>
+
 			  <div className="box">
-        
 				<div className="little-box">
 				<p><b>Assigned Employee(s):</b></p>
             {task.employees && task.employees.length > 0 ? (
@@ -255,4 +285,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default History;
