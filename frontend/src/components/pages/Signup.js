@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useSignup } from "../hooks/useSignup";
-import './../css/Signup.css';
-import PasswordStrengthBox from "../components/PasswordStrengthBox";
+import { useSignup } from "../../hooks/useSignup";
+import '../../css/Signup.css';
+import PasswordStrengthBox from "../PasswordStrengthBox";
 import validator from 'validator';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 

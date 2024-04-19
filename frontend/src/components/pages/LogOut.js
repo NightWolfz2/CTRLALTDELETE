@@ -1,4 +1,4 @@
-import './../css/LogOut.css'; // Import CSS file
+import '../../css/LogOut.css'; // Import CSS file
 
 const LoggedOut = () => { 
   return (

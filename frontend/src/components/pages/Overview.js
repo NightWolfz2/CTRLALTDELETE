@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import './../css/Overview.css'; // Import CSS file
-import editIcon from '../images/edit_icon.png';
-import { useTasksContext } from "../hooks/useTasksContext"; 
-import TaskDetails from "../components/TaskDetails";
+import '../../css/Overview.css'; // Import CSS file
+import editIcon from '../../images/edit_icon.png';
+import { useTasksContext } from "../../hooks/useTasksContext"; 
+import TaskDetails from "../TaskDetails";
 import { useNavigate } from 'react-router-dom';
-import { useCustomFetch } from '../hooks/useCustomFetch';
-import { useLogout } from '../hooks/useLogout';
+import { useCustomFetch } from '../../hooks/useCustomFetch';
+import { useLogout } from '../../hooks/useLogout';
 import moment from 'moment-timezone';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);

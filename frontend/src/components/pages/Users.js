@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaUserAlt, FaEnvelope, FaTrash, FaChevronCircleUp, FaChevronCircleDown, FaCrown } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import './../css/Users.css';
+import '../../css/Users.css';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
