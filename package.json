@@ -4,6 +4,7 @@
     "cors": "^2.8.5",
     "moment-timezone": "^0.5.45",
     "node-cron": "^3.0.3",
+    "node-fetch": "^2.7.0",
     "nodemailer": "^6.9.9",
     "query-string": "^9.0.0",
     "react-datepicker": "^4.21.0",
@@ -17,10 +18,16 @@
     "start-backend": "cd backend && npm run dev",
     "install-backend": "cd backend && npm install && npm install express && npm install nodemailer && npm install dotenv && npm install cors && npm install node-cron ",
     "install-frontend": "cd frontend && npm install && npm install react-icons --save",
-    "install-libs": "npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm install cors && npm install query-string && npm install axios && npm install moment-timezone && npm install validator"
+    "install-libs": "npm install --save-dev @babel/plugin-proposal-private-property-in-object && npm install cors && npm install query-string && npm install axios && npm install moment-timezone && npm install validator",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "concurrently": "^8.2.2"
+    "@babel/preset-env": "^7.24.4",
+    "@babel/preset-react": "^7.24.1",
+    "concurrently": "^8.2.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
   }
 }
