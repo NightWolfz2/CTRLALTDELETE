@@ -123,7 +123,7 @@ const CalendarPage = () => {
         return '#3174ad'; // Default color if priority is not defined
     }
   };
-
+/*
   // Fetch employees
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -152,7 +152,7 @@ const CalendarPage = () => {
 
     fetchEmployees();// Dependency array, if you're using the 'user' state to store user information
   }, [user]);
-
+*/
   // Fetch Tasks
   useEffect(() => {
     const fetchTasks = async () => {
@@ -274,20 +274,20 @@ const CalendarPage = () => {
     <div className="calendar-page">
       <div className="side-container">
         <div className="side-component-stuff">
-          <h3>Today is {todayString}</h3>
+          <h3 data-testid="1">Today is {todayString}</h3>
           <DatePicker className="date-picker" selected={date} onChange={handleDateChange} inline />
         </div>
         <div className="side-component-2">
           {showTasks && (
             <div className="task-list" >
-              <h3 >Agenda</h3>
-              <h4>{agendaDate}</h4>
+              <h3  data-testid="2">Agenda</h3>
+              <h4 data-testid="3" >{agendaDate}</h4>
               <table style={{ width: '100%', padding: '2% 0' }}>
                 <thead>
                     <tr >
-                      <th>Due</th>
-                      <th>Task</th>
-                      <th style={{paddingLeft: '0.5rem'}}>Complete</th>
+                      <th data-testid="4">Due</th>
+                      <th data-testid="5">Task</th>
+                      <th data-testid="6" style={{paddingLeft: '0.5rem'}}>Complete</th>
                     </tr>
                   </thead>
                 <tbody>
