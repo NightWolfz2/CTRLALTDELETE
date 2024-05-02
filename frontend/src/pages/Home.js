@@ -8,6 +8,7 @@ import { useCustomFetch } from '../hooks/useCustomFetch';
 import { useLogout } from '../hooks/useLogout'; 
 import moment from 'moment-timezone';
 import { calculateTaskStatus } from '../hooks/utils';
+import React from 'react';
 
 
 const Home = () => {
@@ -95,7 +96,7 @@ const Home = () => {
   };
 
   return (
-    <div className="home">
+    <div id="homePage" className="home">
       <div className="home-container">
         <div className="page-title">
           <h2>Home</h2>

@@ -48,7 +48,7 @@ const Navbar = () => {
       
       <div className="nav-links">
         <Link to="/">Home</Link>
-        <Link to="/createTask">Create Task</Link>
+        <Link to="/createTask" id="createTaskLink">Create Task</Link> 
         <Link to="/calendar">Calendar</Link>
         <Link to="/overview">Overview</Link>       
         <Link to="/history">History</Link>

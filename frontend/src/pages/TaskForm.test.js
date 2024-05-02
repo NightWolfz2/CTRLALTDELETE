@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import TaskForm from './TaskForm';
 import { TasksContextProvider } from '../context/TasksContext';
@@ -106,26 +106,6 @@ describe('TaskForm Frontend Validation', () => {
   // Additional tests??
 });
 
-
-describe('TaskForm Frontend Validation', () => {
-  test('shows combined error when required fields are empty', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
-
-    // Use fillForm helper to submit an empty form
-    await fillForm(getByLabelText, getByRole, {
-      title: '',
-      date: '',
-      description: '',
-      priority: ''
-    });
-
-    // Check for the combined error message
-    expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
-  });
-
-  // Additional tests???
-});
-
 describe('TaskForm API Interaction', () => {
   test('submits the form successfully and displays a success message', async () => {
     const { getByLabelText, getByRole, findByText } = setup();
@@ -161,19 +141,58 @@ describe('TaskForm API Interaction', () => {
   // Additional tests??
 });
 
-/*
-  // Define another test case
-  test('should create a task when all required fields are provided', () => {
-    // Your test logic here
-  });
+describe('TaskForm - Fetch Employees', () => {
+  test('displays fetched employees in dropdown menu', async () => {
+    // Mock the API response with sample list of employees
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve([
+        { 
+          _id: '1', 
+          fname: 'John', 
+          lname: 'Doe', 
+          email: 'john.doe@example.com',
+          password: 'password123',
+          role: 'employee',
+          verified: true,
+          owner: false
+        },
+        { 
+          _id: '2', 
+          fname: 'Jane', 
+          lname: 'Smith', 
+          email: 'jane.smith@example.com',
+          password: 'password456',
+          role: 'admin',
+          verified: true,
+          owner: false
+        },
+        // Add more employee records as needed
+      ]),
+    });
+  
+    // Render the TaskForm component using the setup function
+    const { getByLabelText } = setup();
+  
+    // Wait for the component to render and fetch employees
+    await waitFor(() => expect(getByLabelText(/assign employee/i)).toBeInTheDocument());
+  
+    // Get the dropdown menu element
+    const employeeDropdown = getByLabelText(/assign employee/i);
+  
+    // Extract options from the dropdown menu
+    const options = Array.from(employeeDropdown.options);
 
-  // Continue defining other test cases
-  test('should fetch all employees when attempting to create a task', () => {
-    // Your test logic here
-  });
-
-  test('should allow removing an employee after being added to a task', () => {
-    // Your test logic here
-  });
+    console.log('Dropdown options:', options);
+  
+    // Assert that the dropdown menu contains the expected number of options
+    expect(options).toHaveLength(3); // Including the default option and two employees
+  
+    // Assert that each option corresponds to an employee fetched from the server
+    expect(options[0].text).toBe('Select Employee');
+    expect(options[1].text).toBe('John Doe');
+    expect(options[2].text).toBe('Jane Smith');
+  });  
 });
-*/
+
+

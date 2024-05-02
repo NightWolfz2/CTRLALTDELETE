@@ -25,7 +25,9 @@ const TaskForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
+    console.log('Fetching employees...'); //TEST
     const fetchEmployees = async () => {
+      console.log('Making API request to fetch employees...'); //TEST
     if (!user) return;
 
     try {
@@ -42,6 +44,7 @@ const TaskForm = () => {
         }
 
         const employeesData = await response.json();
+        console.log('Fetched employees:', employeesData); //TETS
                         // Do something with the fetched employees data, like setting state
         setEmployees(employeesData);
       } catch (error) {
@@ -158,7 +161,7 @@ setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
 
 return (
 <div>
-  <form className="create" onSubmit={handleSubmit}>
+  <form id="taskForm" className="create" onSubmit={handleSubmit}>
       <h3>Create Task</h3>
 
       <label htmlFor="title">Task Title:</label> 
@@ -227,8 +230,8 @@ return (
           value={description}
       ></textarea>
 
-      <button type="submit">Submit</button>
-      {successMessage && <div className="success-message">{successMessage}</div>}
+      <button id="submitButton" type="submit">Submit</button>
+      {successMessage && <div id="successMessage" className="success-message">{successMessage}</div>}
       {error && <div className="task-form-error">{error}</div>}
   </form>
 </div>
