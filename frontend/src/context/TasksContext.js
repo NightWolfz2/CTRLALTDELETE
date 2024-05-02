@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+
 import { createContext, useReducer } from 'react'
 
 export const TasksContext = createContext()
@@ -37,7 +38,7 @@ export const tasksReducer = (state, action) => {
 
 export const TasksContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(tasksReducer, { 
-    tasks: [] //CHANGED
+    tasks: []
   })
   
   return (

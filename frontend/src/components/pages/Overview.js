@@ -39,11 +39,7 @@ const Overview = () => {
   const fetchEmployeeNames = async (employeeIds) => {
     const details = await Promise.all(employeeIds.map(async (id) => {
       try {
-        const response = await fetch(`http://localhost:4000/api/user/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${user.token}`
-          }
-        });
+        const response = await customFetch(`/api/user/${id}`);
         if (!response.ok) throw new Error('Could not fetch employee details');
         const data = await response.json();
         return { name: `${data.fname} ${data.lname}`, email: data.email };
@@ -179,6 +175,12 @@ const Overview = () => {
   const [completedStates, setCompletedStates] = useState(new Map());
   const handleButtonClick = async (taskId) => {
     try {
+      setCompletedStates((prevStates) => {
+        const newStates = new Map(prevStates);
+        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
+        return newStates;
+      });
+
       // Fetch the data asynchronously
       const response = await customFetch(`/api/tasks/complete-task/${taskId}`, 'PATCH');
       const json = await response.json();
@@ -187,11 +189,7 @@ const Overview = () => {
       dispatch({ type: 'UPDATE_TASK', payload: json });
   
       // Update the completed states
-      setCompletedStates((prevStates) => {
-        const newStates = new Map(prevStates);
-        newStates.set(taskId, true); // Assuming taskId is the key for the completed state
-        return newStates;
-      });
+      
     } catch (error) {
       console.error('Error:', error);
       // Handle errors here
@@ -210,14 +208,14 @@ const Overview = () => {
   };
 
   return (
-    <div className='Overview' style={{ paddingBottom: "4rem" }}>
+    <div data-testid="overview" className='Overview' style={{ paddingBottom: "4rem" }}>
       <div className="page-title"> 
         <h2>Overview</h2>
         <div className="filter-container">
 
           <div className="priority-label">
-            <label>Priority: </label>
-            <select className="priority-select" value={priorityLevel} onChange={priorityChange}>
+            <label htmlFor="priority-select">Priority: </label>
+            <select id="priority-select" className="priority-select" value={priorityLevel} onChange={priorityChange}>
               <option value="All">All Priorities</option>
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -226,8 +224,8 @@ const Overview = () => {
           </div>
 
           <div className="status-label">
-            <label>Status: </label>
-            <select className="status-select" value={status} onChange={statusChange}>
+            <label htmlFor="status-select">Status: </label>
+            <select id="status-select" className="status-select" value={status} onChange={statusChange}>
               <option value="All">All Statuses</option>
               <option value="In Progress">In Progress</option>
               <option value="Past Due">Past Due</option>
@@ -235,8 +233,9 @@ const Overview = () => {
           </div>
 
           <div className="due-date-label">
-            <label>Due Date: </label>
+            <label htmlFor="date-select">Due Date: </label>
             <input
+             id="date-select"
               className="date-select"
               type="date"
               value={dueDate}
@@ -245,8 +244,9 @@ const Overview = () => {
           </div>
 
           <div className="search-bar-label">
-            <label>Search: </label>
+            <label htmlFor="searchBar">Search: </label>
             <input
+            id="searchBar"
               className="searchBar"
               type="text"
               value={searchBar}
@@ -330,6 +330,7 @@ const Overview = () => {
               </div>
               <div className="edit-button">
                 <button
+                  data-testid="edit-button"
                   style={{ backgroundImage: `url(${editIcon})` }}
                   onClick={() => handleEditTask(task._id)}
                 ></button>
