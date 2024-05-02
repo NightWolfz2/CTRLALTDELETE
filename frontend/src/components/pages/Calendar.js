@@ -283,11 +283,13 @@ const CalendarPage = () => {
               <h3 >Agenda</h3>
               <h4>{agendaDate}</h4>
               <table style={{ width: '100%', padding: '2% 0' }}>
-                <tr >
-                  <th>Due</th>
-                  <th>Task</th>
-                  <th style={{paddingLeft: '0.5rem'}}>Complete</th>
-                </tr>
+                <thead>
+                    <tr >
+                      <th>Due</th>
+                      <th>Task</th>
+                      <th style={{paddingLeft: '0.5rem'}}>Complete</th>
+                    </tr>
+                  </thead>
                 <tbody>
                   {tasksDue.slice().sort((a, b) => new Date(a.date) - new Date(b.date)).map(task => (
                     <tr key={task.id}>
