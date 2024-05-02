@@ -25,7 +25,9 @@ const TaskForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
+    console.log('Fetching employees...'); //TEST
     const fetchEmployees = async () => {
+      console.log('Making API request to fetch employees...'); //TEST
     if (!user) return;
 
     try {
@@ -42,6 +44,7 @@ const TaskForm = () => {
         }
 
         const employeesData = await response.json();
+        console.log('Fetched employees:', employeesData); //TETS
                         // Do something with the fetched employees data, like setting state
         setEmployees(employeesData);
       } catch (error) {
@@ -158,27 +161,30 @@ setSelectedEmployees(selectedEmployees.filter(id => id !== employeeId));
 
 return (
 <div>
-  <form className="create" onSubmit={handleSubmit}>
+  <form id="taskForm" className="create" onSubmit={handleSubmit}>
       <h3>Create Task</h3>
 
-      <label>Task Title:</label>
+      <label htmlFor="title">Task Title:</label> 
       <input
+          id="title" //htmlFor="<label>" and id="<label>" FOR TESTING PURPOSES!!!!!!!!!!!!!!!!!!!!!!!!!
           type="text"
           onChange={handleTitleChange}
           value={title}
           //className={emptyFields.includes('title') ? 'error' : ''}
       />
 
-      <label>Due Date:</label>
+      <label htmlFor="date">Due Date:</label>
       <input 
+          id="date" 
           type="datetime-local"
           onChange={handleDateChange} 
           value={date}
           //className={emptyFields.includes('date') ? 'error' : ''}
       />
 
-      <label>Priority:</label>
+      <label htmlFor="priority">Priority:</label>
       <select
+          id="priority" 
           onChange={handlePriorityChange}
           value={priority}
       >
@@ -188,8 +194,12 @@ return (
           <option value="Low">Low</option>
       </select>
 
-      <label>Assign Employee:</label>
-      <select value={currentEmployee} onChange={handleCurrentEmployeeChange}>
+      <label htmlFor="employee">Assign Employee:</label>
+      <select 
+          id="employee" 
+          value={currentEmployee} 
+          onChange={handleCurrentEmployeeChange}
+      >
           <option value="">Select Employee</option>
           {employees.map(employee => (
               <option key={employee._id} value={employee._id}>
@@ -212,15 +222,16 @@ return (
           );
       })}
 
-      <label>Description:</label>
+      <label htmlFor="description">Description:</label> 
       <textarea
+          id="description"
           rows="10"
           onChange={handleDescriptionChange}
           value={description}
       ></textarea>
 
-      <button type="submit">Submit</button>
-      {successMessage && <div className="success-message">{successMessage}</div>}
+      <button id="submitButton" type="submit">Submit</button>
+      {successMessage && <div id="successMessage" className="success-message">{successMessage}</div>}
       {error && <div className="task-form-error">{error}</div>}
   </form>
 </div>
