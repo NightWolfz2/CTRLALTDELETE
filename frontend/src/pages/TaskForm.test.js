@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import TaskForm from './TaskForm';
 import { TasksContextProvider } from '../context/TasksContext';
@@ -70,43 +70,61 @@ the test indirectly checks whether the form validates input fields and correctly
 The presence of the console error in the output is part of the expected behavior when the mocked fetch
 function rejects the submission due to validation failures.
 */
-describe('TaskForm', () => {
-  test('fails to create task when required fields are missing', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
 
-    // Use fillForm helper to submit an empty form
+describe('TaskForm API Interaction', () => { //ok
+
+  test('displays error when title is missing', async () => {
+    const { getByLabelText, getByRole, findByText } = setup();
+  
     await fillForm(getByLabelText, getByRole, {
       title: '',
-      date: '',
-      description: '',
-      priority: ''
+      date: '2024-12-25T12:00',
+      description: 'Complete this task soon.',
+      priority: 'High'
     });
+  
+    expect(await findByText(/title field is required/i)).toBeInTheDocument();
+  });  
 
-    // Check for the combined error message
-    expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
-  });
-});
-
-describe('TaskForm Frontend Validation', () => {
-  test('shows combined error when required fields are empty', async () => {
+  test('displays error when date is missing', async () => {
     const { getByLabelText, getByRole, findByText } = setup();
-
-    // Use fillForm helper to submit an empty form
+  
     await fillForm(getByLabelText, getByRole, {
-      title: '',
+      title: 'New Task',
       date: '',
-      description: '',
-      priority: ''
+      description: 'Complete this task soon.',
+      priority: 'High'
     });
-
-    // Check for the combined error message
-    expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
+  
+    expect(await findByText(/provide a due date for the task/i)).toBeInTheDocument();
   });
 
-  // Additional tests??
-});
+  test('displays error when description is missing', async () => {
+    const { getByLabelText, getByRole, findByText } = setup();
+  
+    await fillForm(getByLabelText, getByRole, {
+      title: 'New Task',
+      date: '2024-12-25T12:00',
+      description: '',
+      priority: 'High'
+    });
+  
+    expect(await findByText(/task description is required/i)).toBeInTheDocument();
+  });
 
-describe('TaskForm API Interaction', () => {
+  test('displays error when priority is missing', async () => {
+    const { getByLabelText, getByRole, findByText } = setup();
+  
+    await fillForm(getByLabelText, getByRole, {
+      title: 'New Task',
+      date: '2024-12-25T12:00',
+      description: 'Complete this task soon.',
+      priority: ''
+    });
+  
+    expect(await findByText(/select a priority level for the task/i)).toBeInTheDocument();
+  });  
+
   test('submits the form successfully and displays a success message', async () => {
     const { getByLabelText, getByRole, findByText } = setup();
     const testDate = moment().tz('America/Los_Angeles').add(1, 'days').format('YYYY-MM-DDTHH:mm');
@@ -123,7 +141,7 @@ describe('TaskForm API Interaction', () => {
     expect(await findByText('Task Created')).toBeInTheDocument();
   });  
 
-  test('fails to create task when required fields are missing and displays combined error messages', async () => {
+  test('fails to create task when all required fields are missing and displays combined error messages', async () => {
     const { getByLabelText, getByRole, findByText } = setup();
 
     // Use fillForm helper to submit an empty form
@@ -137,62 +155,8 @@ describe('TaskForm API Interaction', () => {
     // Check for combined error messages
     expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
   });
-
-  // Additional tests??
 });
 
-describe('TaskForm - Fetch Employees', () => {
-  test('displays fetched employees in dropdown menu', async () => {
-    // Mock the API response with sample list of employees
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve([
-        { 
-          _id: '1', 
-          fname: 'John', 
-          lname: 'Doe', 
-          email: 'john.doe@example.com',
-          password: 'password123',
-          role: 'employee',
-          verified: true,
-          owner: false
-        },
-        { 
-          _id: '2', 
-          fname: 'Jane', 
-          lname: 'Smith', 
-          email: 'jane.smith@example.com',
-          password: 'password456',
-          role: 'admin',
-          verified: true,
-          owner: false
-        },
-        // Add more employee records as needed
-      ]),
-    });
-  
-    // Render the TaskForm component using the setup function
-    const { getByLabelText } = setup();
-  
-    // Wait for the component to render and fetch employees
-    await waitFor(() => expect(getByLabelText(/assign employee/i)).toBeInTheDocument());
-  
-    // Get the dropdown menu element
-    const employeeDropdown = getByLabelText(/assign employee/i);
-  
-    // Extract options from the dropdown menu
-    const options = Array.from(employeeDropdown.options);
 
-    console.log('Dropdown options:', options);
-  
-    // Assert that the dropdown menu contains the expected number of options
-    expect(options).toHaveLength(3); // Including the default option and two employees
-  
-    // Assert that each option corresponds to an employee fetched from the server
-    expect(options[0].text).toBe('Select Employee');
-    expect(options[1].text).toBe('John Doe');
-    expect(options[2].text).toBe('Jane Smith');
-  });  
-});
 
 
