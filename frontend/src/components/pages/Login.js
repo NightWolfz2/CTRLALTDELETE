@@ -17,11 +17,12 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <div className="form-container"> {/* Use form-container for styling */}
+            <div className="form-container" id="loginFormContainer"> {/* Use form-container for styling */}
                 <h3>Login</h3>
                 <form onSubmit={handleSubmit}>
                     <label>Email:</label>
                     <input
+                        id="emailInput"  //FOR TESTING
                         type="email"
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
@@ -29,6 +30,7 @@ const Login = () => {
                     />
                     <label>Password:</label>
                     <input
+                        id="passwordInput" //FOR TESTING
                         type="password"
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
@@ -38,7 +40,7 @@ const Login = () => {
                         <Link to="/forgot-password">Forgot Password?</Link>
                     </div>
                     <div className="button-container">
-                    <button type="submit" className="auth-button" style={{ fontWeight: 'bold', fontSize: '1.2rem' }} disabled={isLoading}>
+                    <button type="submit" className="auth-button" id="loginButton" style={{ fontWeight: 'bold', fontSize: '1.2rem' }} disabled={isLoading}>
                     Login
                     </button>
                     <button 
