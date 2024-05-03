@@ -8,10 +8,8 @@ beforeAll(() => {
         json: () => Promise.resolve([]),
       });
     }
-
     // You can add more conditions for other API endpoints
     // ...
-
     // Default to rejecting fetch calls that aren't explicitly mocked:
     return Promise.reject(new Error(`Unmocked endpoint: ${url}`));
   });
@@ -20,9 +18,6 @@ beforeAll(() => {
 afterEach(() => {
   global.fetch.mockClear();
 });
-
 afterAll(() => {
   global.fetch.mockRestore();
 });
-
-  

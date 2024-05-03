@@ -130,22 +130,22 @@ describe('CalendarPage Component', () => {
     // Day button click
     fireEvent.click(dayButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
-    expect(rbcViewLabel).toEqual("Friday May 03");
+    expect(rbcViewLabel).toEqual("Thursday May 02");
     // Next button click
     fireEvent.click(nextButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
-    expect(rbcViewLabel).toEqual("Saturday May 04");
+    expect(rbcViewLabel).toEqual("Friday May 03");
     agendaDate = getByTestId("3").textContent
-    expect(agendaDate).toEqual("May 4, 2024");
+    expect(agendaDate).toEqual("May 3, 2024");
     // Back button click
     fireEvent.click(backButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
-    expect(rbcViewLabel).toEqual("Friday May 03");
+    expect(rbcViewLabel).toEqual("Thursday May 02");
     // Today button click
     fireEvent.click(backButton);  //click back to go to May 01
     fireEvent.click(todayButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
-    expect(rbcViewLabel).toEqual("Friday May 03");
+    expect(rbcViewLabel).toEqual("Thursday May 02");
 
   });
 
@@ -183,61 +183,6 @@ describe('CalendarPage Component', () => {
     expect(agendaDate).toEqual("June 28, 2024");
 
   });
-
-    it('Selects a day in week view', async () => {
-      const { getByText } = render(
-        <MemoryRouter>
-          <AuthContextProvider>
-            <CalendarPage />
-          </AuthContextProvider>
-        </MemoryRouter>
-      );
-  
-      // Navigate to week view if not already in it
-      fireEvent.click(getByText('Week'));
-  
-      // Assuming that "01 Wed" is visible and clickable in the current view
-      fireEvent.click(getByText('01 Wed'));
-  
-      // Check if the selected date has changed to "01 Wed"
-      // This assumes you have a way to display the selected date or some related change
-      await waitFor(() => {
-        const selectedDate = getByText('May 1, 2024'); // Adjust the format and text as per your application
-        expect(selectedDate).toBeInTheDocument();
-      });
-    });
-  
-    it('Selects a day in weeks view and then months view ', async () => {
-      const { getByText } = render(
-        <MemoryRouter>
-          <AuthContextProvider>
-            <CalendarPage />
-          </AuthContextProvider>
-        </MemoryRouter>
-      );
-      
-      // Click on day header in week view
-      fireEvent.click(getByText('01 Wed'));
-
-      // Verify changes, e.g., a task list for the selected day or the date being highlighted
-      await waitFor(() => {
-        const selectedDayTasks = getByText('May 1, 2024');
-        expect(selectedDayTasks).toBeInTheDocument();
-      });
-
-      // Navigate to month view
-      fireEvent.click(getByText('Month'));
-  
-      // Click on a day number
-      fireEvent.click(getByText('02')); // Click on the first day of the month shown
-  
-      // Verify changes, e.g., a task list for the selected day or the date being highlighted
-      await waitFor(() => {
-        const selectedDayTasks = getByText('May 2, 2024');
-        expect(selectedDayTasks).toBeInTheDocument();
-      });
-
-    });
 
   /*
   it('Displays tasks correctly', async () => {

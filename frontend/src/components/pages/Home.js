@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useTasksContext } from "../hooks/useTasksContext";
-import './../css/Home.css'; // Import your CSS file
-import TaskDetails from "../components/TaskDetails";
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useTasksContext } from "../../hooks/useTasksContext";
+import '../../css/Home.css'; // Import your CSS file
+import TaskDetails from "../TaskDetails";
+import { useAuthContext } from '../../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom'; 
-import { useCustomFetch } from '../hooks/useCustomFetch'; 
-import { useLogout } from '../hooks/useLogout'; 
+import { useCustomFetch } from '../../hooks/useCustomFetch'; 
+import { useLogout } from '../../hooks/useLogout'; 
 import moment from 'moment-timezone';
-import { calculateTaskStatus } from '../hooks/utils';
-import React from 'react';
+import { calculateTaskStatus } from '../../hooks/utils';
 
 
 const Home = () => {
@@ -96,7 +95,7 @@ const Home = () => {
   };
 
   return (
-    <div id="homePage" className="home">
+    <div className="home">
       <div className="home-container">
         <div className="page-title">
           <h2>Home</h2>
