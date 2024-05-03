@@ -31,7 +31,9 @@ async function runTest() {
         let loginButton = await driver.findElement(By.id('loginButton'));
         await usernameInput.sendKeys('person1@gmail.com');
         await passwordInput.sendKeys('Person1!');
+        await driver.executeScript("arguments[0].scrollIntoView(true);", loginButton);
         await loginButton.click();
+
 
         // Wait for navigation to home page
         await driver.wait(until.elementLocated(By.id('homePage')), 10000);
@@ -56,12 +58,17 @@ async function runTest() {
         await submitButton.click();
         console.log('Form submitted.');
 
-        // Optional: capture screenshot after submission
-        await captureScreenshot(driver, 'post-submission-screenshot.png');
+        // Capture screenshot right before submission
+        await driver.executeScript("document.body.style.zoom='50%'");
+        await captureScreenshot(driver, 'pre-submission-screenshot.png');
 
         // Check for success message
         let successMessage = await driver.wait(until.elementLocated(By.id('successMessage')), 10000);
         console.log('Success message displayed:', successMessage ? true : false);
+
+        //Capture screenshot right after submission
+        await driver.executeScript("arguments[0].scrollIntoView(true);", submitButton);
+        await captureScreenshot(driver, 'post-submission-screenshot.png');
 
     } catch (error) {
         console.error('An error occurred:', error);

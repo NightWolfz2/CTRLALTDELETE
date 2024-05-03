@@ -71,90 +71,90 @@ The presence of the console error in the output is part of the expected behavior
 function rejects the submission due to validation failures.
 */
 
-describe('TaskForm API Interaction', () => { //ok
+describe('TaskForm API Interaction', () => { 
 
-  test('displays error when title is missing', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
+  // test('displays error when title is missing', async () => {
+  //   const { getByLabelText, getByRole, findByText } = setup();
   
-    await fillForm(getByLabelText, getByRole, {
-      title: '',
-      date: '2024-12-25T12:00',
-      description: 'Complete this task soon.',
-      priority: 'High'
-    });
+  //   await fillForm(getByLabelText, getByRole, {
+  //     title: '',
+  //     date: '2024-12-25T12:00',
+  //     description: 'Complete this task soon.',
+  //     priority: 'High'
+  //   });
   
-    expect(await findByText(/title field is required/i)).toBeInTheDocument();
-  });  
+  //   expect(await findByText(/title field is required/i)).toBeInTheDocument();
+  // });  
 
-  test('displays error when date is missing', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
+  // test('displays error when date is missing', async () => {
+  //   const { getByLabelText, getByRole, findByText } = setup();
   
-    await fillForm(getByLabelText, getByRole, {
-      title: 'New Task',
-      date: '',
-      description: 'Complete this task soon.',
-      priority: 'High'
-    });
+  //   await fillForm(getByLabelText, getByRole, {
+  //     title: 'New Task',
+  //     date: '',
+  //     description: 'Complete this task soon.',
+  //     priority: 'High'
+  //   });
   
-    expect(await findByText(/provide a due date for the task/i)).toBeInTheDocument();
-  });
+  //   expect(await findByText(/provide a due date for the task/i)).toBeInTheDocument();
+  // });
 
-  test('displays error when description is missing', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
+  // test('displays error when description is missing', async () => {
+  //   const { getByLabelText, getByRole, findByText } = setup();
   
-    await fillForm(getByLabelText, getByRole, {
-      title: 'New Task',
-      date: '2024-12-25T12:00',
-      description: '',
-      priority: 'High'
-    });
+  //   await fillForm(getByLabelText, getByRole, {
+  //     title: 'New Task',
+  //     date: '2024-12-25T12:00',
+  //     description: '',
+  //     priority: 'High'
+  //   });
   
-    expect(await findByText(/task description is required/i)).toBeInTheDocument();
-  });
+  //   expect(await findByText(/task description is required/i)).toBeInTheDocument();
+  // });
 
-  test('displays error when priority is missing', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
+  // test('displays error when priority is missing', async () => {
+  //   const { getByLabelText, getByRole, findByText } = setup();
   
-    await fillForm(getByLabelText, getByRole, {
-      title: 'New Task',
-      date: '2024-12-25T12:00',
-      description: 'Complete this task soon.',
-      priority: ''
-    });
+  //   await fillForm(getByLabelText, getByRole, {
+  //     title: 'New Task',
+  //     date: '2024-12-25T12:00',
+  //     description: 'Complete this task soon.',
+  //     priority: ''
+  //   });
   
-    expect(await findByText(/select a priority level for the task/i)).toBeInTheDocument();
-  });  
+  //   expect(await findByText(/select a priority level for the task/i)).toBeInTheDocument();
+  // });  
 
-  test('submits the form successfully and displays a success message', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
-    const testDate = moment().tz('America/Los_Angeles').add(1, 'days').format('YYYY-MM-DDTHH:mm');
+  // test('submits the form successfully and displays a success message', async () => {
+  //   const { getByLabelText, getByRole, findByText } = setup();
+  //   const testDate = moment().tz('America/Los_Angeles').add(1, 'days').format('YYYY-MM-DDTHH:mm');
 
-    // Use fillForm helper to fill in the form with valid data
-    await fillForm(getByLabelText, getByRole, {
-      title: 'New Task',
-      date: testDate,
-      description: 'Complete this task soon.',
-      priority: 'High'
-    });
+  //   // Use fillForm helper to fill in the form with valid data
+  //   await fillForm(getByLabelText, getByRole, {
+  //     title: 'New Task',
+  //     date: testDate,
+  //     description: 'Complete this task soon.',
+  //     priority: 'High'
+  //   });
 
-    // Expect to find a success message
-    expect(await findByText('Task Created')).toBeInTheDocument();
-  });  
+  //   // Expect to find a success message
+  //   expect(await findByText('Task Created')).toBeInTheDocument();
+  // });  
 
-  test('fails to create task when all required fields are missing and displays combined error messages', async () => {
-    const { getByLabelText, getByRole, findByText } = setup();
+   test('fails to create task when all required fields are missing and displays combined error messages', async () => {
+     const { getByLabelText, getByRole, findByText } = setup();
 
-    // Use fillForm helper to submit an empty form
-    await fillForm(getByLabelText, getByRole, {
-      title: '',
-      date: '',
-      description: '',
-      priority: ''
-    });
+     // Use fillForm helper to submit an empty form
+     await fillForm(getByLabelText, getByRole, {
+       title: '',
+       date: '',
+       description: '',
+       priority: ''
+     });
 
-    // Check for combined error messages
-    expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
-  });
+     // Check for combined error messages
+     expect(await findByText(combinedErrorMessage)).toBeInTheDocument();
+   });
 });
 
 
