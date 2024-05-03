@@ -42,13 +42,6 @@ const mockUser = {
 
 
 describe('CalendarPage Component', () => {
-  it('Renders without crashing', () => {
-    render(
-      <MemoryRouter> <AuthContextProvider>
-        <CalendarPage />
-      </AuthContextProvider></MemoryRouter> 
-    );
-  });
 
   it('Displays today\'s date correctly', () => {
     const { getByTestId } = render(     
@@ -91,7 +84,7 @@ describe('CalendarPage Component', () => {
     expect(col_3).toEqual("Complete");
   });
 
-  it('All rbc buttons work as expected', () => {
+  it('All rbc buttons work as expected & rbc toolbar label and adenda date dynamically changes as expected', () => {
     const { getByRole, getByTestId } = render(     
       <MemoryRouter> <AuthContextProvider>
         <CalendarPage />
@@ -105,48 +98,68 @@ describe('CalendarPage Component', () => {
     const monthButton = getByRole('button', { name: 'Month' });
     const weekButton = getByRole('button', { name: 'Week' });
     const dayButton = getByRole('button', { name: 'Day' });
+    const wv_HeaderBtn = getByRole('button', { name: '01 Wed' });
 
+    // Assert that all buttons are present
     expect(todayButton).toBeInTheDocument();
     expect(backButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
-    // Assert that all buttons are present
     expect(monthButton).toBeInTheDocument();
     expect(weekButton).toBeInTheDocument();
     expect(dayButton).toBeInTheDocument();
+    expect(wv_HeaderBtn).toBeInTheDocument();
 
     let agendaDate = getByTestId("3").textContent;
     let rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("April 28 – May 04");
+    expect(agendaDate).toEqual("May 2, 2024")
     
     // Simulate button clicks
     // Month button click
     fireEvent.click(monthButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("May 2024");
+
     // Week button click
     fireEvent.click(weekButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("April 28 – May 04");
+
     // Day button click
     fireEvent.click(dayButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("Thursday May 02");
+
     // Next button click
     fireEvent.click(nextButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("Friday May 03");
     agendaDate = getByTestId("3").textContent
     expect(agendaDate).toEqual("May 3, 2024");
+
     // Back button click
     fireEvent.click(backButton);
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("Thursday May 02");
-    // Today button click
+    agendaDate = getByTestId("3").textContent
+    expect(agendaDate).toEqual("May 2, 2024");
+
     fireEvent.click(backButton);  //click back to go to May 01
+    agendaDate = getByTestId("3").textContent
+    expect(agendaDate).toEqual("May 1, 2024");
+
+      // Today button click
     fireEvent.click(todayButton);
+    agendaDate = getByTestId("3").textContent
+    expect(agendaDate).toEqual("May 2, 2024");
     rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
     expect(rbcViewLabel).toEqual("Thursday May 02");
 
+    // Week view header button
+    fireEvent.click(wv_HeaderBtn);
+    agendaDate = getByTestId("3").textContent
+    expect(agendaDate).toEqual("May 1, 2024");
+    
   });
 
 
