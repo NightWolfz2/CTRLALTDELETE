@@ -6,7 +6,11 @@ const fs = require('fs');
 async function takeScreenshot(driver, filename) {
     let image = await driver.takeScreenshot();
     //fs.writeFileSync(filename, image, 'base64');
-    fs.writeFileSync('C:\\Users\\nikol\\Documents\\GitHub\\CtrlAltDelete\\frontend\\screenshots\\${}', image, 'base64');
+    fs.writeFileSync(filename, image, 'base64');
+}
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
 }
 
 // Function to clear browser data
@@ -40,13 +44,25 @@ async function testHomePage() {
         console.log("Navigated to home page.");
 
         // Take a screenshot after a successful login
-        await takeScreenshot(driver, 'C:\\Users\\nikol\\Documents\\GitHub\\CtrlAltDelete\\frontend\\screenshots\\screenshot.png');
+        await takeScreenshot(driver, 'C:\\Users\\nikol\\Documents\\GitHub\\CtrlAltDelete\\frontend\\screenshots\\LoginSuccess.png');
         console.log("Screenshot taken after successful login.");
 
-        // Apply filters
+        //Navigate to Calendar
         await driver.findElement(By.linkText('Calendar')).click();
-        await driver.wait(until.urlIs('http://localhost:3000/overview'), 30000);
+        await driver.wait(until.urlIs('http://localhost:3000/calendar'), 30000);
         console.log("Navigated to Calendar page.");
+        await takeScreenshot(driver, 'C:\\Users\\nikol\\Documents\\GitHub\\CtrlAltDelete\\frontend\\screenshots\\CalendarView.png');
+        
+
+        //
+        await driver.findElement(By.xpath("//button[text()='Day']")).click();
+        await delay(1000);
+        await driver.findElement(By.xpath("//button[text()='Next']")).click();
+        await driver.findElement(By.linkText('wef')).click();
+
+        await driver.findElement(By.xpath("//button[text()='wef']")).click();
+        await delay(10000);
+
 
     } catch (error) {
         console.error('An error occurred:', error);
