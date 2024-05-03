@@ -19,11 +19,23 @@ async function clearBrowserData(driver) {
     }
 }
 
+// Helper function to apply and capture filter state
+async function applyFilterAndWait(driver, filterId, value, screenshotPath) {
+    const filterElement = await driver.findElement(By.id(filterId));
+    await filterElement.sendKeys(value, Key.RETURN);
+    console.log(`Filter set to '${value}' for ${filterId}.`);
+
+    // Wait for the page to update the results based on the filter
+    await driver.sleep(5000); // Ensure results have loaded
+
+    // Screenshot after applying filter
+    await takeScreenshot(driver, screenshotPath);
+    console.log(`Screenshot taken for ${filterId} set to '${value}'.`);
+}
+
 // The main test function
 async function testHomePage() {
     let options = new chrome.Options();
-    // Add other Chrome options as needed
-
     let driver = await new Builder()
         .forBrowser('chrome')
         .setChromeOptions(options)
@@ -34,54 +46,52 @@ async function testHomePage() {
 
         await driver.get('http://localhost:3000/login');
         console.log("Navigated to login page.");
-
         await driver.findElement(By.id('emailInput')).sendKeys('abhargava@csus.edu');
         await driver.findElement(By.id('passwordInput')).sendKeys('!1Testing', Key.RETURN);
         console.log("Credentials entered and submitted.");
 
         await driver.wait(until.urlIs('http://localhost:3000/'), 20000);
         console.log("Navigated to home page.");
-
-        // Take a screenshot after a successful login
         await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\successful-login.png');
         console.log("Screenshot taken after successful login.");
 
-        // Apply filters
-        await driver.findElement(By.id('status')).sendKeys('In Progress', Key.RETURN);
-        console.log("Status filter set to 'In Progress'.");
+        // Status Filters: In Progress, Past Due, All
+        await applyFilterAndWait(driver, 'status', 'In Progress', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\status-InProgress.png');
+        await applyFilterAndWait(driver, 'status', 'Past Due', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\status-PastDue.png');
+        await applyFilterAndWait(driver, 'status', 'All', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\status-All.png');
 
-        await driver.findElement(By.id('priority')).sendKeys('High', Key.RETURN);
-        console.log("Priority filter set to 'High'.");
+        // Priority Filters: High, Medium, Low
+        await applyFilterAndWait(driver, 'priority', 'High', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\priority-High.png');
+        await applyFilterAndWait(driver, 'priority', 'Medium', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\priority-Medium.png');
+        await applyFilterAndWait(driver, 'priority', 'Low', 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\priority-Low.png');
 
+        // Reset filters before applying due date
+        const resetButton = await driver.findElement(By.xpath("//button[text()='Reset Filters']"));
+        await resetButton.click();
+        console.log("Filters reset before due date application.");
+
+        // Due Date Filter: Apply and take a screenshot
         const dueDateInput = await driver.findElement(By.id('due-date'));
-        await dueDateInput.clear();
-        await dueDateInput.sendKeys('2024-06-30', Key.RETURN);
+        await dueDateInput.sendKeys('06/30/2024', Key.RETURN); // Adjust date format here
         console.log("Due date filter set.");
+        await driver.sleep(5000);
+        await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\due-date-set.png');
 
+        // Reset and apply Search Filter
+        await resetButton.click();
+        console.log("Filters reset before applying search.");
         const searchBar = await driver.findElement(By.id('search'));
         await searchBar.sendKeys('Test', Key.RETURN);
         console.log("Search term 'Test' entered.");
-
-        // Take a screenshot after applying filters
-        await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\filters-applied.png');
-        console.log("Screenshot taken after applying filters.");
-
-        // Click the "Reset Filters" button
-        const resetButton = await driver.findElement(By.xpath("//button[text()='Reset Filters']"));
-        await resetButton.click();
-        console.log("Filters reset.");
-
-        // Take a screenshot after resetting filters
-        await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\filters-reset.png');
-        console.log("Screenshot taken after resetting filters.");
+        await driver.sleep(5000);
+        await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\search-applied.png');
 
     } catch (error) {
         console.error('An error occurred:', error);
         await takeScreenshot(driver, 'C:\\Users\\Arjun\\Documents\\190\\CtrlAltDelete\\frontend\\screenshots\\error-screenshot.png');
         console.log("Screenshot taken on error.");
     } finally {
-        // Uncomment the line below if you want to close the browser after the tests
-         await driver.quit();
+        await driver.quit();
     }
 }
 
