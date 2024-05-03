@@ -5,7 +5,8 @@ const fs = require('fs');
 // Function to take screenshots
 async function takeScreenshot(driver, filename) {
     let image = await driver.takeScreenshot();
-    fs.writeFileSync(filename, image, 'base64');
+    //fs.writeFileSync(filename, image, 'base64');
+    fs.writeFileSync('C:\\Users\\nikol\\Documents\\GitHub\\CtrlAltDelete\\frontend\\screenshots\\${filename}', image, 'base64');
 }
 
 // Function to clear browser data
@@ -22,27 +23,22 @@ async function clearBrowserData(driver) {
 // The main test function
 async function testHomePage() {
     let options = new chrome.Options();
+    let driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     // Add other Chrome options as needed
-
-    let driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(options)
-        .build();
 
     try {
         await clearBrowserData(driver);
 
-        //await driver.wait(until.elementLocated(By.id('emailInput')), 10000); // waits up to 10 seconds
-
         await driver.get('http://localhost:3000/login');
         console.log("Navigated to login page.");
-        await driver.wait(until.elementLocated(By.id('emailInput')), 10000); // waits up to 10 seconds
+        
+        //await driver.wait(until.elementLocated(By.id('emailInput')), 10000); // waits up to 10 seconds
 
         await driver.findElement(By.id('emailInput')).sendKeys('nikolay.chkhaylo@yahoo.com');
         await driver.findElement(By.id('passwordInput')).sendKeys('TheColaman3@', Key.RETURN);
         console.log("Credentials entered and submitted.");
 
-        await driver.wait(until.urlIs('http://localhost:3000/'), 20000);
+        await driver.wait(until.urlIs('http://localhost:3000/'), 30000);
         console.log("Navigated to home page.");
 
         // Take a screenshot after a successful login
