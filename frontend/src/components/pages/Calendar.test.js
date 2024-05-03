@@ -1,13 +1,44 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, getByText, screen } from '@testing-library/react';
 import CalendarPage from './Calendar';
 import { MemoryRouter } from 'react-router-dom'; // Import MemoryRouter
 import { AuthContextProvider } from "../../context/AuthContext"
+import '@testing-library/jest-dom';
 
 // Mock the useCustomFetch hook
 jest.mock('../../hooks/useCustomFetch', () => ({
   useCustomFetch: jest.fn(),
 }));
+
+jest.mock('../../hooks/useCustomFetch', () => ({
+  useCustomFetch: () => jest.fn(() => Promise.resolve(mockTasks))
+}));
+
+jest.mock('../../hooks/useAuthContext', () => ({
+  useAuthContext: () => ({ user: mockUser })
+}));
+
+const mockTasks = [
+  {
+    id: "task",
+    title: "FattusChungus",
+    date: "2024-05-02T15:00:00.000Z",
+    priority: "Low",
+    completed: true,
+    editHistory: [],
+    employees: [],
+    status: "In Progress",
+  }
+];
+
+const mockUser = {
+  user: {
+    _id: "user1",
+    fname: "Jane",
+    lname: "Doe",
+    token: "fakeToken123"
+  }
+};
 
 
 describe('CalendarPage Component', () => {
@@ -75,13 +106,13 @@ describe('CalendarPage Component', () => {
     const weekButton = getByRole('button', { name: 'Week' });
     const dayButton = getByRole('button', { name: 'Day' });
 
-    expect(todayButton).toBeTruthy();
-    expect(backButton).toBeTruthy();
-    expect(nextButton).toBeTruthy();
+    expect(todayButton).toBeInTheDocument();
+    expect(backButton).toBeInTheDocument();
+    expect(nextButton).toBeInTheDocument();
     // Assert that all buttons are present
-    expect(monthButton).toBeTruthy();
-    expect(weekButton).toBeTruthy();
-    expect(dayButton).toBeTruthy();
+    expect(monthButton).toBeInTheDocument();
+    expect(weekButton).toBeInTheDocument();
+    expect(dayButton).toBeInTheDocument();
 
     let agendaDate = getByTestId("3").textContent;
     let rbcViewLabel = document.getElementsByClassName('rbc-toolbar-label')[0].textContent;
@@ -130,11 +161,11 @@ describe('CalendarPage Component', () => {
     );
     
     const dp_PrevBtn = getByLabelText('Previous Month')
-    expect(dp_PrevBtn).toBeTruthy();
+    expect(dp_PrevBtn).toBeInTheDocument();
 
 
     const dp_NextBtn = getByLabelText('Next Month')
-    expect(dp_NextBtn).toBeTruthy();
+    expect(dp_NextBtn).toBeInTheDocument();
     let dp_MonthLabel = document.getElementsByClassName('react-datepicker__current-month')[0].textContent;
     expect(dp_MonthLabel).toEqual('May 2024');
     fireEvent.click(dp_PrevBtn);
@@ -146,11 +177,34 @@ describe('CalendarPage Component', () => {
     expect(dp_MonthLabel).toEqual('June 2024');
     
     let dp_Option = getByLabelText('Choose Friday, June 28th, 2024');
-    expect(dp_Option).toBeTruthy();
+    expect(dp_Option).toBeInTheDocument();
     fireEvent.click(dp_Option);
     let agendaDate = getByTestId("3").textContent;
     expect(agendaDate).toEqual("June 28, 2024");
 
   });
 
+  /*
+  it('Displays tasks correctly', async () => {
+    const { getByLabelText, screen } = render(
+      <MemoryRouter>
+        <AuthContextProvider>
+          <CalendarPage />
+        </AuthContextProvider>
+      </MemoryRouter>
+    );
+    // Get the element by aria-label
+    await waitFor(() => {
+      expect(screen.getByLabelText('FattusChungus')).toBeInTheDocument();
+    });
+  
+   
+  
+  // Assert that the element is found
+  expect(taskElement).toBeInTheDocument();
+    
+  });
+*/
+   
+  
 });

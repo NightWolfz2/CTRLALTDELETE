@@ -43,6 +43,16 @@ const CalendarPage = () => {
   const maxTime = new Date();
   maxTime.setHours(23, 59, 0); // Set maximum time to 11:59 PM
 
+  const EventComponent = ({ event }) => {
+    return (
+      <div aria-label={event.title}>
+        <span>{event.title}</span>
+      </div>
+    );
+  };
+
+  
+
   useEffect(() => {
     // Update agenda text whenever date changes
     setAgendaDate(`${date.toLocaleDateString('en-CA', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`);
@@ -123,7 +133,7 @@ const CalendarPage = () => {
         return '#3174ad'; // Default color if priority is not defined
     }
   };
-/*
+
   // Fetch employees
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -152,7 +162,7 @@ const CalendarPage = () => {
 
     fetchEmployees();// Dependency array, if you're using the 'user' state to store user information
   }, [user]);
-*/
+
   // Fetch Tasks
   useEffect(() => {
     const fetchTasks = async () => {
@@ -297,13 +307,14 @@ const CalendarPage = () => {
                         style={{ 
                           width: '15%', height: '16px', paddingRight: '20px', color: '#fff', 
                           fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none'
+                          
                         }}>
                         {new Date(task.date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true, minimumIntegerDigits: 2 })}
                       </td>
                       <td 
                         style={{ 
                           width: '40%', padding: '0px 5px', borderRadius: '2px', color: 'black', backgroundColor: getTaskBgColor(task.priority), opacity: task.completed ? '0.5' : '1' }}>
-                        <span 
+                        <span aria-label={task.title}
                           onClick={() => handleTaskClick(task)} 
                           style={{ cursor: 'pointer', fontSize: 'small', fontWeight:'500', textDecoration: task.completed ? 'line-through' : 'none' }}>
                           {task.title}</span>
@@ -426,6 +437,9 @@ const CalendarPage = () => {
         view={currentView} // Set the current view
         onView={(view) => setCurrentView(view)} // Update the current view when changed
         onDrillDown={handleDateChange} // Call handleDrillDown when the calendar drills down
+        components={{
+          event: EventComponent // Use custom EventComponent to render events
+        }}
     />
     </div>
   )
