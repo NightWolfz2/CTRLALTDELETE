@@ -13,6 +13,7 @@ import Overview from './pages/Overview'
 import History from './pages/History'
 import EditHistory from './pages/EditHistory'
 import Profile from './pages/Profile'
+//import LoggedOut from './pages/LogOut'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Verify from './pages/Verification'
@@ -31,7 +32,7 @@ function App() {
   const {user} = useAuthContext()
   
   return (
-    <div>
+    <div className='root'>
       <BrowserRouter>
         <Navbar />
         <TokenExpirationChecker />
@@ -98,7 +99,7 @@ function App() {
               element={user && user.role !== 'employee'? <Users /> : <Navigate to="/login" />}
               />
             </Routes>
-        </div>
+          </div>
           <Bottombar />
           </BrowserRouter>
     </div>
